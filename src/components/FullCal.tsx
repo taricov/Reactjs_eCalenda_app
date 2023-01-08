@@ -1,25 +1,5 @@
-// -- Main Features:
-//  1) Side list for regular tasks to dnd either unique (removes on drop
-//     or could be used more than once (stays on drop)
-//  2) Events are extendible (extend them)
-//  3) Events are dragable (can be moved over)
-//  4) Events are Colorful (each color represents a type of event)
-//  5) Events could be repetitive (daily/weekly/monthly)
-//  6) Events could be overlapped (simultaneous)
-//@  7) Events should be searchable (searchBar)
-// Taggggggggggggs
-
-//TODO: Future Updates: add attachment drop-zone
-//TODO: Future Updates: TimeLine View (Vertical Calendar [Gantt-chart-like])
-
 import MantineDatePicker from "./DatePicker/MantineDatePicker";
-import React, {
-  useState,
-  useEffect,
-  useRef,
-  HtmlHTMLAttributes,
-  ChangeEventHandler,
-} from "react";
+import React, { useState, useEffect, useRef, ChangeEventHandler } from "react";
 // import DatePickerModal from "./MantineModal";
 import FullCalendar from "@fullcalendar/react"; // must go before plugins
 import dayGridPlugin from "@fullcalendar/daygrid"; // a plugin!
@@ -30,10 +10,6 @@ import moment from "moment";
 
 import {
   Grid,
-  Col,
-  Card,
-  Modal,
-  Badge,
   Text,
   ColorInput,
   Textarea,
@@ -53,7 +29,6 @@ import {
   updateEvent,
   removeEvent,
   handleCurrentMonth,
-  updateImage,
 } from "./functions/fullcalendar";
 import "./Index.css";
 import { openConfirmModal } from "@mantine/modals";
@@ -61,34 +36,26 @@ import { atom, useAtom } from "jotai";
 import { EventInput } from "@fullcalendar/core";
 import { DatePicker, DatePickerBase, TimeInput } from "@mantine/dates";
 import { BsClock } from "react-icons/bs";
-import { favColorsAtom } from "../store/jotai";
-// App Components Types:
+import {
+  allIntervals,
+  favColorsAtom,
+  repeatedAtom,
+  tagsAtom,
+  xTimesAtom,
+} from "../store/jotai";
 
-interface AppColorInputProps {
-  // newAddedColor?: HTMLInputElement;
-  onChangeFn?: any;
-}
-// App Components:
-
-// const AppColorInput = ({ onChangeFn }: AppColorInputProps) => {
-//   return (
-//     <ColorInput
-//       withEyeDropper
-//       placeholder="Select A color"
-//       label="Color:"
-//       format="hex"
-//       swatchesPerRow={7}
-//       // ref={newAddedColor}
-//       onChange={onChangeFn}
-//       swatches={swatches}
-//     />
-//   );
-// };
-const Index = () => {
+const FullCal = () => {
   const [favColors, setFavColors] = useAtom(favColorsAtom);
+  const [tags, setTags] = useAtom(tagsAtom);
+  const [asRepeated, setAsRepeated] = useAtom(repeatedAtom);
+  const [eventTitle, setEventTitle] = useState("");
+  // const [repeatTimes, setRepeatTimes] = useAtom<string | undefined>(xTimesAtom);
   const [repeatTimes, setRepeatTimes] = useState<string | null>(null);
 
-  // console.log(favColors);
+  const handleRepeated = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setAsRepeated(e.currentTarget.checked);
+    console.log(e.target.checked);
+  };
 
   const selectedXTimes = (selectedInterval: string) => {
     setRepeatTimes(selectedInterval);
@@ -97,90 +64,113 @@ const Index = () => {
     setFavColors([selectedColor, ...favColors.slice(0, -1)]);
   };
 
+  const handleEventTitle = (e: any) => {
+    setEventTitle(e.target.value);
+    console.log(eventTitle);
+  };
+
   const openModal = () => {
     openConfirmModal({
-      title: "Please confirm your action",
+      title: "Create New",
       children: (
         <>
-          <Grid>
-            <Grid.Col md={6} lg={3}>
+          <Container>
+            <Flex direction="column">
               <TextInput
                 withAsterisk
-                placeholder="New Event"
+                placeholder="Event Name"
+                onChange={handleEventTitle}
                 variant="unstyled"
               />
               <Textarea variant="unstyled" placeholder="Type notes ..." />
-            </Grid.Col>
-            <Grid.Col md={6} lg={3}>
-              {/* <AppColorInput onChangeFn={updateColors} /> */}
+              <MantineDatePicker
+                label=""
+                desc="Select Dates:"
+                placeholder=""
+                size="sm"
+              />
+            </Flex>
+
+            <Space h={"md"} />
+            <Checkbox
+              label="Repeat"
+              color="teal"
+              size="sm"
+              checked={asRepeated}
+              onChange={() => handleRepeated}
+            />
+            <Flex
+              direction={"column"}
+              className={`${asRepeated ? "hidden" : ""}`}
+            >
+              {/* //TODO not Working Repeated */}
+              <Flex gap={20}>
+                <Select
+                  variant="unstyled"
+                  placeholder={"every 2 weeks"}
+                  onChange={selectedXTimes}
+                  data={allIntervals}
+                  className="w-3/5"
+                  size="xs"
+                />
+                <Flex className="w-full" gap={10}>
+                  <Text
+                    className="flex items-center justify-center "
+                    size={"xs"}
+                  >
+                    ends
+                  </Text>
+                  <DatePicker
+                    className="w-fit"
+                    variant="unstyled"
+                    placeholder="never"
+                    size="xs"
+                  />
+                </Flex>
+              </Flex>
+              <Flex>
+                <Text className="flex items-center justify-center " size={"xs"}>
+                  reminder
+                </Text>
+                <TimeInput
+                  size="xs"
+                  className="w-1/3"
+                  placeholder="none"
+                  icon={<BsClock size={16} />}
+                  variant="unstyled"
+                  defaultValue={new Date()}
+                />
+              </Flex>
+            </Flex>
+            <Flex gap={20}>
+              <MultiSelect
+                className="w-fit"
+                data={tags}
+                size="xs"
+                placeholder="add tags"
+                searchable
+                variant="unstyled"
+                creatable
+                getCreateLabel={(query) => `+ Create ${query}`}
+                onCreate={(query) => {
+                  const item = query;
+                  setTags((current) => [...current, item]);
+                  return item;
+                }}
+              />
               <ColorInput
-                withEyeDropper
-                placeholder="Select A color"
-                label="Color:"
+                // withEyeDropper
+                size="xs"
+                className="w-fit"
+                variant="unstyled"
+                placeholder="Pick color"
                 format="hex"
                 swatchesPerRow={7}
                 swatches={favColors}
                 onChange={updateColors}
               />
-            </Grid.Col>
-
-            <MantineDatePicker
-              label="Select the date range:"
-              placeholder="Select Date Range"
-            />
-          </Grid>
-          <Grid>
-            <Grid.Col md={6} lg={3}>
-              <Space h={"md"} />
-              <Checkbox label="Repeat" color="teal" size="sm" onChange={""} />
-            </Grid.Col>
-            <Grid.Col md={6} lg={3}>
-              <Select
-                variant="unstyled"
-                placeholder={"Every 2 weeks"}
-                // value={repeatTimes}
-                onChange={selectedXTimes}
-                data={[
-                  "Daily",
-                  "2 Days",
-                  "Weekly",
-                  "2 Weeks",
-                  "Monthly",
-                  "Quarterly",
-                  "Bi-annually",
-                  "Anuually",
-                ]}
-                size="xs"
-              />
-              <DatePicker
-                variant="unstyled"
-                label="Ends"
-                placeholder="Never"
-                size="xs"
-              />
-              <TimeInput
-                label="reminder"
-                size="xs"
-                className="w-1/3"
-                placeholder="None"
-                icon={<BsClock size={16} />}
-                variant="unstyled"
-                defaultValue={new Date()}
-              />
-            </Grid.Col>
-          </Grid>
-          <Grid>
-            <Grid.Col>
-              <MultiSelect
-                placeholder="tags"
-                variant="unstyled"
-                searchable
-                creatable
-                onCreate={(newData) => data.push(newData)}
-                data={["Math", "History", "Chemistry", "Phenology"]}
-              />
-            </Grid.Col>
-          </Grid>
+            </Flex>
+          </Container>
         </>
       ),
       labels: { confirm: "Confirm", cancel: "Cancel" },
@@ -209,8 +199,8 @@ const Index = () => {
     { id: "3", name: "แผนกไอที", color: "#1DCF0E" },
   ];
   useEffect(() => {
-    loadData();
-    drag();
+    // loadData();
+    // drag();
   }, []);
   const loadData = () => {
     listEvent()
@@ -222,7 +212,7 @@ const Index = () => {
       });
   };
   const drag = () => {
-    let dragable = document.getElementById("external-event");
+    let dragable: any = document.getElementById("external-event");
     new Draggable(dragable, {
       itemSelector: ".fc-event",
       eventData: function (eventEl) {
@@ -231,14 +221,14 @@ const Index = () => {
         let color = eventEl.getAttribute("color");
 
         return {
-          id: id,
-          title: title,
-          color: color,
+          id,
+          title,
+          color,
         };
       },
     });
   };
-  const handleClick = (info) => {
+  const handleClick = (info: any) => {
     openModal();
     const id = info.event._def.extendedProps._id;
     setId(id);
@@ -320,7 +310,7 @@ const Index = () => {
       });
   };
 
-  const onChangeValues = (e) => {
+  const onChangeValues = (e: any) => {
     console.log(e.target.value);
     setValues({ ...values, [e.target.name]: e.target.value });
   };
@@ -372,9 +362,10 @@ const Index = () => {
   // window.location.reload();
   return (
     <>
-      <Grid>
-        <Grid.Col span={3}>
-          <Card>
+      <Grid className="h-full">
+        {/* <Grid.Col span={3}> */}
+        {/* <Card id="external-event">s</Card> */}
+        {/* <Card>
             <div id="external-event">
               <ul>
                 {department.map((item, index) => (
@@ -420,9 +411,9 @@ const Index = () => {
                 </li>
               ))}
             </ol>
-          </Card>
-        </Grid.Col>
-        <Grid.Col span={9}>
+          </Card>*/}
+        {/* </Grid.Col> */}
+        <Grid.Col>
           <FullCalendar
             plugins={[dayGridPlugin, timeGridPlugin, interactionPlugin]}
             headerToolbar={{
@@ -439,54 +430,10 @@ const Index = () => {
             editable={true}
             eventChange={handleChange}
           />
-          {/* <MantineModal /> */}
-          {/* <Modal
-            title="Basic Modal"
-            opened={isModalVisible}
-            // onOk={handleOk}
-            onClose={handleCancel}
-          > }
-            <input
-              name="title"
-              value={values.title}
-              onChange={onChangeValues}
-            />
-            <select name="color" onChange={onChangeValues}>
-              <option key={999} value="">
-                --กรุณาเลือกแผนก--
-              </option>
-              {department.map((item, index) => (
-                <option
-                  key={index}
-                  value={item.color}
-                  style={{ backgroundColor: item.color }}
-                >
-                  {item.name}
-                </option>
-              ))}
-            </select>
-          </Modal>
-          <Modal
-            title="Basic Modal"
-            opened={isModalVisible1}
-            // onOk={handleOk1}
-            onClose={handleCancel1}
-            // footer={[
-            //   <button onClick={handleOk1}>Submit</button>,
-            //   <button onClick={handleCancel1}>Cancel</button>,
-            //   <button onClick={handleRemove}>Delete</button>,
-            // ]}
-          >
-            <h1>รายละเอียด</h1>
-            <img src={`${process.env.REACT_APP_IMAGE}/${image}`} width="100%" /> 
-            <input type="file" onChange={handleFile} name="file" />
-          </Modal>
-          datesSet={getCurrent}
-              */}
         </Grid.Col>
       </Grid>
     </>
   );
 };
 
-export default Index;
+export default FullCal;

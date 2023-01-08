@@ -1,7 +1,50 @@
-.fc-event{
-    margin: 1em 0;
-    cursor: move;
+
+.fc{
+    height: 90vh !important;
 }
+.fc-day{
+    height: 1em!important;
+
+}
+.fc-button:focus{
+box-shadow: none !important;
+}
+.fc-button{
+    outline: none !important;
+    /* border: none !important; */
+    transition: all .3s;
+    font-size: 12px !important;
+    width: 50px;
+    height: 30px;
+}
+.fc-toolbar-title{
+font-size: 14px !important;
+font-weight: bold;
+
+}
+.fc-toolbar{
+    margin: 20px;
+}
+.fc-today-button{
+    text-transform: capitalize !important;
+}
+.fc-col-header-cell-cushion{
+    font-weight: 600;
+    font-size: 12px;
+    color: rgba(0, 0, 0, 0.6);
+
+}
+
+.fc-timegrid-slot-label-cushion, .fc-daygrid-day-number{
+    font-weight: 600;
+    font-size: 12px;
+}
+.fc-timegrid-axis-cushion{
+    font-weight: 600;
+    font-size: 12px;
+    text-transform: capitalize;
+}
+
 
 :root {
     --fc-daygrid-event-dot-width: 8px;
@@ -15,13 +58,13 @@
 
   
   /* Month/Week/Day btn */
-  --fc-button-text-color: #fff;
-  --fc-button-bg-color: #34412d;
-  --fc-button-border-color: #502c2f;
+  --fc-button-text-color: rgb(255, 255, 255);
+  --fc-button-bg-color: transparent;
   --fc-button-hover-bg-color: #1e2b37;
-  --fc-button-hover-border-color: #1a252f;
-  --fc-button-active-bg-color: #eb47cd;
-  --fc-button-active-border-color: #151e27;
+  --fc-button-border-color: rgb(193, 178, 178);
+  --fc-button-hover-border-color: rgb(193, 178, 178);
+  --fc-button-active-border-color: rgb(193, 178, 178);
+  --fc-button-active-bg-color: #659af7a0;
   --fc-event-bg-color: #3788d8;
   --fc-event-border-color: #3788d8;
   --fc-event-text-color: #fff;
@@ -32,12 +75,12 @@
 
   --fc-event-resizer-thickness: 8px;
   --fc-event-resizer-dot-total-width: 8px;
-  --fc-event-resizer-dot-border-width: 1px;
+  --fc-event-resizer-dot-border-width: 10px;
 
   --fc-non-business-color: rgba(215, 215, 215, 0.3);
-  --fc-bg-event-color: rgb(143, 223, 130);
+  --fc-bg-event-color: rgb(223, 155, 130);
   --fc-bg-event-opacity: 0.3;
   --fc-highlight-color: rgba(188, 241, 224, 0.3);
-  --fc-today-bg-color: rgba(255, 40, 183, 0.15);
-  --fc-now-indicator-color: red;
+  --fc-today-bg-color: rgba(108, 108, 108, 0.15);
+  --fc-now-indicator-color: rgba(248, 56, 56, 0.782);
   }

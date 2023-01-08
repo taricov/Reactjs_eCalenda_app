@@ -21,6 +21,7 @@
     "@mantine/hooks": "^5.10.0",
     "@mantine/modals": "^5.10.0",
     "@mantine/notifications": "^5.10.0",
+    "@tabler/icons": "^1.119.0",
     "@tanstack/react-query": "^4.20.9",
     "axios": "^1.2.2",
     "dayjs": "^1.11.7",
@@ -29,7 +30,9 @@
     "moment": "^2.29.4",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
-    "react-icons": "^4.7.1"
+    "react-icons": "^4.7.1",
+    "wouter": "^2.10.0-alpha.1",
+    "zod": "^3.20.2"
   },
   "devDependencies": {
     "@types/react": "^18.0.26",
@@ -37,6 +40,7 @@
     "@vitejs/plugin-react": "^3.0.0",
     "autoprefixer": "^10.4.13",
     "postcss": "^8.4.20",
+    "prisma": "^4.8.0",
     "tailwindcss": "^3.2.4",
     "typescript": "^4.9.3",
     "vite": "^4.0.0"

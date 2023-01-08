@@ -5,6 +5,52 @@
 
 @layer components{
     body{
-       @apply bg-stone-900 w-screen h-screen
+        @apply bg-stone-900 w-screen h-screen
     }
-}
+    }
+    /* @layer base{
+
+    .fc{
+     @apply h-screen bg-red-600;
+    }
+    .fc-timegrid-axis-cushion{
+        @apply font-bold text-xl capitalize;
+    } */
+    /* .fc-day{
+        height: 1em!important;
+    
+    }
+    .fc-button:focus{
+    box-shadow: none !important;
+    }
+    .fc-button{
+        outline: none !important;
+        /* border: none !important; 
+        transition: all .3s;
+        font-size: 12px !important;
+        width: 50px;
+        height: 30px;
+    }
+    .fc-toolbar-title{
+    font-size: 14px !important;
+    font-weight: bold;
+    
+    }
+    .fc-toolbar{
+        margin: 20px;
+    }
+    .fc-col-header-cell-cushion{
+        font-weight: 600;
+        font-size: 12px;
+        color: rgba(0, 0, 0, 0.6);
+    
+    }
+    
+
+    
+     */
+     /* .fc-timegrid-slot-label-cushion, .fc-daygrid-day-number{
+        @apply font-bold font-sm
+    }
+    
+} */

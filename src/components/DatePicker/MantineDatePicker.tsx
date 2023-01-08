@@ -37,8 +37,10 @@ const SiteCompDatePicker = ({
           monthPickerControl: "hover:bg-primary-300",
           yearPickerControl: "hover:bg-primary-300",
         }}
+        variant="unstyled"
         label={label}
         size={size}
+        withAsterisk
         description={desc}
         placeholder={placeholder}
         amountOfMonths={2}

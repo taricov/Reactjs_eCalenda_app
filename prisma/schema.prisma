@@ -1,0 +1,63 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider     = "mysql"
+  url          = env("DATABASE_URL")
+  // shadowDatabaseUrl = env("SHADOW_DATABASE_URL")
+  relationMode = "prisma"
+}
+
+model User {
+  id        Int       @id @unique @default(autoincrement())
+  name      String
+  email     String    @unique
+  // Some extra information
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+  projects  Project[]
+}
+
+model Project {
+  id        Int      @id @default(autoincrement())
+  name      String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  user      User?    @relation(fields: [user_id], references: [id])
+  user_id   Int?     @unique
+  events    Event[]
+}
+
+model Event {
+  id         Int      @id @default(autoincrement())
+  start_date DateTime
+  end_date   DateTime
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+  project    Project? @relation(fields: [project_id], references: [id])
+  project_id Int?     @unique
+  tags       Tag[]
+  color_id   Color?
+}
+
+model Color {
+  id        Int      @id @default(autoincrement())
+  name      String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  event     Event?   @relation(fields: [event_id], references: [id])
+  event_id  Int?     @unique
+}
+
+model Tag {
+  id        Int      @id @default(autoincrement())
+  name      String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  event     Event?   @relation(fields: [event_id], references: [id])
+  event_id  Int?     @unique
+}
