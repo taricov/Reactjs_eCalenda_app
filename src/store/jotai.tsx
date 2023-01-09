@@ -1,3 +1,4 @@
+import { Flex, Text, TextInput } from "@mantine/core";
 import { atom, useAtom } from "jotai";
 import { atomWithStorage } from "jotai/utils";
 
@@ -84,16 +85,19 @@ export const predefinedDraggables = [
 
 export const createdProjects = [
   {
-    name: "Project #1",
     id: "1",
+    name: "Project #1",
+    color: "#fa5252",
   },
   {
-    name: "Project #2",
     id: "2",
+    name: "Project #2",
+    color: "green",
   },
   {
-    name: "Project #3",
     id: "3",
+    name: "Project #3",
+    color: "brown",
   },
 ];
 
@@ -133,7 +137,7 @@ export const createdClusters = [
   {
     name: "Cluster #1",
     id: "1",
-    color: "green-400",
+    color: "red-400",
   },
   {
     name: "Cluster #2",
@@ -143,7 +147,7 @@ export const createdClusters = [
   {
     name: "Cluster #3",
     id: "3",
-    color: "slate-400",
+    color: "#4c6ef5",
   },
 ];
 export const searchDataAtom = atom([undefined, "rr", "22"]);
@@ -160,3 +164,111 @@ export const repeateddAtom = atom(false);
 export const xTimesAtom = atom(undefined);
 
 export const settingsDrawerOpen = atom(false);
+export const integrationModalOpen = atom(false);
+
+export const userInfoDisabledAtom = atom({
+  user_name: true,
+  user_email: true,
+  user_role: true,
+});
+export const userInfoAtom = atom({
+  user_name: "Taric Ov",
+  user_email: "taricov1@gmail.com",
+  user_role: "admin",
+});
+
+export const availableIntegrationsAtom = [
+  {
+    id: "1",
+    image:
+      "https://play-lh.googleusercontent.com/8nvKcNeL5ELV6vaMD5N3grOA2D7xvHvNKmrsSCRUMIzImLvcuKRbcpfMmtka6Ryfeoo",
+    label: "Daftra",
+    description: "Manage your business calendar.",
+    disabled: false,
+    children: () => {
+      return (
+        <>
+          <Text size="sm">
+            Leverage your workflow and manage all your appointments in one
+            place.
+          </Text>
+          <TextInput
+            className="mt-4"
+            label="API Key"
+            description={
+              <Flex className="items-center" gap={3}>
+                <Text>Get your Zoom API key </Text>
+                <Text color={"blue"} component="a" href="https://mantine.dev">
+                  Click here
+                </Text>
+              </Flex>
+            }
+          />
+        </>
+      );
+    },
+  },
+
+  {
+    id: "2",
+    image:
+      "https://play-lh.googleusercontent.com/yZsmiNjmji3ZoOuLthoVvptLB9cZ0vCmitcky4OUXNcEFV3IEQkrBD2uu5kuWRF5_ERA",
+    label: "Zoom",
+    description: "Schedule your Meetings",
+    disabled: false,
+    children: () => {
+      return (
+        <>
+          <Text size="sm">
+            Manage your meetings on zoom from the same place you manage your
+            business calendar.
+          </Text>
+          <TextInput
+            className="mt-4"
+            label="API Key"
+            description={
+              <>
+                <Text>Get your Zoom API key </Text>
+                <Text color={"blue"} component="a" href="https://mantine.dev">
+                  Click here
+                </Text>
+              </>
+            }
+          />
+        </>
+      );
+    },
+  },
+
+  {
+    id: "3",
+    image:
+      "https://www.showmetech.com.br/wp-content/uploads//2017/10/1200x630bb.jpg",
+    label: "Google Calendar",
+    description: "Coming soon",
+    //  "Full compatibility with Google Calendar",
+    disabled: true,
+    children: () => {
+      return (
+        <>
+          <Text size="sm">
+            Preserve your workflow, but take the shortcut to its best
+          </Text>
+
+          <TextInput
+            label="API Key"
+            className="mt-4"
+            description={
+              <>
+                <Text>If you don't know how to get your Google API key,</Text>
+                <Text color={"blue"} component="a" href="https://mantine.dev">
+                  Click here
+                </Text>
+              </>
+            }
+          />
+        </>
+      );
+    },
+  },
+];

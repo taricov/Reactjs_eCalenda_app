@@ -21,6 +21,7 @@ import {
   navBarToggleAtom,
   predefinedDraggables,
   settingsDrawerOpen,
+  userInfoAtom,
 } from "../store/jotai";
 import myImg from "../assets/me.jpg";
 import { BsBell, BsEnvelope, BsGear } from "react-icons/bs";
@@ -29,17 +30,94 @@ import Tooltip from "./MantineTooltip";
 import { useActivityLog } from "../hooks/useActivityLog";
 import ClusterIcon from "./ClusterIcon";
 import SettingsDrawer from "./SettingsDrawer";
+import { MantineModal } from "./MantineModal";
+import { AiOutlineEdit } from "react-icons/ai";
+import { openEditProfileModal } from "./ModalEditProfile";
+import { useHotkeys } from "@mantine/hooks";
 
+// =========================== EditPRofile imports
+import { TextInput } from "@mantine/core";
+import { useClickOutside } from "@mantine/hooks";
+import { showNotification } from "@mantine/notifications";
+import { IconCheck } from "@tabler/icons";
+import { AiOutlineCheck } from "react-icons/ai";
+import { userInfoDisabledAtom } from "../store/jotai";
+
+// =========================== EditPRofile Modal starts
+// const openEditProfileModal = () =>
+//   MantineModal(
+//     "Edit Profile",
+//     ReactNodes(),
+//     { confirm: "Apply", cancel: "Discard" },
+//     onEditProfileModalCancel,
+//     onEditProfileModalConfirm
+//   );
+
+// =========================== EditPRofile Modal ends
+// const ss = () =>
+//   MantineModal(
+//     "Edit Profile",
+//     () => {
+//       return (
+//         <>
+//           <Text size="sm">This is a modal</Text>
+//           <Text size="sm">This is a modal</Text>
+//           <Text size="sm">This is a modal</Text>
+//         </>
+//       );
+//     },
+//     { confirm: "Apply", cancel: "Discard" },
+//     onEditProfileModalCancel,
+//     onEditProfileModalConfirm
+//   );
 export default function AppSideBar() {
   const [toggleNav] = useAtom(navBarToggleAtom);
   console.log(toggleNav);
   const [settingsOpened, setSettingsOpened] = useAtom(settingsDrawerOpen);
+  useHotkeys([["mod+j", () => setSettingsOpened((opened) => !settingsOpened)]]);
 
   //   const [newLog, setNewLog] = useAtom(loggerAtom);
   // const loggerAct = (e) => {
 
   //   useActivityLog(x)
   // }
+
+  // const onEditProfileModalCancel = () => {
+  //   console.log("onEditProfileModalCancel");
+  // };
+  // const onEditProfileModalConfirm = () => {
+  //   console.log("onEditProfileModalConfirmed");
+  // };
+
+  // const openEditProfileModal = () =>
+  //   MantineModal(
+  //     "Edit Profile",
+  //     ReactNodes(),
+  //     { confirm: "Apply", cancel: "Discard" },
+  //     onEditProfileModalCancel,
+  //     onEditProfileModalConfirm
+  //   );
+
+  // Edit Personal Profile Modal::Start
+
+  // const onEditProfileModalCancel = () => {
+  //   console.log("onEditProfileModalCancel");
+  //   console.log(ReactNodes);
+  // };
+  // const onEditProfileModalConfirm = () => {
+  //   console.log("onEditProfileModalConfirmed");
+  // };
+  // const openEditProfileModal = () =>
+  //   MantineModal(
+  //     "New modal",
+  //     ReactNodes(),
+  //     { confirm: "cin", cancel: "cancel" },
+  //     onEditProfileModalCancel,
+  //     onEditProfileModalConfirm
+  //   );
+  // Edit Personal Profile Modal::Finish
+
+  const [userInfo] = useAtom(userInfoAtom);
   return (
     <Navbar
       p="md"
@@ -61,10 +139,10 @@ export default function AppSideBar() {
             alt="Taric Ov"
           />
           <Text size="lg" color="bold">
-            Taric Ov
+            {userInfo.user_name}
           </Text>
           <Text className="italic" size="xs" color="dimmed">
-            taricov1@gmail.com
+            {userInfo.user_email}
           </Text>
         </Flex>
         <Flex gap={12} className="my-2" align="center" justify="center">
@@ -77,9 +155,9 @@ export default function AppSideBar() {
               <BsGear />
             </Tooltip>
           </ActionIcon>
-          <ActionIcon onClick={() => console.log("ff")}>
+          <ActionIcon onClick={() => openEditProfileModal()}>
             <Tooltip label={"tooltip"}>
-              <BsEnvelope />
+              <AiOutlineEdit />
             </Tooltip>
           </ActionIcon>
           <ActionIcon
@@ -107,14 +185,18 @@ export default function AppSideBar() {
             defaultValue={createdProjects.map((x) => x.id)}
           >
             {createdProjects.map((proj: any) => {
-              const { id, name } = proj;
+              const { id, name, color } = proj;
               return (
                 <>
                   <Checkbox
-                    classNames={{ label: "pl-1 mr-4" }}
+                    classNames={{
+                      label: "pl-1 mr-4",
+                      input: `checked:bg-[${color}] checked:border-none`,
+                      root: "cursor:pointer",
+                    }}
                     key={id}
                     value={id}
-                    label={name}
+                    label={color}
                   />
                 </>
               );

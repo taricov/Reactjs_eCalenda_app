@@ -23,6 +23,7 @@ import RegistrationPage from "./pages/RegistrationPage";
 import LoginPage from "./pages/LoginPage";
 import Error404Page from "./pages/Error404Page";
 import HomePage from "./pages/HomePage";
+import { NotificationsProvider } from "@mantine/notifications";
 
 function App() {
   const [darkMode] = useAtom(darkModeAtom);
@@ -46,32 +47,34 @@ function App() {
         withNormalizeCSS
       >
         <ModalsProvider>
-          <Route path="/">
-            <HomePage />
-          </Route>
-          <Route path="/register">
-            <RegistrationPage />
-          </Route>
-          <Route path="/login">
-            <LoginPage />
-          </Route>
-          <Route path="/:rest*">
-            <Error404Page />
-          </Route>
-          {/* <AppContainer>
+          <NotificationsProvider autoClose={2000}>
+            <Route path="/">
+              <HomePage />
+            </Route>
+            <Route path="/register">
+              <RegistrationPage />
+            </Route>
+            <Route path="/login">
+              <LoginPage />
+            </Route>
+            <Route path="/:rest*">
+              <Error404Page />
+            </Route>
+            {/* <AppContainer>
             <ShortcutsPane />
             <Flex direction={"column"} gap={10}>
-              {/* <TextInput
-                placeholder="Search"
-                radius="xl"
-                size="xs"
-                onChange={(e) => setValue(e.currentTarget.value)}
-                icon={<BsSearch size={14} />}
-              /> 
-              <AppTopBar />
-              <FullCal />
+            {/* <TextInput
+            placeholder="Search"
+            radius="xl"
+            size="xs"
+            onChange={(e) => setValue(e.currentTarget.value)}
+            icon={<BsSearch size={14} />}
+            /> 
+            <AppTopBar />
+            <FullCal />
             </Flex>
           </AppContainer> */}
+          </NotificationsProvider>
         </ModalsProvider>
       </MantineProvider>
     </div>

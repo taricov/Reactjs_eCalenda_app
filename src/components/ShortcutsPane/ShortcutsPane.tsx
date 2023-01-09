@@ -5,7 +5,7 @@ import ShortcutsSection from "./ShortcutsSection";
 import SiteCompModal from "./MantineModal";
 
 const ShortcutsPane = () => {
-  // const handleKeyPress = useCallback((e: KeyboardEvent) => {
+  // const handleKeyPress   = useCallback((e: KeyboardEvent) => {
   //   let pressed = e.key;
   //   if ((e.metaKey || e.ctrlKey) && pressed === "/") {
   //     setOpened((opened) => !opened);

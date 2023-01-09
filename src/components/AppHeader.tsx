@@ -10,13 +10,23 @@ import {
 import { useAtom } from "jotai";
 import { BsFillCircleFill } from "react-icons/bs";
 import { GiStripedSun } from "react-icons/gi";
-import { darkModeAtom, navBarToggleAtom } from "../store/jotai";
-import EasyOnYourself from "./EasyOnYouself";
 import { GoSettings } from "react-icons/go";
 import { IoMdHelpCircle } from "react-icons/io";
-
+import {
+  darkModeAtom,
+  integrationModalOpen,
+  navBarToggleAtom,
+} from "../store/jotai";
+import EasyOnYourself from "./EasyOnYouself";
+import ModalIntegration from "./MantineAccordion";
 export default function AppHeader() {
   const theme = useMantineTheme();
+  const [integrationOpen, setIntegrationOpened] = useAtom(integrationModalOpen);
+
+  const handleIntegrationModal = () => {
+    setIntegrationOpened(true);
+    console.log(integrationOpen);
+  };
 
   const [darkMode, setDarkMode] = useAtom(darkModeAtom);
   const toggleDarkMode = () => {
@@ -52,7 +62,8 @@ export default function AppHeader() {
         <ActionIcon size={30} onClick={undefined}>
           <IoMdHelpCircle />
         </ActionIcon>
-        <ActionIcon size={30} onClick={undefined}>
+        <ModalIntegration />
+        <ActionIcon size={30} onClick={handleIntegrationModal}>
           <GoSettings />
         </ActionIcon>
         <EasyOnYourself />
