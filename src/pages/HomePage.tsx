@@ -3,6 +3,7 @@ import ShortcutsPane from "../components/ShortcutsPane/ShortcutsPane";
 import AppContainer from "../layout/AppContainer";
 import AppTopBar from "../layout/AppTopBar";
 import FullCal from "../components/FullCal";
+import CalendarStats from "../components/CalendarStats";
 
 export default function HomePage() {
   return (
@@ -19,6 +20,7 @@ export default function HomePage() {
               /> */}
           <AppTopBar />
           <FullCal />
+          <CalendarStats />
         </Flex>
       </AppContainer>
     </>

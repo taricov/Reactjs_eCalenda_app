@@ -7,7 +7,9 @@ import {
   Stack,
   Text,
 } from "@mantine/core";
+import { useHotkeys } from "@mantine/hooks";
 import { useAtom } from "jotai";
+import { useRef } from "react";
 import { ChangeEvent, ChangeEventHandler, SetStateAction } from "react";
 import { BsPlusLg, BsSearch } from "react-icons/bs";
 import { searchDataAtom, searchQueryAtom } from "../store/jotai";
@@ -19,15 +21,30 @@ export default function AppTopBar() {
     setSearchQuery(e);
     console.log(e);
   };
+
+  const searchBar = useRef<HTMLInputElement | null>(null);
+  const focusSearchBar: () => void = () => {
+    searchBar.current?.focus();
+  };
+  useHotkeys([
+    ["mod+k", () => focusSearchBar()],
+    ["/", () => focusSearchBar()],
+  ]);
   return (
     <>
-      <Flex justify={"space-between"}>
+      <Flex
+        direction="column"
+        justify="space-between"
+        gap={10}
+        className="xs:flex-row"
+      >
         <Autocomplete
+          ref={searchBar}
           classNames={{
             input:
-              "border-gray-100 focus:border-gray-300 dark:border-gray-800 dark:focus:border-gray-700  transition-all duration-200",
+              "border-app-color-200 focus:border-app-color-400 dark:border-gray-800 dark:focus:border-gray-700  transition-all duration-200",
           }}
-          className="grow mr-5 "
+          className="grow xm:mx-auto"
           icon={<BsSearch />}
           data={[]}
           placeholder="search"
@@ -42,12 +59,17 @@ export default function AppTopBar() {
           width={"fit"}
         >
           <Menu.Target>
-            <Button size="sm" variant="default" leftIcon={<BsPlusLg />}>
+            <Button
+              size="sm"
+              className="bg-app-color-500 hover:bg-app-color-600 text-app-color-50 transition-all duration-200"
+              variant="default"
+              leftIcon={<BsPlusLg />}
+            >
               Add New
             </Button>
           </Menu.Target>
 
-          <Menu.Dropdown>
+          <Menu.Dropdown className="w-11/12">
             <Menu.Label>Actions</Menu.Label>
             <Menu.Item>New Event</Menu.Item>
             <Menu.Item>New Project</Menu.Item>

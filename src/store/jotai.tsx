@@ -54,7 +54,7 @@ export const allIntervals = [
   "Anuually",
 ];
 
-export const repeatedAtom = atom<boolean | undefined>(undefined);
+export const repeatedAtom = atom(false);
 
 //"outline" | "light" | "filled" | "gradient" | "dot"
 export const predefinedDraggables = [
@@ -83,7 +83,7 @@ export const predefinedDraggables = [
   },
 ];
 
-export const createdProjects = [
+export const createdProjectsAtom = atom([
   {
     id: "1",
     name: "Project #1",
@@ -99,7 +99,7 @@ export const createdProjects = [
     name: "Project #3",
     color: "brown",
   },
-];
+]);
 
 export const eventsAtom = atom([
   {
@@ -133,7 +133,7 @@ export const eventsAtom = atom([
   },
 ]);
 
-export const createdClusters = [
+export const createdClustersAtom = atom([
   {
     name: "Cluster #1",
     id: "1",
@@ -149,7 +149,7 @@ export const createdClusters = [
     id: "3",
     color: "#4c6ef5",
   },
-];
+]);
 export const searchDataAtom = atom([undefined, "rr", "22"]);
 export const searchQueryAtom = atom("");
 export const loggerAtom = atom<string | null>("");
@@ -160,7 +160,7 @@ export const valuesAtom = atom({
   end: "",
   color: "",
 });
-export const repeateddAtom = atom(false);
+
 export const xTimesAtom = atom(undefined);
 
 export const settingsDrawerOpen = atom(false);
@@ -170,12 +170,21 @@ export const userInfoDisabledAtom = atom({
   user_name: true,
   user_email: true,
   user_role: true,
+  calendar_title: true,
+  event_limit: true,
 });
 export const userInfoAtom = atom({
   user_name: "Taric Ov",
   user_email: "taricov1@gmail.com",
-  user_role: "admin",
 });
+export const calendarSettingsAtom = atom({
+  calendar_title: "Calendar #1",
+  event_limit: "",
+  weather_indicator: false,
+});
+
+// export const eventLimitAtom = atom("");
+// export const calendarTitleAtom = atom("Calendar #1");
 
 export const availableIntegrationsAtom = [
   {
@@ -227,12 +236,12 @@ export const availableIntegrationsAtom = [
             className="mt-4"
             label="API Key"
             description={
-              <>
+              <Flex className="items-center" gap={3}>
                 <Text>Get your Zoom API key </Text>
                 <Text color={"blue"} component="a" href="https://mantine.dev">
                   Click here
                 </Text>
-              </>
+              </Flex>
             }
           />
         </>
@@ -271,4 +280,37 @@ export const availableIntegrationsAtom = [
       );
     },
   },
+  {
+    id: "3",
+    image:
+      "https://static.toiimg.com/thumb/msid-93048963,width-1280,height-720,resizemode-4/.jpg",
+    label: "Google Meet",
+    description: "Coming soon",
+    //  "Full compatibility with Google Calendar",
+    disabled: true,
+    children: () => {
+      return (
+        <>
+          <Text size="sm">
+            Preserve your workflow, but take the shortcut to its best
+          </Text>
+
+          <TextInput
+            label="API Key"
+            className="mt-4"
+            description={
+              <>
+                <Text>If you don't know how to get your Google API key,</Text>
+                <Text color={"blue"} component="a" href="https://mantine.dev">
+                  Click here
+                </Text>
+              </>
+            }
+          />
+        </>
+      );
+    },
+  },
 ];
+
+// export const weatherIndicatorAtom = atom(false);

@@ -1,3 +1,4 @@
+import { C } from "@fullcalendar/core/internal-common";
 import {
   ActionIcon,
   Avatar,
@@ -5,43 +6,33 @@ import {
   Checkbox,
   Container,
   Flex,
-  Grid,
   Navbar,
   Progress,
-  Space,
-  Stack,
   Text,
-  ThemeIcon,
 } from "@mantine/core";
+import { useDisclosure, useHotkeys } from "@mantine/hooks";
 import { useAtom } from "jotai";
+import { AiOutlineEdit } from "react-icons/ai";
+import { BsBell, BsGear } from "react-icons/bs";
+import myImg from "../assets/me.jpg";
+import { useActivityLog } from "../hooks/useActivityLog";
 import {
-  createdClusters,
-  createdProjects,
-  loggerAtom,
+  createdClustersAtom,
+  createdProjectsAtom,
   navBarToggleAtom,
   predefinedDraggables,
   settingsDrawerOpen,
   userInfoAtom,
 } from "../store/jotai";
-import myImg from "../assets/me.jpg";
-import { BsBell, BsEnvelope, BsGear } from "react-icons/bs";
-import { GiNothingToSay } from "react-icons/gi";
-import Tooltip from "./MantineTooltip";
-import { useActivityLog } from "../hooks/useActivityLog";
 import ClusterIcon from "./ClusterIcon";
-import SettingsDrawer from "./SettingsDrawer";
-import { MantineModal } from "./MantineModal";
-import { AiOutlineEdit } from "react-icons/ai";
+import Tooltip from "./MantineTooltip";
 import { openEditProfileModal } from "./ModalEditProfile";
-import { useHotkeys } from "@mantine/hooks";
+import SettingsDrawer from "./SettingsDrawer";
+import AppEditProfile from "./specialComps/AppEditProfile";
+import AppSettings from "./specialComps/AppSettings";
+import IconWithTooltip from "./specialComps/MantineIconWithTip";
 
 // =========================== EditPRofile imports
-import { TextInput } from "@mantine/core";
-import { useClickOutside } from "@mantine/hooks";
-import { showNotification } from "@mantine/notifications";
-import { IconCheck } from "@tabler/icons";
-import { AiOutlineCheck } from "react-icons/ai";
-import { userInfoDisabledAtom } from "../store/jotai";
 
 // =========================== EditPRofile Modal starts
 // const openEditProfileModal = () =>
@@ -74,7 +65,9 @@ export default function AppSideBar() {
   const [toggleNav] = useAtom(navBarToggleAtom);
   console.log(toggleNav);
   const [settingsOpened, setSettingsOpened] = useAtom(settingsDrawerOpen);
-  useHotkeys([["mod+j", () => setSettingsOpened((opened) => !settingsOpened)]]);
+  const [opened, { close, open }] = useDisclosure(false);
+  useHotkeys([["mod+j", () => setSettingsOpened(() => !settingsOpened)]]);
+  useHotkeys([["mod+]", () => (opened === false ? open() : close())]]);
 
   //   const [newLog, setNewLog] = useAtom(loggerAtom);
   // const loggerAct = (e) => {
@@ -117,7 +110,12 @@ export default function AppSideBar() {
   //   );
   // Edit Personal Profile Modal::Finish
 
+  // const openEditProfile = () =>{
+  //   setEditProfile(true)
+  // }
   const [userInfo] = useAtom(userInfoAtom);
+  const [createdProjects] = useAtom(createdProjectsAtom);
+  const [createdClusters] = useAtom(createdClustersAtom);
   return (
     <Navbar
       p="md"
@@ -146,40 +144,59 @@ export default function AppSideBar() {
           </Text>
         </Flex>
         <Flex gap={12} className="my-2" align="center" justify="center">
-          <SettingsDrawer
+          <AppSettings
             closedIt={settingsOpened}
             closeIt={() => setSettingsOpened(false)}
           />
+          {/* <SettingsDrawer
+            closedIt={settingsOpened}
+            closeIt={() => setSettingsOpened(false)}
+          /> */}
           <ActionIcon onClick={() => setSettingsOpened(true)}>
-            <Tooltip label={"tooltip"}>
+            <Tooltip label={"Settings"}>
               <BsGear />
             </Tooltip>
           </ActionIcon>
-          <ActionIcon onClick={() => openEditProfileModal()}>
-            <Tooltip label={"tooltip"}>
+          <AppEditProfile opened={opened} open={open} close={close} />
+          <ActionIcon onClick={open}>
+            <Tooltip label={"Profile"}>
               <AiOutlineEdit />
             </Tooltip>
           </ActionIcon>
           <ActionIcon
             className="flex justify-center align-center"
-            value={"xxx"}
+            value={"notifications"}
             onClick={useActivityLog}
           >
-            <Tooltip label={"tooltip"}>
+            <Tooltip label={"Notifications"}>
               <BsBell />
             </Tooltip>
           </ActionIcon>
+
+          {/* <IconWithTooltip Icon={BsBell} tip="heo" /> */}
         </Flex>
 
         <Container className="p-0">
           <Tooltip label={"Usage"}>
-            <Progress size="xs" value={20} />
+            <Progress
+              size="xs"
+              value={20}
+              classNames={{ bar: "bg-app-color-500" }}
+            />
+            <Text c="dimmed" size={"xs"} variant="text" align="right">
+              23/100
+            </Text>
           </Tooltip>
         </Container>
         <Flex direction={"column"} className="pt-4">
-          <Text className="tracking-widest mb-2" opacity={0.5} size={"sm"}>
-            Projects
-          </Text>
+          <Flex>
+            <Text className="tracking-widest mb-2" opacity={0.5} size={"sm"}>
+              Projects
+            </Text>
+            <Text className="tracking-widest mb-2" opacity={0.5} size={"sm"}>
+              {"(" + createdProjects.length + ")"}
+            </Text>
+          </Flex>
           <Checkbox.Group
             spacing={1}
             defaultValue={createdProjects.map((x) => x.id)}
@@ -189,6 +206,7 @@ export default function AppSideBar() {
               return (
                 <>
                   <Checkbox
+                    className={`bg-[${color}]`}
                     classNames={{
                       label: "pl-1 mr-4",
                       input: `checked:bg-[${color}] checked:border-none`,
@@ -204,9 +222,14 @@ export default function AppSideBar() {
           </Checkbox.Group>
         </Flex>
         <Flex direction={"column"} className="pt-4">
-          <Text className="tracking-widest mb-2" opacity={0.5} size={"sm"}>
-            Clusters
-          </Text>
+          <Flex>
+            <Text className="tracking-widest mb-2" opacity={0.5} size={"sm"}>
+              Clusters
+            </Text>
+            <Text className="tracking-widest mb-2" opacity={0.5} size={"sm"}>
+              {"(" + createdClusters.length + ")"}
+            </Text>
+          </Flex>
           {createdClusters.map((cluster: any) => {
             const { id, name, color } = cluster;
             return (
@@ -217,10 +240,15 @@ export default function AppSideBar() {
             );
           })}
         </Flex>
-        <Flex direction={"column"} className="pt-4" id="events__container">
-          <Text className="tracking-widest mb-2" opacity={0.5} size={"sm"}>
-            Regular
-          </Text>
+        <Flex direction={"column"} className="pt-4" id="external-event">
+          <Flex>
+            <Text className="tracking-widest mb-2" opacity={0.5} size={"sm"}>
+              Regular
+            </Text>
+            <Text className="tracking-widest mb-2" opacity={0.5} size={"sm"}>
+              {"(" + predefinedDraggables.length + ")"}
+            </Text>
+          </Flex>
           <Flex direction={"column"} id="events__container">
             {predefinedDraggables.map((predefined: any) => {
               const { id, title, color, variant, gradiant } = predefined;

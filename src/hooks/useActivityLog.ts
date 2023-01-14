@@ -1,4 +1,4 @@
-import { loggerAtom } from "./../store/jotai";
+import { loggerAtom } from "../store/jotai";
 import { useAtom } from "jotai";
 import { useState } from "react";
 import { Actionslogger } from "../helpers/activityLog/Actionslogger";

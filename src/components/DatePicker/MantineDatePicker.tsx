@@ -1,7 +1,9 @@
-import { useState } from "react";
+import { useContext, useState } from "react";
 import { DateRangePicker, DateRangePickerValue } from "@mantine/dates";
 import { MantineSize } from "@mantine/core";
 import "./DatePicker.css";
+import dayjs from "dayjs";
+import { selectedDateRange } from "../FullCal";
 
 interface Props {
   label: string;
@@ -12,30 +14,45 @@ interface Props {
 
 const SiteCompDatePicker = ({
   label,
+
   placeholder,
   size = "sm",
   desc,
 }: Props) => {
+  let dateObj = useContext(selectedDateRange);
+
   const [value, setValue] = useState<DateRangePickerValue>([
-    new Date(),
-    new Date(),
+    dateObj.startYear !== undefined
+      ? new Date(dateObj.startYear, dateObj.startMonth - 1, dateObj.startDay)
+      : new Date(),
+    dateObj.endYear !== undefined
+      ? new Date(dateObj.endYear, dateObj.endMonth - 1, dateObj.endDay)
+      : new Date(),
   ]);
 
   return (
     <div className="w-full">
       <DateRangePicker
+        modalZIndex={2000}
+        firstDayOfWeek="sunday"
+        weekendDays={[5, 6]}
+        excludeDate={(date) => date.getDay() === 5 || date.getDay() === 6}
+        minDate={undefined}
+        maxDate={undefined}
+        // range={[startDate, endDate]}
+        dropdownType="modal"
         classNames={{
+          calendarBase: "flex sm:flex-row flex-col w-fit",
           input: "w-full",
-          dropdown: "text-xs bg-primary-400 h-fit border-none",
+          dropdown: "text-xs bg-app-color-400 h-fit border-none",
           cell: "",
-          day: "text-sm h-8 hover:bg-primary-300 date__custom_styles date__in_range date__both_ends",
-          weekday: "text-cta-dark",
-          month: "text-cta-dark",
-          calendarHeaderControl: "hover:bg-primary-300",
-          calendarHeaderLevel: "hover:bg-primary-300",
-
-          monthPickerControl: "hover:bg-primary-300",
-          yearPickerControl: "hover:bg-primary-300",
+          day: "text-sm h-8 hover:bg-app-color-300  date__custom_styles date__in_range date__both_ends",
+          weekday: "text-app-color-700 dark:!text-app-color-100 text-sm",
+          month: "text-app-color-500",
+          calendarHeaderControl: "hover:bg-app-color-300",
+          calendarHeaderLevel: "hover:bg-app-color-300",
+          monthPickerControl: "hover:bg-app-color-300",
+          yearPickerControl: "hover:bg-app-color-300",
         }}
         variant="unstyled"
         label={label}

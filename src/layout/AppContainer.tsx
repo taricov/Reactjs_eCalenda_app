@@ -8,6 +8,7 @@ interface Props {
 export default function AppContainer({ children }: Props) {
   return (
     <AppShell
+      className="w-screen"
       navbarOffsetBreakpoint="sm"
       asideOffsetBreakpoint="sm"
       navbar={<AppSideBar />}

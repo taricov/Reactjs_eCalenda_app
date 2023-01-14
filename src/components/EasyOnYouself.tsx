@@ -11,10 +11,11 @@ import {
 } from "@mantine/core";
 import { AiOutlineCoffee } from "react-icons/ai";
 import { useState } from "react";
+import { useHotkeys } from "@mantine/hooks";
 
 export default function EasyOnYourself() {
   const [opened, setOpened] = useState(false);
-
+  useHotkeys([["mod+'", () => setOpened((prev) => !prev)]]);
   return (
     <>
       <Modal

@@ -7,6 +7,7 @@ import {
   Text,
   useMantineTheme,
 } from "@mantine/core";
+import { useHotkeys } from "@mantine/hooks";
 import { useAtom } from "jotai";
 import { BsFillCircleFill } from "react-icons/bs";
 import { GiStripedSun } from "react-icons/gi";
@@ -39,6 +40,11 @@ export default function AppHeader() {
     setToggleNav((toggleNav) => !toggleNav);
     console.log(toggleNav);
   };
+
+  useHotkeys([["mod+i", () => setIntegrationOpened(() => !integrationOpen)]]);
+  useHotkeys([
+    ["alt + d", () => setDarkMode(darkMode === "dark" ? "light" : "dark")],
+  ]);
   return (
     <Header
       className="flex justify-between"
@@ -56,7 +62,7 @@ export default function AppHeader() {
           />
         </MediaQuery>
 
-        <Text>timeON</Text>
+        <Text>eCalenda</Text>
       </Flex>
       <Flex align={"center"} justify={"center"}>
         <ActionIcon size={30} onClick={undefined}>

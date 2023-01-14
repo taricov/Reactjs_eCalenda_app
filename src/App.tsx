@@ -1,3 +1,4 @@
+import { QueryClientProvider, QueryClient } from "react-query";
 import {
   ColorScheme,
   Flex,
@@ -24,12 +25,15 @@ import LoginPage from "./pages/LoginPage";
 import Error404Page from "./pages/Error404Page";
 import HomePage from "./pages/HomePage";
 import { NotificationsProvider } from "@mantine/notifications";
+import { getWeatherIcons } from "./api/weather/getWeatherIcons";
+const queryClient = new QueryClient();
 
 function App() {
   const [darkMode] = useAtom(darkModeAtom);
   const [value, setValue] = useState("");
   const [searchData, setSrearchData] = useAtom(searchDataAtom);
 
+  // getWeatherIcons();
   useLayoutEffect(() => {
     const fetchdata: any = async () => {
       // const data: any = await fetch(null);
@@ -41,6 +45,7 @@ function App() {
 
   return (
     <div className={`App ${darkMode === "dark" ? "dark" : ""}`}>
+      {/* <QueryClientProvider client={queryClient}> */}
       <MantineProvider
         theme={{ colorScheme: darkMode === "dark" ? "dark" : "light" }}
         withGlobalStyles
@@ -77,6 +82,7 @@ function App() {
           </NotificationsProvider>
         </ModalsProvider>
       </MantineProvider>
+      {/* </QueryClientProvider> */}
     </div>
   );
 }
