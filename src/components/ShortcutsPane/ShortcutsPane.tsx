@@ -130,7 +130,6 @@ const ShortcutsPane = () => {
             fw={"bold"}
             className="dark:text-app-color-600 text-app-color-100"
           >
-            <div className="text-black dark:text-white">dfsfdsf</div>
             Site Shortcuts
           </Text>
           <Text>
@@ -143,7 +142,7 @@ const ShortcutsPane = () => {
             {shortcutsObj.map((section) => {
               return (
                 <>
-                  <tr>
+                  <tr key={section.section_title}>
                     <Text
                       align="center"
                       className={"py-2 px-5"}
@@ -156,7 +155,7 @@ const ShortcutsPane = () => {
                   </tr>
                   {section.items.map((item) => {
                     return (
-                      <tr>
+                      <tr key={item.title}>
                         <td>
                           <Flex
                             justify={"space-between"}

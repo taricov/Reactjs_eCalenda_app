@@ -202,21 +202,18 @@ export default function AppSideBar() {
             defaultValue={createdProjects.map((x) => x.id)}
           >
             {createdProjects.map((proj: any) => {
-              const { id, name, color } = proj;
+              const { id, name, CheckedColor } = proj;
               return (
-                <>
-                  <Checkbox
-                    className={`bg-[${color}]`}
-                    classNames={{
-                      label: "pl-1 mr-4",
-                      input: `checked:bg-[${color}] checked:border-none`,
-                      root: "cursor:pointer",
-                    }}
-                    key={id}
-                    value={id}
-                    label={color}
-                  />
-                </>
+                <Checkbox
+                  classNames={{
+                    label: "pl-1 mr-4",
+                    input: `${CheckedColor} checked:border-none`,
+                    root: "cursor:pointer",
+                  }}
+                  key={id}
+                  value={id}
+                  label={name}
+                />
               );
             })}
           </Checkbox.Group>
@@ -231,10 +228,10 @@ export default function AppSideBar() {
             </Text>
           </Flex>
           {createdClusters.map((cluster: any) => {
-            const { id, name, color } = cluster;
+            const { id, name, borderColor, color } = cluster;
             return (
               <Flex key={id} className="cursor-pointer mb-2">
-                <ClusterIcon iconColor={color} />
+                <ClusterIcon borderColor={borderColor} iconColor={color} />
                 <Text className="text-sm pl-2">{name}</Text>
               </Flex>
             );
@@ -251,20 +248,17 @@ export default function AppSideBar() {
           </Flex>
           <Flex direction={"column"} id="events__container">
             {predefinedDraggables.map((predefined: any) => {
-              const { id, title, color, variant, gradiant } = predefined;
+              const { id, title, toColor } = predefined;
+
               return (
-                <>
-                  <Badge
-                    key={id}
-                    className="fc-event mb-1 hover:cursor-move"
-                    variant={variant}
-                    color={color}
-                    gradient={gradiant}
-                    onClickCapture={() => console.log("this")}
-                  >
-                    {title}
-                  </Badge>
-                </>
+                <Badge
+                  key={id}
+                  className={`fc-event mb-1 bg-gradient-to-r from-app-color-500 ${toColor} hover:cursor-move text-app-color-100 dark:text-app-color-200`}
+                  variant={"gradient"}
+                  onClickCapture={() => console.log("this")}
+                >
+                  {title}
+                </Badge>
               );
             })}
           </Flex>

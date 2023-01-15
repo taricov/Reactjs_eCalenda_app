@@ -5,10 +5,12 @@ import React, {
   useRef,
   ChangeEventHandler,
   createContext,
+  useContext,
 } from "react";
 // import DatePickerModal from "./MantineModal";
 import FullCalendar from "@fullcalendar/react"; // must go before plugins
 import dayGridPlugin from "@fullcalendar/daygrid"; // a plugin!
+import listPlugin from "@fullcalendar/list";
 import timeGridPlugin from "@fullcalendar/timegrid";
 import interactionPlugin, { Draggable } from "@fullcalendar/interaction"; // needed for dayClick
 
@@ -47,6 +49,8 @@ import {
   allIntervals,
   createdClustersAtom,
   createdProjectsAtom,
+  createEventForm,
+  eventsAtom,
   favColorsAtom,
   repeatedAtom,
   tagsAtom,
@@ -57,170 +61,11 @@ import CreateEvent from "./specialComps/EventForm";
 import CreateProject from "./specialComps/ProjectForm";
 import CreateCluster from "./specialComps/ClusterForm";
 import CreateRegular from "./specialComps/RegularForm";
-export let selectedDateRange = createContext<any>(null);
+// export let selectedDateRange = createContext<any>(null);
 
+export let formContext = createContext<any>(null);
 const FullCal = () => {
-  // const [createdProjects] = useAtom(createdProjectsAtom);
-  // const [createdClusters] = useAtom(createdClustersAtom);
-
-  // const [favColors, setFavColors] = useAtom(favColorsAtom);
-  // const [tags, setTags] = useAtom(tagsAtom);
-  // const [repeated, setRepeated] = useAtom(repeatedAtom);
-  // const [eventTitle, setEventTitle] = useState("");
-  // const [repeatTimes, setRepeatTimes] = useAtom<string | undefined>(xTimesAtom);
-  // const [repeatTimes, setRepeatTimes] = useState<string | null>(null);
-
-  // const handleRepeated = (e: any) => {
-  //   setRepeated(!!e.currentTarget.checked);
-  //   console.log(repeated);
-  // };
-
-  // const selectedXTimes = (selectedInterval: string) => {
-  //   setRepeatTimes(selectedInterval);
-  // };
-  // const updateColors = (selectedColor: string) => {
-  //   setFavColors([selectedColor, ...favColors.slice(0, -1)]);
-  // };
-
-  // const handleEventTitle = (e: any) => {
-  //   setEventTitle(e.target.value);
-  //   console.log(eventTitle);
-  // };
-
-  // const openModal = () => {
-  //   openConfirmModal({
-  //     title: "Create New",
-  //     children: (
-  //       <>
-  //         <Container>
-  //           <Flex direction="column">
-  //             <TextInput
-  //               withAsterisk
-  //               placeholder="Event Name"
-  //               onChange={handleEventTitle}
-  //               variant="unstyled"
-  //             />
-  //             <Textarea variant="unstyled" placeholder="Type notes ..." />
-  //             <MantineDatePicker
-  //               label=""
-  //               desc="Select Dates:"
-  //               placeholder=""
-  //               size="sm"
-  //             />
-  //           </Flex>
-  //           <Flex gap={20}>
-  //             <Select
-  //               variant="unstyled"
-  //               placeholder={"add project"}
-  //               onChange={selectedXTimes}
-  //               data={createdProjects.map((v) => v.name)}
-  //               className="w-3/5"
-  //               size="xs"
-  //             />
-  //             <MultiSelect
-  //               className="w-fit"
-  //               data={createdClusters.map((v) => v.name)}
-  //               size="xs"
-  //               placeholder="add clusters"
-  //               searchable
-  //               variant="unstyled"
-  //             />
-  //           </Flex>
-
-  //           <Space h={"md"} />
-  //           <Switch
-  //             labelPosition="left"
-  //             label="Indicator"
-  //             checked={repeated}
-  //             onChange={() => setRepeated(!repeated)}
-  //             description="Show/Hide weather indicators"
-  //           />
-  //           <Checkbox
-  //             label="Repeat"
-  //             color="teal"
-  //             size="sm"
-  //             // checked={repeated}
-  //             // onChange={(e) => setRepeated(e.currentTarget.checked)}
-  //           />
-  //           <Flex
-  //             direction={"column"}
-  //             className={`${repeated ? "hidden" : ""}`}
-  //           >
-  //             {/* //TODO not Working Repeated */}
-  //             <Flex gap={20}>
-  //               <Select
-  //                 variant="unstyled"
-  //                 placeholder={"every 2 weeks"}
-  //                 onChange={selectedXTimes}
-  //                 data={allIntervals}
-  //                 className="w-3/5"
-  //                 size="xs"
-  //               />
-  //               <Flex className="w-full" gap={10}>
-  //                 <Text
-  //                   className="flex items-center justify-center "
-  //                   size={"xs"}
-  //                 >
-  //                   ends
-  //                 </Text>
-  //                 <DatePicker
-  //                   className="w-fit"
-  //                   variant="unstyled"
-  //                   placeholder="never"
-  //                   size="xs"
-  //                 />
-  //               </Flex>
-  //             </Flex>
-  //             <Flex>
-  //               <Text className="flex items-center justify-center " size={"xs"}>
-  //                 reminder
-  //               </Text>
-  //               <TimeInput
-  //                 size="xs"
-  //                 className="w-1/3"
-  //                 placeholder="none"
-  //                 icon={<BsClock size={16} />}
-  //                 variant="unstyled"
-  //                 defaultValue={new Date()}
-  //               />
-  //             </Flex>
-  //           </Flex>
-  //           <Flex gap={20}>
-  //             <MultiSelect
-  //               className="w-fit"
-  //               data={tags}
-  //               size="xs"
-  //               placeholder="add tags"
-  //               searchable
-  //               variant="unstyled"
-  //               creatable
-  //               getCreateLabel={(query) => `+ Create ${query}`}
-  //               onCreate={(query) => {
-  //                 const item = query;
-  //                 setTags((current) => [...current, item]);
-  //                 return item;
-  //               }}
-  //             />
-  //             <ColorInput
-  //               // withEyeDropper
-  //               size="xs"
-  //               className="w-fit"
-  //               variant="unstyled"
-  //               placeholder="Pick color"
-  //               format="hex"
-  //               swatchesPerRow={7}
-  //               swatches={favColors}
-  //               onChange={updateColors}
-  //             />
-  //           </Flex>
-  //         </Container>
-  //       </>
-  //     ),
-  //     labels: { confirm: "Confirm", cancel: "Cancel" },
-  //     onCancel: () => console.log("Cancel"),
-  //     onConfirm: () => console.log("Confirmed"),
-  //   });
-  // };
+  // let x = useContext(eventFormContext);
 
   const newAddedColor = useRef<HTMLInputElement>(null);
   const [values, setValues] = useState({
@@ -229,7 +74,7 @@ const FullCal = () => {
     end: "",
     color: "",
   });
-  const [events, setEvents] = useState([]);
+  const [events, setEvents] = useAtom(eventsAtom);
   const [currentEvent, setCurrentEvent] = useState([]);
 
   const [id, setId] = useState("");
@@ -245,15 +90,15 @@ const FullCal = () => {
     // loadData();
     drag();
   }, []);
-  const loadData = () => {
-    listEvent()
-      .then((res) => {
-        setEvents(res.data);
-      })
-      .catch((err) => {
-        console.log(err);
-      });
-  };
+  // const loadData = () => {
+  //   listEvent()
+  //     .then((res) => {
+  //       setEvents(res.data);
+  //     })
+  //     .catch((err) => {
+  //       console.log(err);
+  //     });
+  // };
   const drag = () => {
     let dragable: any = document.getElementById("external-event");
     new Draggable(dragable, {
@@ -290,23 +135,29 @@ const FullCal = () => {
       endMonth,
       endDay,
     });
-    createEventHandlers.open();
-
-    console.log("clickEvent", dateRange);
+    // createEventHandlers.open;
+    setEventFormOpened(true);
   };
 
-  const handleClick = (info: any) => {
-    createEventHandlers.open();
-    const id = info.event._def.extendedProps._id;
+  const clickedEvent = (eventClicked: any) => {
+    const { id, title, start, end, allDay } = eventClicked.event;
+
+    console.log(id, title, start, end, allDay);
+    setEventFormOpened(true);
+  };
+
+  const handleClick = (event: any, jsEvent: any, view: any) => {
+    console.log(event);
+    // const id = info.event._def.extendedProps._id;
     setId(id);
-    setImage(info.event._def.extendedProps.filename);
+    // setImage(info.event._def.extendedProps.filename);
   };
-  useHotkeys([["mod+e", () => createEventHandlers.toggle()]]);
+  useHotkeys([["mod+e", () => setEventFormOpened(!createEventFormOpened)]]);
   const handleRemove = () => {
     removeEvent(id)
       .then((res) => {
         //code
-        loadData();
+        // loadData();
         // console.log(res);
       })
       .catch((err) => {
@@ -315,6 +166,7 @@ const FullCal = () => {
       });
   };
 
+  const [createEventFormOpened, setEventFormOpened] = useAtom(createEventForm);
   const handleFile = (e: any) => {
     const fileInput = e.target.files[0];
     setFile(fileInput);
@@ -349,9 +201,8 @@ const FullCal = () => {
         // console.log(err);
       });
   };
-  const [creatEventOpened, createEventHandlers] = useDisclosure(false);
   const handleSelect = (info: any) => {
-    createEventHandlers.open();
+    setEventFormOpened(true);
     // console.log("fromSelect", info);
     setValues({
       ...values,
@@ -361,13 +212,14 @@ const FullCal = () => {
   };
 
   // Handle Change Resize
-  const handleChange = (info: any) => {
+  const handleChange = (eventData: any) => {
+    console.log("fromSelect", eventData);
     // console.log(info.event._def.extendedProps._id)
     // console.log(info.event.startStr, info.event.endStr)
     const values = {
-      id: info.event._def.extendedProps._id,
-      start: info.event.startStr,
-      end: info.event.endStr,
+      id: eventData.event._def.extendedProps._id,
+      start: eventData.event.startStr,
+      end: eventData.event.endStr,
     };
     updateEvent(values)
       .then((res) => {
@@ -417,100 +269,58 @@ const FullCal = () => {
 
   // console.log(currentEvent);
 
-  const d = moment(new Date()).format("DD/MM/YYYY");
-  const r = new Date();
-  const filterDate = currentEvent.filter((item) => {
-    return d == moment(item.start).format("DD/MM/YYYY");
-  });
+  // const d = moment(new Date()).format("DD/MM/YYYY");
+  // const r = new Date();
+  // const filterDate = currentEvent.filter((item) => {
+  //   return d == moment(item.start).format("DD/MM/YYYY");
+  // });
 
-  const betweenDate = currentEvent.filter((item) => {
-    return r >= moment(item.start) && r < moment(item.end);
-  });
+  // const betweenDate = currentEvent.filter((item) => {
+  //   return r >= moment(item.start) && r < moment(item.end);
+  // });
   // console.log("between", betweenDate);
   // window.location.reload();
 
+  const views = {
+    // listWeek: { buttonText: "Agenda" },
+    timeGridDay: { buttonText: "Day" },
+    timeGridWeek: { buttonText: "Week" },
+    dayGridMonth: { buttonText: "Month" },
+  };
   return (
     <>
-      <selectedDateRange.Provider value={dateRange}>
+      <formContext.Provider value={dateRange}>
+        <CreateRegular />
+        <CreateProject />
+        <CreateCluster />
+        <CreateEvent />
         <Grid className="h-full">
-          {/* <Grid.Col span={3}> */}
-          {/* <Card id="external-event">s</Card> */}
-          {/* <Card>
-            <div id="external-event">
-              <ul>
-                {department.map((item, index) => (
-                  <li
-                    className="fc-event"
-                    id={item.id}
-                    title={item.name}
-                    color={item.color}
-                    key={index}
-                    style={{ backgroundColor: item.color }}
-                  >
-                    {item.name}
-                  </li>
-                ))}
-              </ul>
-            </div>
-          </Card>
-          <Card>
-            <ol>
-              {currentEvent.map((item, index) => (
-                <li key={index}>
-                  {d == moment(item.start).format("DD/MM/YYYY") ? (
-                    <>
-                      {moment(item.start).format("DD/MM/YYYY") +
-                        "-" +
-                        item.title}
-                      <Badge color="green">วันนี้</Badge>
-                    </>
-                  ) : r >= moment(item.start) && r < moment(item.end) ? (
-                    <>
-                      {moment(item.start).format("DD/MM/YYYY") +
-                        "-" +
-                        item.title}
-                      <Badge color="yellow">อยู่ระหว่างดำเนินการ</Badge>
-                    </>
-                  ) : (
-                    <>
-                      {moment(item.start).format("DD/MM/YYYY") +
-                        "-" +
-                        item.title}
-                    </>
-                  )}
-                </li>
-              ))}
-            </ol>
-          </Card>*/}
-          {/* </Grid.Col> */}
           <Grid.Col>
-            <CreateRegular />
-            <CreateProject />
-            <CreateCluster />
-            <CreateEvent
-              opened={creatEventOpened}
-              open={createEventHandlers.open}
-              close={createEventHandlers.close}
-            />
             <FullCalendar
-              plugins={[dayGridPlugin, timeGridPlugin, interactionPlugin]}
+              plugins={[
+                dayGridPlugin,
+                timeGridPlugin,
+                interactionPlugin,
+                listPlugin,
+              ]}
+              views={views}
               headerToolbar={{
                 left: "prev,next today",
                 center: "title",
                 right: "dayGridMonth,timeGridWeek,timeGridDay",
               }}
+              select={createEventClick}
               events={events}
               selectable={true}
-              select={createEventClick}
+              editable={true}
+              eventClick={clickedEvent}
               drop={handleRecieve}
               datesSet={currentMonth}
-              eventClick={handleClick}
-              editable={true}
               eventChange={handleChange}
             />
           </Grid.Col>
         </Grid>
-      </selectedDateRange.Provider>
+      </formContext.Provider>
     </>
   );
 };

@@ -110,7 +110,7 @@
         @apply bg-none !border-app-color-200 dark:!border-opacity-25 text-sm !text-app-color-800 dark:!text-app-color-50
     }
 .fc-highlight{
-    @apply !bg-app-color-200 
+    @apply !bg-app-color-200 bg-opacity-5
 }
 .fc-day-today{
     @apply !bg-app-color-100 dark:!bg-app-color-50 dark:!bg-opacity-5
@@ -157,7 +157,9 @@
 .fc-col-header{
     @apply !w-full
 } */
-
+/* .mantine-1ttjiou{
+    @apply !bg-transparent
+} */
 
 
 

@@ -1,9 +1,9 @@
 import { Flex, Text, TextInput } from "@mantine/core";
+import { DateRangePickerValue } from "@mantine/dates";
 import { atom, useAtom } from "jotai";
 import { atomWithStorage } from "jotai/utils";
 
 // ====================== Setting DarkMode ====================
-//FIXME: sync icon, theme, localStorage and toggle
 const browser = typeof window !== "undefined";
 const localStrOpt = browser ? localStorage.getItem("darkMode") : "light";
 
@@ -56,57 +56,65 @@ export const allIntervals = [
 
 export const repeatedAtom = atom(false);
 
-//"outline" | "light" | "filled" | "gradient" | "dot"
 export const predefinedDraggables = [
   {
+    id: "1",
     title: "Task #1",
-    variant: "gradient",
-    gradient: "red",
+    toColor: "to-[#cee010]",
   },
   {
+    id: "2",
     title: "Task #2",
-    color: "red",
-    variant: "gradiant",
-    gradient: { from: "teal", to: "lime", deg: 105 },
+    toColor: "to-[blue]",
   },
   {
+    id: "3",
     title: "Task #3",
-    color: "blue",
-    variant: "",
-    gradient: { from: "red", to: "green", deg: 105 },
+    toColor: "to-[green]",
   },
   {
+    id: "4",
     title: "Task #4",
-    color: "none",
-    variant: "gradient",
-    gradient: { from: "teal", to: "lime", deg: 105 },
+    toColor: "to-[black]",
   },
 ];
 
+export const createEventForm = atom(false);
+// export const dateRangePicker = atom<DateRangePickerValue | []>([]);
 export const createdProjectsAtom = atom([
   {
     id: "1",
     name: "Project #1",
-    color: "#fa5252",
+    CheckedColor: "checked:bg-[#fa5252]",
   },
   {
     id: "2",
     name: "Project #2",
-    color: "green",
+    CheckedColor: "checked:bg-[green]",
   },
   {
     id: "3",
     name: "Project #3",
-    color: "brown",
+    CheckedColor: "checked:bg-[brown]",
   },
 ]);
-
-export const eventsAtom = atom([
+interface eventProps {
+  id: string;
+  title: string;
+  start: string;
+  end: string;
+  filename: string;
+  color: string;
+  textColor: string;
+  className: string;
+  allDay: boolean;
+}
+export const eventsAtom = atom<any>([
   {
     id: "1",
     title: "Event #1",
     start: "2023-01-22",
-    end: "2023-01-29",
+    end: "2023-01-28T22:00:00.000Z",
     filename: "event",
     color: "rgba(255,255,2,0.4)",
     textColor: "rgba(255,255,2)",
@@ -115,7 +123,7 @@ export const eventsAtom = atom([
   },
   {
     id: "2",
-    title: "Event #3",
+    title: "Event #2",
     start: "2023-01-02",
     end: "2023-01-03",
     filename: "event",
@@ -137,17 +145,20 @@ export const createdClustersAtom = atom([
   {
     name: "Cluster #1",
     id: "1",
-    color: "red-400",
+    color: "bg-red-400",
+    borderColor: "border-red-400",
   },
   {
     name: "Cluster #2",
     id: "2",
-    color: "violet-400",
+    color: "bg-violet-400",
+    borderColor: "border-violet-400",
   },
   {
     name: "Cluster #3",
     id: "3",
-    color: "#4c6ef5",
+    color: "bg-[#4c6ef5]",
+    borderColor: "border-[#4c6ef5]",
   },
 ]);
 export const searchDataAtom = atom([undefined, "rr", "22"]);

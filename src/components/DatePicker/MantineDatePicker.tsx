@@ -1,13 +1,15 @@
-import { useContext, useState } from "react";
+import { createContext, useContext, useState } from "react";
 import { DateRangePicker, DateRangePickerValue } from "@mantine/dates";
 import { MantineSize } from "@mantine/core";
 import "./DatePicker.css";
 import dayjs from "dayjs";
-import { selectedDateRange } from "../FullCal";
+import { formContext } from "../FullCal";
+import { useAtom } from "jotai";
+// import { dateRangePicker } from "../../store/jotai";
 
 interface Props {
-  label: string;
-  placeholder: string;
+  placeholder?: string;
+  label?: string;
   size?: MantineSize | undefined;
   desc?: string;
 }
@@ -19,16 +21,22 @@ const SiteCompDatePicker = ({
   size = "sm",
   desc,
 }: Props) => {
-  let dateObj = useContext(selectedDateRange);
-
-  const [value, setValue] = useState<DateRangePickerValue>([
+  let dateObj = useContext(formContext);
+  const [pickerDates, setPickerDates] = useState<DateRangePickerValue>([
     dateObj.startYear !== undefined
       ? new Date(dateObj.startYear, dateObj.startMonth - 1, dateObj.startDay)
       : new Date(),
     dateObj.endYear !== undefined
-      ? new Date(dateObj.endYear, dateObj.endMonth - 1, dateObj.endDay)
+      ? new Date(dateObj.endYear, dateObj.endMonth - 1, dateObj.endDay - 1)
       : new Date(),
   ]);
+  // const [selectedDateRangePicker, setSelectedDateRangePicker] =
+  //   useAtom(dateRangePicker);
+  // const handleSelectedDateRangePicker = () => {
+  //   setPickerDates;
+  //   setSelectedDateRangePicker(pickerDates);
+  // };
+  // console.log(pickerDates[1]);
 
   return (
     <div className="w-full">
@@ -61,8 +69,8 @@ const SiteCompDatePicker = ({
         description={desc}
         placeholder={placeholder}
         amountOfMonths={2}
-        value={value}
-        onChange={setValue}
+        value={pickerDates}
+        onChange={setPickerDates}
       />
     </div>
   );

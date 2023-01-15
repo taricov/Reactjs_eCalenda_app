@@ -19,12 +19,15 @@ import { useAutoAnimate } from "@formkit/auto-animate/react";
 
 import { DatePicker, TimeInput } from "@mantine/dates";
 import { useAtom } from "jotai";
-import { useState } from "react";
+import { createContext, useContext, useState } from "react";
 import { BsClock } from "react-icons/bs";
 import {
   allIntervals,
   createdClustersAtom,
   createdProjectsAtom,
+  createEventForm,
+  // dateRangePicker,
+  eventsAtom,
   favColorsAtom,
   repeatedAtom,
   tagsAtom,
@@ -32,6 +35,7 @@ import {
 import MantineDatePicker from "../DatePicker/MantineDatePicker";
 import { date, z } from "zod";
 import { useForm, zodResolver } from "@mantine/form";
+import { useDisclosure } from "@mantine/hooks";
 
 interface Props {
   open: () => void;
@@ -39,50 +43,51 @@ interface Props {
   opened: boolean;
 }
 
-export default function CreateEvent({ opened, close, open }: Props) {
+export default function CreateEvent() {
+  const [events, setEvents] = useAtom(eventsAtom);
   const [createdProjects] = useAtom(createdProjectsAtom);
   const [createdClusters] = useAtom(createdClustersAtom);
   const [favColors, setFavColors] = useAtom(favColorsAtom);
   const [tags, setTags] = useAtom(tagsAtom);
   //   const [repeated, setRepeated] = useAtom(repeatedAtom);
   const [repeated, setRepeated] = useState(false);
-  const [eventTitle, setEventTitle] = useState("");
+  // const [eventTitle, setEventTitle] = useState("");
 
-  const [hideMe] = useAutoAnimate<HTMLDivElement>();
+  // const [hideMe] = useAutoAnimate<HTMLDivElement>();
   // const [repeatTimes, setRepeatTimes] = useAtom<string | undefined>(xTimesAtom);
-  const [repeatTimes, setRepeatTimes] = useState<string | null>(null);
+  // const [repeatTimes, setRepeatTimes] = useState<string | null>(null);
 
-  const selectedXTimes = (selectedInterval: string) => {
-    setRepeatTimes(selectedInterval);
-  };
-  const updateColors = (selectedColor: string) => {
-    setFavColors([selectedColor, ...favColors.slice(0, -1)]);
-  };
+  // const selectedXTimes = (selectedInterval: string) => {
+  //   setRepeatTimes(selectedInterval);
+  // };
+  // const updateColors = (selectedColor: string) => {
+  //   setFavColors([selectedColor, ...favColors.slice(0, -1)]);
+  // };
 
-  const handleEventTitle = (e: any) => {
-    setEventTitle(e.target.value);
-    console.log(eventTitle);
-  };
+  // const handleEventTitle = (e: any) => {
+  //   setEventTitle(e.target.value);
+  //   console.log(eventTitle);
+  // };
 
   const eventSchema = z.object({
-    eventName: z.string(),
-    notes: z.string().optional(),
-    dateRange: z.date().array().nonempty(),
-    project: z.string().optional(),
+    eventName: z.string().nonempty(),
+    // notes: z.string().optional(),
+    // dateRange: z.date().array().nonempty(),
+    // project: z.string().optional(),
     // clusters: z.string().array().optional(),
-    repeated: z.boolean().optional(),
-    freq: z.string().optional(),
-    ends: z.string().optional(),
-    reminder: z.string().optional(),
-    tags: z.string().array().optional(),
-    color: z.string().array().optional(),
+    // repeated: z.boolean().optional(),
+    // freq: z.string().optional(),
+    // ends: z.date().optional(),
+    // reminder: z.date().optional(),
+    // tags: z.string().array().optional(),
+    // color: z.string().optional(),
   });
 
   const form = useForm({
     initialValues: {
       eventName: "",
+      // dateRange: "",
       notes: "",
-      dateRange: [],
       project: "",
       clusters: "",
       repeated: false,
@@ -90,17 +95,31 @@ export default function CreateEvent({ opened, close, open }: Props) {
       ends: "",
       reminder: "",
       tags: [],
-      color: "",
+      colored: "",
     },
     validate: zodResolver(eventSchema),
   });
+  // const [creatEventOpened, createEventHandlers] = useDisclosure(false);
 
+  const [createdEventFormOpened, setEventFormOpened] = useAtom(createEventForm);
+  // const [selectedDateRangePicker] = useAtom(dateRangePicker);
+  const eventData = (values: any) => {
+    const { eventName, colored } = values;
+    // const start = selectedDateRangePicker[0];
+    // const end = selectedDateRangePicker[1];
+    setEvents([...events, { title: eventName, allDay: true, color: colored }]);
+    console.log(events);
+    setEventFormOpened(false);
+    form.reset();
+  };
+  // let editObj = useContext(formContext);
+  // console.log(editObj);
   return (
     <>
       <Modal
         withinPortal={false}
-        opened={opened}
-        onClose={close}
+        opened={createdEventFormOpened}
+        onClose={() => setEventFormOpened(false)}
         centered
         size={"90%"}
         title="Create Event"
@@ -112,10 +131,10 @@ export default function CreateEvent({ opened, close, open }: Props) {
         }}
       >
         <Container className="p-5">
-          <form onSubmit={form.onSubmit((values) => console.log(values))}>
+          <form onSubmit={form.onSubmit(eventData)}>
             <Flex direction="column">
               <TextInput
-                withAsterisk
+                // withAsterisk
                 placeholder="Event Name"
                 // onChange={handleEventTitle}
                 variant="unstyled"
@@ -127,9 +146,7 @@ export default function CreateEvent({ opened, close, open }: Props) {
                 {...form.getInputProps("notes")}
               />
               <MantineDatePicker
-                label=""
-                desc="Select Dates:"
-                placeholder=""
+                desc="Select Dates"
                 size="sm"
                 {...form.getInputProps("dateRange")}
               />
@@ -163,12 +180,14 @@ export default function CreateEvent({ opened, close, open }: Props) {
               }}
               size="sm"
               checked={repeated}
-              //   onChange={() => setRepeated((repeated) => !repeated)}
+              // onChange={() => setRepeated((repeated) => !repeated)}
               {...form.getInputProps("repeated", { type: "checkbox" })}
             />
             <Flex
               direction={"column"}
-              className={`${!repeated ? "hidden" : ""}`}
+              className={`${
+                !form.getInputProps("repeated").value ? "hidden" : ""
+              }`}
             >
               <Flex gap={20}>
                 <Select
@@ -239,7 +258,7 @@ export default function CreateEvent({ opened, close, open }: Props) {
                 swatchesPerRow={7}
                 swatches={favColors}
                 // onChange={updateColors}
-                {...form.getInputProps("colors")}
+                {...form.getInputProps("colored")}
               />
             </Flex>
             <Group position="right" mt="md">
