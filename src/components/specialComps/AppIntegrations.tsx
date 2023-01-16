@@ -1,9 +1,39 @@
 import { Group, Avatar, Text, Accordion, Modal } from "@mantine/core";
+import { useHotkeys } from "@mantine/hooks";
 import { useAtom } from "jotai";
-import {
-  availableIntegrationsAtom,
-  integrationModalOpen,
-} from "../store/jotai";
+import { availableIntegrationsAtom, isOpen } from "../../store/jotai";
+
+//========== Integration Component =================================
+
+export default function ModalIntegration() {
+  const [isOpened, setIsOpened] = useAtom(isOpen);
+
+  useHotkeys([
+    [
+      "mod+i",
+      () =>
+        setIsOpened({
+          ...isOpened,
+          integration_modal: !isOpened.integration_modal,
+        }),
+    ],
+  ]);
+  return (
+    <>
+      <Modal
+        opened={isOpened.integration_modal}
+        onClose={() => setIsOpened({ ...isOpened, integration_modal: false })}
+        classNames={{ title: "text-2xl font-bold" }}
+        title="Manage Integrations"
+        fullScreen
+      >
+        <IntegrationAccordion />
+      </Modal>
+    </>
+  );
+}
+
+//========== Building Integration Component =================================
 
 interface AccordionLabelProps {
   label: string;
@@ -25,7 +55,7 @@ function AccordionLabel({ label, image, description }: AccordionLabelProps) {
   );
 }
 
-function MantineAccordion() {
+function IntegrationAccordion() {
   const items = availableIntegrationsAtom.map((item) => (
     <Accordion.Item value={item.id} key={item.label}>
       <Accordion.Control disabled={item.disabled}>
@@ -41,23 +71,5 @@ function MantineAccordion() {
     <Accordion chevronPosition="right" variant="contained">
       {items}
     </Accordion>
-  );
-}
-
-export default function ModalIntegration() {
-  const [integrationOpen, setIntegrationOpened] = useAtom(integrationModalOpen);
-
-  return (
-    <>
-      <Modal
-        opened={integrationOpen}
-        onClose={() => setIntegrationOpened(false)}
-        classNames={{ title: "text-2xl font-bold" }}
-        title="Manage Integrations"
-        fullScreen
-      >
-        <MantineAccordion />
-      </Modal>
-    </>
   );
 }

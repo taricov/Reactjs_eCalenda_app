@@ -17,6 +17,8 @@ import {
 import { string } from "zod";
 import { Section } from "@mantine/core/lib/AppShell/HorizontalSection/Section/Section";
 import AppStandardModal from "../specialComps/AppStandardModal";
+import { isOpen } from "../../store/jotai";
+import { useAtom } from "jotai";
 
 const ShortcutsPane = () => {
   // const handleKeyPress   = useCallback((e: KeyboardEvent) => {
@@ -104,8 +106,19 @@ const ShortcutsPane = () => {
     },
   ];
 
-  const [shortCutsOpened, shortCutsHandlers] = useDisclosure(false);
-  useHotkeys([["mod+/", () => shortCutsHandlers.toggle()]]);
+  const [isOpened, setIsOpened] = useAtom(isOpen);
+
+  // const [shortCutsOpened, shortCutsHandlers] = useDisclosure(false);
+  useHotkeys([
+    [
+      "mod+/",
+      () =>
+        setIsOpened({
+          ...isOpened,
+          shortcuts_modal: !isOpened.shortcuts_modal,
+        }),
+    ],
+  ]);
 
   return (
     <>
@@ -124,8 +137,8 @@ const ShortcutsPane = () => {
         overlayBlur={0}
       > */}
       <AppStandardModal
-        modalOpned={shortCutsOpened}
-        modalCloser={shortCutsHandlers.close}
+        modalOpned={isOpened.shortcuts_modal}
+        modalCloser={() => setIsOpened({ ...isOpened, shortcuts_modal: false })}
         title="Shortcuts/Hacks"
         Xwidth={11}
       >

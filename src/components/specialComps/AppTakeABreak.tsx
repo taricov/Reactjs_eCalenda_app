@@ -12,16 +12,24 @@ import {
 import { AiOutlineCoffee } from "react-icons/ai";
 import { useState } from "react";
 import { useHotkeys } from "@mantine/hooks";
+import { useAtom } from "jotai";
+import { isOpen } from "../../store/jotai";
 
 export default function EasyOnYourself() {
-  const [opened, setOpened] = useState(false);
-  useHotkeys([["mod+'", () => setOpened((prev) => !prev)]]);
+  const [isOpened, setIsOpened] = useAtom(isOpen);
+
+  useHotkeys([
+    [
+      "mod+'",
+      () => setIsOpened({ ...isOpened, easy_modal: !isOpened.easy_modal }),
+    ],
+  ]);
   return (
     <>
       <Modal
         transition={"slide-down"}
-        opened={opened}
-        onClose={() => setOpened(false)}
+        opened={isOpened.easy_modal}
+        onClose={() => setIsOpened({ ...isOpened, easy_modal: false })}
         fullScreen
       >
         <Container>
@@ -58,18 +66,13 @@ export default function EasyOnYourself() {
                 root: "w-fit m-auto",
               }}
               variant="outline"
-              onClick={() => setOpened(false)}
+              onClick={() => setIsOpened({ ...isOpened, easy_modal: false })}
             >
               Back To Work
             </Button>
           </Stack>
         </Container>
       </Modal>
-      <Group position="center">
-        <ActionIcon onClick={() => setOpened(true)}>
-          <AiOutlineCoffee />
-        </ActionIcon>
-      </Group>
     </>
   );
 }

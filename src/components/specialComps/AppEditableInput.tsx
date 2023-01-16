@@ -7,6 +7,7 @@ interface Props {
   disabled: boolean;
   inputRef?: string | undefined | any;
   iconOnClick: () => void;
+  type?: string;
   label?: string | undefined;
 }
 
@@ -16,6 +17,7 @@ export default function AppEditableInput({
   valOnChange,
   disabled = true,
   inputRef,
+  type,
   iconOnClick,
 }: Props) {
   return (
@@ -28,6 +30,7 @@ export default function AppEditableInput({
         value={inputVal}
         onChange={valOnChange}
         disabled={disabled}
+        type={"text"}
         ref={inputRef}
         classNames={{ input: "mt-2" }}
       />

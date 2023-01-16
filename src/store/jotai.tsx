@@ -79,7 +79,7 @@ export const predefinedDraggables = [
   },
 ];
 
-export const createEventForm = atom(false);
+// export const createEventForm = atom(false);
 // export const dateRangePicker = atom<DateRangePickerValue | []>([]);
 export const createdProjectsAtom = atom([
   {
@@ -161,7 +161,6 @@ export const createdClustersAtom = atom([
     borderColor: "border-[#4c6ef5]",
   },
 ]);
-export const searchDataAtom = atom([undefined, "rr", "22"]);
 export const searchQueryAtom = atom("");
 export const loggerAtom = atom<string | null>("");
 
@@ -174,25 +173,7 @@ export const valuesAtom = atom({
 
 export const xTimesAtom = atom(undefined);
 
-export const settingsDrawerOpen = atom(false);
 export const integrationModalOpen = atom(false);
-
-export const userInfoDisabledAtom = atom({
-  user_name: true,
-  user_email: true,
-  user_role: true,
-  calendar_title: true,
-  event_limit: true,
-});
-export const userInfoAtom = atom({
-  user_name: "Taric Ov",
-  user_email: "taricov1@gmail.com",
-});
-export const calendarSettingsAtom = atom({
-  calendar_title: "Calendar #1",
-  event_limit: "",
-  weather_indicator: false,
-});
 
 // export const eventLimitAtom = atom("");
 // export const calendarTitleAtom = atom("Calendar #1");
@@ -325,3 +306,42 @@ export const availableIntegrationsAtom = [
 ];
 
 // export const weatherIndicatorAtom = atom(false);
+
+// ================ user settings variables =================
+
+// export const settingsDrawerOpen = atom(false);
+export const settingsAtom = atom({
+  g_darkMode: false,
+  g_sounds: true,
+  g_calendarName: "Calendar #1",
+  e_eventLimit: 0,
+  e_allDay: true,
+  c_weatherIndicator: false,
+  c_recurring: false,
+});
+
+export const userInfoDisabledAtom = atom({
+  user_name: true,
+  user_email: true,
+  user_role: true,
+  calendar_title: true,
+  event_limit: true,
+});
+export const userInfoAtom = atom({
+  user_name: "Taric Ov",
+  user_email: "taricov1@gmail.com",
+  avatar_url: "../assets/me.jpg",
+  user_birthday: undefined,
+});
+
+export const isOpen = atom({
+  settings_drawer: false,
+  integration_modal: false,
+  profile_modal: false,
+  shortcuts_modal: false,
+  easy_modal: false,
+  help_modal: false,
+  createEvent_form: false,
+  addCluster_form: false,
+  addProject_form: false,
+});

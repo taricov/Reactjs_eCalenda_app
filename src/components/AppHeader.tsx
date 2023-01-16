@@ -9,6 +9,7 @@ import {
 } from "@mantine/core";
 import { useHotkeys } from "@mantine/hooks";
 import { useAtom } from "jotai";
+import { AiOutlineCoffee } from "react-icons/ai";
 import { BsFillCircleFill } from "react-icons/bs";
 import { GiStripedSun } from "react-icons/gi";
 import { GoSettings } from "react-icons/go";
@@ -16,18 +17,15 @@ import { IoMdHelpCircle } from "react-icons/io";
 import {
   darkModeAtom,
   integrationModalOpen,
+  isOpen,
   navBarToggleAtom,
 } from "../store/jotai";
-import EasyOnYourself from "./EasyOnYouself";
-import ModalIntegration from "./MantineAccordion";
+import EasyOnYourself from "./specialComps/AppTakeABreak";
+import AppIntegrationModal from "./specialComps/AppIntegrations";
 export default function AppHeader() {
   const theme = useMantineTheme();
-  const [integrationOpen, setIntegrationOpened] = useAtom(integrationModalOpen);
 
-  const handleIntegrationModal = () => {
-    setIntegrationOpened(true);
-    console.log(integrationOpen);
-  };
+  const [isOpened, setIsOpened] = useAtom(isOpen);
 
   const [darkMode, setDarkMode] = useAtom(darkModeAtom);
   const toggleDarkMode = () => {
@@ -41,7 +39,6 @@ export default function AppHeader() {
     console.log(toggleNav);
   };
 
-  useHotkeys([["mod+i", () => setIntegrationOpened(() => !integrationOpen)]]);
   useHotkeys([
     ["alt + d", () => setDarkMode(darkMode === "dark" ? "light" : "dark")],
   ]);
@@ -68,11 +65,21 @@ export default function AppHeader() {
         <ActionIcon size={30} onClick={undefined}>
           <IoMdHelpCircle />
         </ActionIcon>
-        <ModalIntegration />
-        <ActionIcon size={30} onClick={handleIntegrationModal}>
+
+        <ActionIcon
+          size={30}
+          onClick={() => setIsOpened({ ...isOpened, easy_modal: true })}
+        >
+          <AiOutlineCoffee />
+        </ActionIcon>
+
+        <ActionIcon
+          size={30}
+          onClick={() => setIsOpened({ ...isOpened, integration_modal: true })}
+        >
           <GoSettings />
         </ActionIcon>
-        <EasyOnYourself />
+
         <ActionIcon size={30} onClick={toggleDarkMode}>
           {darkMode === "light" ? <GiStripedSun /> : <BsFillCircleFill />}
         </ActionIcon>

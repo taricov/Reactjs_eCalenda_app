@@ -10,7 +10,6 @@ import {
   Progress,
   Text,
 } from "@mantine/core";
-import { useDisclosure, useHotkeys } from "@mantine/hooks";
 import { useAtom } from "jotai";
 import { AiOutlineEdit } from "react-icons/ai";
 import { BsBell, BsGear } from "react-icons/bs";
@@ -19,9 +18,9 @@ import { useActivityLog } from "../hooks/useActivityLog";
 import {
   createdClustersAtom,
   createdProjectsAtom,
+  isOpen,
   navBarToggleAtom,
   predefinedDraggables,
-  settingsDrawerOpen,
   userInfoAtom,
 } from "../store/jotai";
 import ClusterIcon from "./ClusterIcon";
@@ -64,10 +63,8 @@ import IconWithTooltip from "./specialComps/MantineIconWithTip";
 export default function AppSideBar() {
   const [toggleNav] = useAtom(navBarToggleAtom);
   console.log(toggleNav);
-  const [settingsOpened, setSettingsOpened] = useAtom(settingsDrawerOpen);
-  const [opened, { close, open }] = useDisclosure(false);
-  useHotkeys([["mod+j", () => setSettingsOpened(() => !settingsOpened)]]);
-  useHotkeys([["mod+]", () => (opened === false ? open() : close())]]);
+
+  // const [opened, { close, open }] = useDisclosure(false);
 
   //   const [newLog, setNewLog] = useAtom(loggerAtom);
   // const loggerAct = (e) => {
@@ -113,6 +110,7 @@ export default function AppSideBar() {
   // const openEditProfile = () =>{
   //   setEditProfile(true)
   // }
+  const [isOpened, setIsOpened] = useAtom(isOpen);
   const [userInfo] = useAtom(userInfoAtom);
   const [createdProjects] = useAtom(createdProjectsAtom);
   const [createdClusters] = useAtom(createdClustersAtom);
@@ -133,7 +131,10 @@ export default function AppSideBar() {
             size="xl"
             href="#"
             // target="_blank"
-            src={myImg}
+            src={
+              // userInfo.avatar_url
+              myImg
+            }
             alt="Taric Ov"
           />
           <Text size="lg" color="bold">
@@ -144,21 +145,18 @@ export default function AppSideBar() {
           </Text>
         </Flex>
         <Flex gap={12} className="my-2" align="center" justify="center">
-          <AppSettings
-            closedIt={settingsOpened}
-            closeIt={() => setSettingsOpened(false)}
-          />
-          {/* <SettingsDrawer
-            closedIt={settingsOpened}
-            closeIt={() => setSettingsOpened(false)}
-          /> */}
-          <ActionIcon onClick={() => setSettingsOpened(true)}>
+          <AppSettings />
+
+          <ActionIcon
+            onClick={() => setIsOpened({ ...isOpened, settings_drawer: true })}
+          >
             <Tooltip label={"Settings"}>
               <BsGear />
             </Tooltip>
           </ActionIcon>
-          <AppEditProfile opened={opened} open={open} close={close} />
-          <ActionIcon onClick={open}>
+          <ActionIcon
+            onClick={() => setIsOpened({ ...isOpened, profile_modal: true })}
+          >
             <Tooltip label={"Profile"}>
               <AiOutlineEdit />
             </Tooltip>

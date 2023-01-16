@@ -12,16 +12,19 @@ import { useAtom } from "jotai";
 import { useRef } from "react";
 import { ChangeEvent, ChangeEventHandler, SetStateAction } from "react";
 import { BsPlusLg, BsSearch } from "react-icons/bs";
-import { searchDataAtom, searchQueryAtom } from "../store/jotai";
+import { eventsAtom, isOpen, searchQueryAtom } from "../store/jotai";
 
 export default function AppTopBar() {
-  const [searchData] = useAtom(searchDataAtom);
+  const [isOpened, setIsOpened] = useAtom(isOpen);
   const [searchQuery, setSearchQuery] = useAtom(searchQueryAtom);
   const handleSearch = (e: SetStateAction<string>) => {
     setSearchQuery(e);
     console.log(e);
   };
-
+  const [events] = useAtom(eventsAtom);
+  const processEvents = (e: SetStateAction<string>) => {
+    // events.
+  };
   const searchBar = useRef<HTMLInputElement | null>(null);
   const focusSearchBar: () => void = () => {
     searchBar.current?.focus();
@@ -69,11 +72,29 @@ export default function AppTopBar() {
             </Button>
           </Menu.Target>
 
-          <Menu.Dropdown className="w-11/12">
+          <Menu.Dropdown className="xs:w-fit w-11/12">
             <Menu.Label>Actions</Menu.Label>
-            <Menu.Item>New Event</Menu.Item>
-            <Menu.Item>New Project</Menu.Item>
-            <Menu.Item>New Cluster</Menu.Item>
+            <Menu.Item
+              onClick={() =>
+                setIsOpened({ ...isOpened, createEvent_form: true })
+              }
+            >
+              New Event
+            </Menu.Item>
+            <Menu.Item
+              onClick={() =>
+                setIsOpened({ ...isOpened, addProject_form: true })
+              }
+            >
+              New Project
+            </Menu.Item>
+            <Menu.Item
+              onClick={() =>
+                setIsOpened({ ...isOpened, addCluster_form: true })
+              }
+            >
+              New Cluster
+            </Menu.Item>
 
             <Menu.Divider />
 

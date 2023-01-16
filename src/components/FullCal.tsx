@@ -49,9 +49,9 @@ import {
   allIntervals,
   createdClustersAtom,
   createdProjectsAtom,
-  createEventForm,
   eventsAtom,
   favColorsAtom,
+  isOpen,
   repeatedAtom,
   tagsAtom,
   xTimesAtom,
@@ -136,14 +136,14 @@ const FullCal = () => {
       endDay,
     });
     // createEventHandlers.open;
-    setEventFormOpened(true);
+    setIsOpened({ ...isOpened, createEvent_form: true });
   };
 
   const clickedEvent = (eventClicked: any) => {
     const { id, title, start, end, allDay } = eventClicked.event;
 
     console.log(id, title, start, end, allDay);
-    setEventFormOpened(true);
+    setIsOpened({ ...isOpened, createEvent_form: true });
   };
 
   const handleClick = (event: any, jsEvent: any, view: any) => {
@@ -152,7 +152,16 @@ const FullCal = () => {
     setId(id);
     // setImage(info.event._def.extendedProps.filename);
   };
-  useHotkeys([["mod+e", () => setEventFormOpened(!createEventFormOpened)]]);
+  useHotkeys([
+    [
+      "mod+e",
+      () =>
+        setIsOpened({
+          ...isOpened,
+          createEvent_form: !isOpened.createEvent_form,
+        }),
+    ],
+  ]);
   const handleRemove = () => {
     removeEvent(id)
       .then((res) => {
@@ -166,7 +175,7 @@ const FullCal = () => {
       });
   };
 
-  const [createEventFormOpened, setEventFormOpened] = useAtom(createEventForm);
+  const [isOpened, setIsOpened] = useAtom(isOpen);
   const handleFile = (e: any) => {
     const fileInput = e.target.files[0];
     setFile(fileInput);
@@ -202,7 +211,7 @@ const FullCal = () => {
       });
   };
   const handleSelect = (info: any) => {
-    setEventFormOpened(true);
+    setIsOpened({ ...isOpened, createEvent_form: true });
     // console.log("fromSelect", info);
     setValues({
       ...values,

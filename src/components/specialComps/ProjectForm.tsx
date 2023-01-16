@@ -14,9 +14,9 @@ import { useDisclosure, useHotkeys } from "@mantine/hooks";
 import { useAtom } from "jotai";
 import { createContext } from "react";
 import { z } from "zod";
-import { favColorsAtom, tagsAtom } from "../../store/jotai";
+import { favColorsAtom, isOpen, tagsAtom } from "../../store/jotai";
 
-export let createProjectToggle = createContext<boolean>(false);
+// export let createProjectToggle = createContext<boolean>(false);
 
 export default function CreateProject() {
   const projSchema = z.object({
@@ -36,82 +36,93 @@ export default function CreateProject() {
     validate: zodResolver(projSchema),
   });
 
-  const [createProjOpened, createProjHandlers] = useDisclosure(false);
+  // const [createProjOpened, createProjHandlers] = useDisclosure(false);
   const [favColors, setFavColors] = useAtom(favColorsAtom);
   const [tags, setTags] = useAtom(tagsAtom);
-  useHotkeys([["mod+shift+p", () => createProjHandlers.toggle()]]);
+  const [isOpened, setIsOpened] = useAtom(isOpen);
+
+  useHotkeys([
+    [
+      "mod+shift+p",
+      () =>
+        setIsOpened({
+          ...isOpened,
+          addProject_form: !isOpened.addProject_form,
+        }),
+    ],
+  ]);
 
   return (
     <>
-      <createProjectToggle.Provider value={createProjOpened}>
-        <Modal
-          withinPortal={false}
-          opened={createProjOpened}
-          onClose={createProjHandlers.close}
-          centered
-          size={"50%"}
-          title="Create Project"
-          classNames={{
-            title: "mx-4 dark:text-app-color-900 font-bold",
-            modal: "p-0 overflow-hidden",
-            header: "mb-0 py-4 bg-app-color-400",
-            close: "mx-5",
-          }}
-        >
-          <Container className="p-5">
-            <form onSubmit={form.onSubmit((values) => console.log(values))}>
-              <TextInput
-                withAsterisk
-                placeholder="Project Name"
-                // onChange={handleEventTitle}
+      {/* <createProjectToggle.Provider value={createProjOpened}> */}
+      <Modal
+        withinPortal={false}
+        opened={isOpened.addProject_form}
+        onClose={() => setIsOpened({ ...isOpened, addProject_form: false })}
+        centered
+        size={"50%"}
+        title="Create Project"
+        classNames={{
+          title: "mx-4 dark:text-app-color-900 font-bold",
+          modal: "p-0 overflow-hidden",
+          header: "mb-0 py-4 bg-app-color-400",
+          close: "mx-5",
+        }}
+      >
+        <Container className="p-5">
+          <form onSubmit={form.onSubmit((values) => console.log(values))}>
+            <TextInput
+              withAsterisk
+              placeholder="Project Name"
+              // onChange={handleEventTitle}
+              variant="unstyled"
+              {...form.getInputProps("projectName")}
+            />
+
+            <Textarea
+              variant="unstyled"
+              placeholder="Project description ..."
+              {...form.getInputProps("projectDesc")}
+            />
+            <Flex wrap={"wrap"}>
+              <ColorInput
+                // withEyeDropper
+                size="sm"
+                className="w-fit"
                 variant="unstyled"
-                {...form.getInputProps("projectName")}
+                placeholder="Pick color"
+                format="hex"
+                swatchesPerRow={7}
+                swatches={favColors}
+                // onChange={updateColors}
+                {...form.getInputProps("colors")}
               />
 
-              <Textarea
+              <MultiSelect
+                className="w-fit"
+                data={tags}
+                size="sm"
+                placeholder="add tags"
+                searchable
                 variant="unstyled"
-                placeholder="Project description ..."
-                {...form.getInputProps("projectDesc")}
+                creatable
+                getCreateLabel={(query) => `+ Create ${query}`}
+                onCreate={(query) => {
+                  const item = query;
+                  setTags((current) => [...current, item]);
+                  return item;
+                }}
+                {...form.getInputProps("projectTags")}
               />
-              <Flex wrap={"wrap"}>
-                <ColorInput
-                  // withEyeDropper
-                  size="sm"
-                  className="w-fit"
-                  variant="unstyled"
-                  placeholder="Pick color"
-                  format="hex"
-                  swatchesPerRow={7}
-                  swatches={favColors}
-                  // onChange={updateColors}
-                  {...form.getInputProps("colors")}
-                />
+            </Flex>
 
-                <MultiSelect
-                  className="w-fit"
-                  data={tags}
-                  size="sm"
-                  placeholder="add tags"
-                  searchable
-                  variant="unstyled"
-                  creatable
-                  getCreateLabel={(query) => `+ Create ${query}`}
-                  onCreate={(query) => {
-                    const item = query;
-                    setTags((current) => [...current, item]);
-                    return item;
-                  }}
-                  {...form.getInputProps("projectTags")}
-                />
-              </Flex>
-
-              <Group position="right" mt="md">
-                <Button type="submit">Create</Button>
-              </Group>
-            </form>
-          </Container>
-        </Modal>
-      </createProjectToggle.Provider>
+            <Group position="right" mt="md">
+              <Button type="submit">Create</Button>
+            </Group>
+          </form>
+        </Container>
+      </Modal>
+      {/* </createProjectToggle.Provider> */}
     </>
   );
 }

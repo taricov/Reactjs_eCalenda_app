@@ -25,10 +25,11 @@ import {
   allIntervals,
   createdClustersAtom,
   createdProjectsAtom,
-  createEventForm,
+
   // dateRangePicker,
   eventsAtom,
   favColorsAtom,
+  isOpen,
   repeatedAtom,
   tagsAtom,
 } from "../../store/jotai";
@@ -101,15 +102,18 @@ export default function CreateEvent() {
   });
   // const [creatEventOpened, createEventHandlers] = useDisclosure(false);
 
-  const [createdEventFormOpened, setEventFormOpened] = useAtom(createEventForm);
+  // const [createdEventFormOpened, setEventFormOpened] = useAtom(createEventForm);
+
   // const [selectedDateRangePicker] = useAtom(dateRangePicker);
+  const [isOpened, setIsOpened] = useAtom(isOpen);
   const eventData = (values: any) => {
     const { eventName, colored } = values;
     // const start = selectedDateRangePicker[0];
     // const end = selectedDateRangePicker[1];
     setEvents([...events, { title: eventName, allDay: true, color: colored }]);
     console.log(events);
-    setEventFormOpened(false);
+    // setEventFormOpened(false);
+    setIsOpened({ ...isOpened, createEvent_form: false });
     form.reset();
   };
   // let editObj = useContext(formContext);
@@ -118,8 +122,8 @@ export default function CreateEvent() {
     <>
       <Modal
         withinPortal={false}
-        opened={createdEventFormOpened}
-        onClose={() => setEventFormOpened(false)}
+        opened={isOpened.createEvent_form}
+        onClose={() => setIsOpened({ ...isOpened, createEvent_form: false })}
         centered
         size={"30%"}
         title="Create Event"
