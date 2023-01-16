@@ -131,7 +131,7 @@ export default function SettingsDrawer({ closedIt, closeIt }: any) {
         title="Settings"
         classNames={{ title: "text-2xl font-bold" }}
         padding="xl"
-        size="xl"
+        // size={"xl"}
       >
         <Flex className="bg-app-color-50 dark:bg-gray-400 px-3 py-5 rounded mb-3">
           <Switch

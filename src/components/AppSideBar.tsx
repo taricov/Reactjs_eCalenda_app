@@ -202,12 +202,12 @@ export default function AppSideBar() {
             defaultValue={createdProjects.map((x) => x.id)}
           >
             {createdProjects.map((proj: any) => {
-              const { id, name, CheckedColor } = proj;
+              const { id, name } = proj;
               return (
                 <Checkbox
                   classNames={{
-                    label: "pl-1 mr-4",
-                    input: `${CheckedColor} checked:border-none`,
+                    label: "pl-2 mr-4",
+                    input: `checked:bg-app-color-500 checked:border-none`,
                     root: "cursor:pointer",
                   }}
                   key={id}
@@ -253,7 +253,7 @@ export default function AppSideBar() {
               return (
                 <Badge
                   key={id}
-                  className={`fc-event mb-1 bg-gradient-to-r from-app-color-500 ${toColor} hover:cursor-move text-app-color-100 dark:text-app-color-200`}
+                  className={`fc-event mb-1 bg-gradient-to-r from-app-color-500 to-app-color-700 hover:cursor-move text-app-color-100 dark:text-app-color-200`}
                   variant={"gradient"}
                   onClickCapture={() => console.log("this")}
                 >

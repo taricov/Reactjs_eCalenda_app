@@ -121,7 +121,7 @@ export default function CreateEvent() {
         opened={createdEventFormOpened}
         onClose={() => setEventFormOpened(false)}
         centered
-        size={"90%"}
+        size={"30%"}
         title="Create Event"
         classNames={{
           title: "mx-4 dark:text-red font-bold",
@@ -158,13 +158,13 @@ export default function CreateEvent() {
                 // onChange={selectedXTimes}
                 data={createdProjects.map((v) => v.name)}
                 className="w-3/5"
-                size="xs"
+                size="sm"
                 {...form.getInputProps("project")}
               />
               <MultiSelect
                 className="w-fit"
                 data={createdClusters.map((v) => v.name)}
-                size="xs"
+                size="sm"
                 placeholder="add clusters"
                 searchable
                 variant="unstyled"
@@ -196,13 +196,13 @@ export default function CreateEvent() {
                   //   onChange={selectedXTimes}
                   data={allIntervals}
                   className="w-3/5"
-                  size="xs"
+                  size="sm"
                   {...form.getInputProps("freq")}
                 />
                 <Flex className="w-full" gap={10}>
                   <Text
                     className="flex items-center justify-center "
-                    size={"xs"}
+                    size={"sm"}
                   >
                     ends
                   </Text>
@@ -210,7 +210,7 @@ export default function CreateEvent() {
                     className="w-fit"
                     variant="unstyled"
                     placeholder="never"
-                    size="xs"
+                    size="sm"
                     {...form.getInputProps("ends")}
                   />
                 </Flex>
@@ -220,7 +220,7 @@ export default function CreateEvent() {
                   reminder
                 </Text>
                 <TimeInput
-                  size="xs"
+                  size="sm"
                   className="w-1/3"
                   placeholder="none"
                   icon={<BsClock size={16} />}
@@ -235,7 +235,7 @@ export default function CreateEvent() {
               <MultiSelect
                 className="w-fit"
                 data={tags}
-                size="xs"
+                size="sm"
                 placeholder="add tags"
                 searchable
                 variant="unstyled"
@@ -250,7 +250,7 @@ export default function CreateEvent() {
               />
               <ColorInput
                 // withEyeDropper
-                size="xs"
+                size="sm"
                 className="w-fit"
                 variant="unstyled"
                 placeholder="Pick color"

@@ -1,4 +1,4 @@
-import { Drawer, Flex, Switch } from "@mantine/core";
+import { Drawer, Flex, Space, Switch } from "@mantine/core";
 import { useClickOutside } from "@mantine/hooks";
 import { showNotification } from "@mantine/notifications";
 import { IconCheck } from "@tabler/icons";
@@ -91,6 +91,7 @@ export default function AppSettings({ closedIt, closeIt }: Props) {
   return (
     <>
       <Drawer
+        withinPortal={false}
         opened={closedIt}
         onClose={closeIt}
         title="Settings"
@@ -99,45 +100,52 @@ export default function AppSettings({ closedIt, closeIt }: Props) {
         size="xl"
       >
         <Accordion defaultValue="Settings">
-          <Accordion.Item value="global">
+          <Accordion.Item value="global_settings">
             <Accordion.Control>Global Settings</Accordion.Control>
             <Accordion.Panel>
-              <Flex className="bg-app-color-50 dark:bg-gray-400 px-3 py-5 rounded mb-3">
-                <Switch
-                  labelPosition="left"
-                  label="Theme"
-                  checked={darkMode === "dark" ? true : false}
-                  onChange={toggleDarkMode}
-                  description="Switch between light/dark themes"
-                />
-              </Flex>
-
+              {/* <Flex className="bg-app-color-50 dark:bg-gray-400 px-3 py-5 rounded mb-3"> */}
+              <Switch
+                labelPosition="left"
+                label="Theme"
+                checked={darkMode === "dark" ? true : false}
+                onChange={toggleDarkMode}
+                description="Switch between light/dark themes"
+              />
+              <Space h={20} />
+              {/* </Flex> */}
+              {/* 
               <Flex
                 direction={"column"}
                 align={"start"}
                 className="bg-app-color-100 dark:bg-opacity-10 px-3 py-5 rounded mb-3"
-              >
-                <AppEditableInput
-                  label="This new input"
-                  inputVal={caleandarSettings.calendar_title}
-                  disabled={disabledFields.calendar_title}
-                  valOnChange={nameOnChange}
-                  inputRef={refCalendarTitle}
-                  iconOnClick={editCalendarTitle}
-                />
-              </Flex>
+              > */}
+              <AppEditableInput
+                label="This new input"
+                inputVal={caleandarSettings.calendar_title}
+                disabled={disabledFields.calendar_title}
+                valOnChange={nameOnChange}
+                inputRef={refCalendarTitle}
+                iconOnClick={editCalendarTitle}
+              />
+              {/* </Flex> */}
             </Accordion.Panel>
           </Accordion.Item>
 
-          <Accordion.Item value="calendar settings">
+          <Accordion.Item value="calendar_settings">
             <Accordion.Control>Calendar Settings</Accordion.Control>
             <Accordion.Panel>
-              Configure components appearance and behavior with vast amount of
-              settings or overwrite any part of component styles
+              <AppEditableInput
+                label="Calendar Name"
+                inputVal={caleandarSettings.calendar_title}
+                disabled={disabledFields.calendar_title}
+                valOnChange={nameOnChange}
+                inputRef={refCalendarTitle}
+                iconOnClick={editCalendarTitle}
+              />
             </Accordion.Panel>
           </Accordion.Item>
 
-          <Accordion.Item value="calendar settings">
+          <Accordion.Item value="event_settings">
             <Accordion.Control>Event Settings</Accordion.Control>
             <Accordion.Panel>
               Configure components appearance and behavior with vast amount of

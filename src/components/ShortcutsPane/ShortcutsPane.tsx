@@ -4,6 +4,7 @@ import ShortcutsRow from "./ShortcutsRow";
 import ShortcutsSection from "./ShortcutsSection";
 import SiteCompModal from "./MantineModal";
 import {
+  Center,
   Container,
   Flex,
   Group,
@@ -15,6 +16,7 @@ import {
 } from "@mantine/core";
 import { string } from "zod";
 import { Section } from "@mantine/core/lib/AppShell/HorizontalSection/Section/Section";
+import AppStandardModal from "../specialComps/AppStandardModal";
 
 const ShortcutsPane = () => {
   // const handleKeyPress   = useCallback((e: KeyboardEvent) => {
@@ -107,7 +109,7 @@ const ShortcutsPane = () => {
 
   return (
     <>
-      <Modal
+      {/* <Modal
         withinPortal={false}
         classNames={{
           modal:
@@ -120,8 +122,14 @@ const ShortcutsPane = () => {
         withCloseButton={false}
         overlayOpacity={0.75}
         overlayBlur={0}
+      > */}
+      <AppStandardModal
+        modalOpned={shortCutsOpened}
+        modalCloser={shortCutsHandlers.close}
+        title="Shortcuts/Hacks"
+        Xwidth={11}
       >
-        <Flex
+        {/* <Flex
           direction={"column"}
           className=" bg-app-color-500 top-0 sticky bg-primary-800 p-5 shadow-md"
         >
@@ -135,7 +143,7 @@ const ShortcutsPane = () => {
           <Text>
             Accelerate your pace and use your system more effeciently.
           </Text>
-        </Flex>
+        </Flex> */}
 
         <Table striped>
           <tbody>
@@ -162,7 +170,7 @@ const ShortcutsPane = () => {
                             className="w-full py-1 px-7"
                           >
                             <Text>{item.title}</Text>
-                            <Group className="px-1 rounded shadow-lg text-app-color-50 dark:bg-app-color-50 bg-app-color-500">
+                            <Group className="px-1 rounded shadow-lg text-app-color-50 dark:bg-app-color-50 bg-app-color-500 dark:bg-transparent">
                               <Text>{item.shortcut}</Text>
                             </Group>
                           </Flex>
@@ -175,7 +183,13 @@ const ShortcutsPane = () => {
             })}
           </tbody>
         </Table>
-      </Modal>
+        <Center className="py-1 dark:bg-app-color-900 bg-app-color-500 ">
+          <Text fz={12}>
+            Accelerate your pace and use your system more effeciently
+          </Text>
+        </Center>
+        {/* </Modal> */}
+      </AppStandardModal>
     </>
   );
 };

@@ -14,6 +14,7 @@ import { useAtom } from "jotai";
 import { AiOutlineCheck, AiOutlineEdit } from "react-icons/ai";
 import { userInfoAtom, userInfoDisabledAtom } from "../../store/jotai";
 import AppEditableInput from "./AppEditableInput";
+import AppStandardModal from "./AppStandardModal";
 
 // Push Notification
 const pushNotification = (title: string, message: string, color: string) => {
@@ -50,17 +51,33 @@ export default function AppEditProfile({ opened, close, open }: Props) {
 
   return (
     <>
-      <Modal
+      {/* <Modal
         opened={opened}
         onClose={close}
         centered
-        size={"90%"}
+        size={"40%"}
         title="Edit Profile"
         className="text-app-color-800 dark:text-app-color-50"
         classNames={{
           title: "font-bold text-app-color-800 dark:text-app-color-50",
         }}
+      > */}
+      <AppStandardModal
+        modalOpned={opened}
+        modalCloser={close}
+        title="Edit Profile"
+        Xwidth={10}
       >
+        <AppEditableInput
+          label="Your Name"
+          inputVal={userInfo.user_name}
+          disabled={disabledFields.user_name}
+          valOnChange={(e) =>
+            setUserInfo({ ...userInfo, user_name: e.currentTarget.value })
+          }
+          inputRef={refYourName}
+          iconOnClick={editYourName}
+        />
         <AppEditableInput
           label="Your Name"
           inputVal={userInfo.user_name}
@@ -96,7 +113,8 @@ export default function AppEditProfile({ opened, close, open }: Props) {
           <Button size="xl" color={""} variant="gradient" title="Discard" />
           <Button title="Save" />
         </Group> */}
-      </Modal>
+        {/* </Modal> */}
+      </AppStandardModal>
     </>
   );
 }

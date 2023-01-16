@@ -19,13 +19,17 @@ export default function AppEditableInput({
   iconOnClick,
 }: Props) {
   return (
-    <Flex align={"end"} className="bg-slate-200 px-3 py-5 rounded mb-3">
+    <Flex
+      align={"end"}
+      // className="bg-slate-200 dark:bg-opacity-5 px-3 py-5 rounded"
+    >
       <TextInput
         label={label}
         value={inputVal}
         onChange={valOnChange}
         disabled={disabled}
         ref={inputRef}
+        classNames={{ input: "mt-2" }}
       />
       <ActionIcon onClick={iconOnClick} className="mb-1 ml-1">
         {disabled ? <AiOutlineEdit /> : <AiOutlineCheck />}
