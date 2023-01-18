@@ -141,7 +141,6 @@ export default function Createproject() {
               />
               <Text>{form.values.projectColor}</Text>
             </Stack>
-
             <Group position="right" mt="md">
               <Button
                 className="bg-app-color-500 hover:bg-app-color-600 transition duration-200 dark:bg-opacity-10 dark:hover:bg-opacity-5 dark:bg-app-color-50 dark-opacity-5"

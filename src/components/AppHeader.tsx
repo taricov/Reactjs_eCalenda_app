@@ -36,12 +36,10 @@ export default function AppHeader() {
   const toggleDarkMode = () => {
     setDarkMode(darkMode === "dark" ? "light" : "dark");
     localStorage.setItem("darkMode", darkMode);
-    console.log(darkMode);
   };
   const [toggleNav, setToggleNav] = useAtom(navBarToggleAtom);
   const handleNavToggle = () => {
     setToggleNav((toggleNav) => !toggleNav);
-    console.log(toggleNav);
   };
   const [allSettings, setSettings] = useAtom(settingsAtom);
   const [languages] = useAtom(langs);
@@ -69,7 +67,10 @@ export default function AppHeader() {
         <Text>eCalenda</Text>
       </Flex>
       <Flex align={"center"} justify={"center"}>
-        <ActionIcon size={30} onClick={undefined}>
+        <ActionIcon
+          size={30}
+          onClick={() => setIsOpened({ ...isOpened, help_modal: true })}
+        >
           <IoMdHelpCircle />
         </ActionIcon>
 

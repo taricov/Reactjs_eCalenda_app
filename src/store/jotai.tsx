@@ -373,3 +373,12 @@ export const langs = atom([
   { label: "🇪🇸", value: "Sp" },
   { label: "🇫🇷", value: "Fr" },
 ]);
+
+export const siteUpdates = atom([
+  {
+    icon: "",
+    title: "",
+    desc: "",
+    date: "",
+  },
+]);

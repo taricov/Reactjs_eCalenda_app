@@ -32,6 +32,7 @@ import AppSettings from "./components/specialComps/AppSettings";
 import AppIntegrations from "./components/specialComps/AppIntegrations";
 
 import rtlPlugin from "stylis-plugin-rtl";
+import AppHelp from "./components/specialComps/AppHelp";
 
 const queryClient = new QueryClient();
 
@@ -98,6 +99,7 @@ function App() {
             <AppSettings />
             <AppIntegrations />
             <AppTakeABreak />
+            <AppHelp />
           </NotificationsProvider>
         </ModalsProvider>
       </MantineProvider>
