@@ -4,13 +4,16 @@ import {
   Flex,
   Header,
   MediaQuery,
+  Menu,
+  Select,
+  Space,
   Text,
   useMantineTheme,
 } from "@mantine/core";
 import { useHotkeys } from "@mantine/hooks";
 import { useAtom } from "jotai";
 import { AiOutlineCoffee } from "react-icons/ai";
-import { BsFillCircleFill } from "react-icons/bs";
+import { BsChevronDown, BsFillCircleFill } from "react-icons/bs";
 import { GiStripedSun } from "react-icons/gi";
 import { GoSettings } from "react-icons/go";
 import { IoMdHelpCircle } from "react-icons/io";
@@ -18,7 +21,9 @@ import {
   darkModeAtom,
   integrationModalOpen,
   isOpen,
+  langs,
   navBarToggleAtom,
+  settingsAtom,
 } from "../store/jotai";
 import EasyOnYourself from "./specialComps/AppTakeABreak";
 import AppIntegrationModal from "./specialComps/AppIntegrations";
@@ -38,6 +43,8 @@ export default function AppHeader() {
     setToggleNav((toggleNav) => !toggleNav);
     console.log(toggleNav);
   };
+  const [allSettings, setSettings] = useAtom(settingsAtom);
+  const [languages] = useAtom(langs);
 
   useHotkeys([
     ["alt + d", () => setDarkMode(darkMode === "dark" ? "light" : "dark")],
@@ -83,6 +90,21 @@ export default function AppHeader() {
         <ActionIcon size={30} onClick={toggleDarkMode}>
           {darkMode === "light" ? <GiStripedSun /> : <BsFillCircleFill />}
         </ActionIcon>
+        <Select
+          classNames={{
+            item: "text-xl w-fit",
+            input:
+              "border-none bg-transparent hover:bg-slate-100 hover:bg-opacity-10 text-xl transition duration-200 p-0 !h-0 w-7 text-right",
+            rightSection: "hidden",
+            dropdown: "!w-fit",
+          }}
+          value={allSettings.selected_lang}
+          onChange={(e: any) =>
+            setSettings({ ...allSettings, selected_lang: e })
+          }
+          defaultValue={allSettings.selected_lang}
+          data={languages}
+        />
       </Flex>
     </Header>
   );

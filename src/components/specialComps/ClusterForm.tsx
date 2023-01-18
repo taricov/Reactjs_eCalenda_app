@@ -2,12 +2,16 @@ import { MdArchive } from "react-icons/md";
 import {
   Button,
   ColorInput,
+  ColorPicker,
   Container,
   Flex,
   Group,
   MediaQuery,
   Modal,
   MultiSelect,
+  Space,
+  Stack,
+  Text,
   Textarea,
   TextInput,
 } from "@mantine/core";
@@ -16,7 +20,7 @@ import { useDisclosure, useHotkeys } from "@mantine/hooks";
 import { useAtom } from "jotai";
 import { createContext } from "react";
 import { z } from "zod";
-import { favColorsAtom, isOpen, tagsAtom } from "../../store/jotai";
+import { favColorsAtom, isOpen, siteColors, tagsAtom } from "../../store/jotai";
 import AppColotInput from "./AppColorInput";
 import { pushNotification } from "./pushNotification";
 import AppStandardModal from "./AppStandardModal";
@@ -55,6 +59,8 @@ export default function CreateCluster() {
         }),
     ],
   ]);
+
+  const [allColors] = useAtom(siteColors);
 
   return (
     <>
@@ -97,24 +103,6 @@ export default function CreateCluster() {
               {...form.getInputProps("clusterDesc")}
             />
             <Flex wrap={"wrap"}>
-              <ColorInput
-                // withEyeDropper
-                size="sm"
-                defaultValue="#7367f0"
-                className="md:w-fit w-full"
-                variant="unstyled"
-                placeholder="Pick color"
-                classNames={{
-                  icon: "w-fit",
-                  input: "px-6",
-                }}
-                format="hex"
-                swatchesPerRow={7}
-                swatches={favColors}
-                // onChange={updateColors}
-                {...form.getInputProps("clusterColor")}
-              />
-
               <MultiSelect
                 className="md:w-fit md:mx-5 w-full"
                 data={tags}
@@ -133,6 +121,20 @@ export default function CreateCluster() {
                 {...form.getInputProps("clusterTags")}
               />
             </Flex>
+            <Space h={10} />
+            <Stack align={"center"}>
+              <ColorPicker
+                classNames={{
+                  swatch: "m-1",
+                  swatches: "justify-center",
+                }}
+                swatchesPerRow={8}
+                swatches={allColors}
+                withPicker={false}
+                {...form.getInputProps("clusterColor")}
+              />
+              <Text>{form.values.clusterColor}</Text>
+            </Stack>
 
             <Group position="right" mt="md">
               <Button

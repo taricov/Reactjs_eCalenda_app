@@ -1,5 +1,6 @@
 
 
+
 :root {
     /* --fc-daygrid-event-dot-width: 8px;
     --fc-list-event-dot-width: 10px;
@@ -39,6 +40,9 @@
   --fc-now-indicator-color: rgba(248, 56, 56, 0.782);
   --fc-main-color: rgba(255, 255, 255, 0.5); */
   }
+
+  #root > div > div.mantine-AppShell-root.w-screen.mantine-osix87 > div > main > div > div.mantine-Grid-root.h-full.mantine-nsdj > div > div > div.fc-view-harness.fc-view-harness-active > div > table > thead > tr > th,#root > div > div.mantine-AppShell-root.w-screen.mantine-osix87 > div > main > div > div.mantine-Grid-root.h-full.mantine-nsdj > div > div > div.fc-view-harness.fc-view-harness-active > div > table > tbody > tr > td{
+    @apply !border-none }
 
 /* 
 .fc-toolbar{
@@ -138,7 +142,6 @@
 /* .fc-view{
 @apply 
 } */
-
 .fc-view-harness{
     @apply !bg-app-color-50 rounded-md w-full !mx-auto dark:!bg-app-color-50 dark:!bg-opacity-5 border  border-app-color-100 dark:!border-opacity-10
 }
@@ -192,4 +195,6 @@
   } */
   
   
+  
+
   

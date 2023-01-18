@@ -136,14 +136,14 @@ const FullCal = () => {
       endDay,
     });
     // createEventHandlers.open;
-    setIsOpened({ ...isOpened, createEvent_form: true });
+    setIsOpened({ ...isOpened, addEvent_form: true });
   };
 
   const clickedEvent = (eventClicked: any) => {
     const { id, title, start, end, allDay } = eventClicked.event;
 
     console.log(id, title, start, end, allDay);
-    setIsOpened({ ...isOpened, createEvent_form: true });
+    setIsOpened({ ...isOpened, addEvent_form: true });
   };
 
   const handleClick = (event: any, jsEvent: any, view: any) => {
@@ -158,7 +158,7 @@ const FullCal = () => {
       () =>
         setIsOpened({
           ...isOpened,
-          createEvent_form: !isOpened.createEvent_form,
+          addEvent_form: !isOpened.addEvent_form,
         }),
     ],
   ]);
@@ -211,7 +211,7 @@ const FullCal = () => {
       });
   };
   const handleSelect = (info: any) => {
-    setIsOpened({ ...isOpened, createEvent_form: true });
+    setIsOpened({ ...isOpened, addEvent_form: true });
     // console.log("fromSelect", info);
     setValues({
       ...values,

@@ -14,6 +14,8 @@ import {
   Transition,
   Button,
   Group,
+  Stack,
+  ColorPicker,
 } from "@mantine/core";
 import { useAutoAnimate } from "@formkit/auto-animate/react";
 
@@ -31,12 +33,14 @@ import {
   favColorsAtom,
   isOpen,
   repeatedAtom,
+  siteColors,
   tagsAtom,
 } from "../../store/jotai";
 import MantineDatePicker from "../DatePicker/MantineDatePicker";
 import { date, z } from "zod";
 import { useForm, zodResolver } from "@mantine/form";
 import { useDisclosure } from "@mantine/hooks";
+import AppStandardModal from "./AppStandardModal";
 
 interface Props {
   open: () => void;
@@ -88,15 +92,16 @@ export default function CreateEvent() {
     initialValues: {
       eventName: "",
       // dateRange: "",
-      notes: "",
-      project: "",
-      clusters: "",
-      repeated: false,
-      freq: "",
-      ends: "",
-      reminder: "",
-      tags: [],
-      colored: "",
+      eventNotes: "",
+      eventProject: "",
+      eventClusters: "",
+      eventRepeated: false,
+      eventFreq: "",
+      eventEnds: "",
+      eventColor: "",
+      eventReminder: "",
+      eventTags: [],
+      eventColored: "",
     },
     validate: zodResolver(eventSchema),
   });
@@ -113,17 +118,19 @@ export default function CreateEvent() {
     setEvents([...events, { title: eventName, allDay: true, color: colored }]);
     console.log(events);
     // setEventFormOpened(false);
-    setIsOpened({ ...isOpened, createEvent_form: false });
+    setIsOpened({ ...isOpened, addEvent_form: false });
     form.reset();
   };
   // let editObj = useContext(formContext);
   // console.log(editObj);
+
+  const [allColors] = useAtom(siteColors);
   return (
     <>
-      <Modal
+      {/* <Modal
         withinPortal={false}
-        opened={isOpened.createEvent_form}
-        onClose={() => setIsOpened({ ...isOpened, createEvent_form: false })}
+        opened={isOpened.addEvent_form}
+        onClose={() => setIsOpened({ ...isOpened, addEvent_form: false })}
         centered
         size={"30%"}
         title="Create Event"
@@ -133,7 +140,13 @@ export default function CreateEvent() {
           header: "mb-0 py-4 bg-app-color-400",
           close: "mx-5",
         }}
+      > */}
+      <AppStandardModal
+        modalOpned={isOpened.addEvent_form}
+        modalCloser={() => setIsOpened({ ...isOpened, addEvent_form: false })}
+        title="Create Event"
       >
+        <></>
         <Container className="p-5">
           <form onSubmit={form.onSubmit(eventData)}>
             <Flex direction="column">
@@ -146,13 +159,13 @@ export default function CreateEvent() {
               />
               <Textarea
                 variant="unstyled"
-                placeholder="Type notes ..."
-                {...form.getInputProps("notes")}
+                placeholder="Type Notes ..."
+                {...form.getInputProps("eventNotes")}
               />
               <MantineDatePicker
                 desc="Select Dates"
                 size="sm"
-                {...form.getInputProps("dateRange")}
+                {...form.getInputProps("eventDateRange")}
               />
             </Flex>
             <Flex gap={20}>
@@ -163,7 +176,7 @@ export default function CreateEvent() {
                 data={createdProjects.map((v) => v.name)}
                 className="w-3/5"
                 size="sm"
-                {...form.getInputProps("project")}
+                {...form.getInputProps("eventProject")}
               />
               <MultiSelect
                 className="w-fit"
@@ -185,12 +198,12 @@ export default function CreateEvent() {
               size="sm"
               checked={repeated}
               // onChange={() => setRepeated((repeated) => !repeated)}
-              {...form.getInputProps("repeated", { type: "checkbox" })}
+              {...form.getInputProps("eventRepeated", { type: "checkbox" })}
             />
             <Flex
               direction={"column"}
               className={`${
-                !form.getInputProps("repeated").value ? "hidden" : ""
+                !form.getInputProps("eventRepeated").value ? "hidden" : ""
               }`}
             >
               <Flex gap={20}>
@@ -215,7 +228,7 @@ export default function CreateEvent() {
                     variant="unstyled"
                     placeholder="never"
                     size="sm"
-                    {...form.getInputProps("ends")}
+                    {...form.getInputProps("eventEnds")}
                   />
                 </Flex>
               </Flex>
@@ -230,7 +243,7 @@ export default function CreateEvent() {
                   icon={<BsClock size={16} />}
                   variant="unstyled"
                   defaultValue={new Date()}
-                  {...form.getInputProps("reminder")}
+                  {...form.getInputProps("eventReminder")}
                 />
               </Flex>
             </Flex>
@@ -250,9 +263,9 @@ export default function CreateEvent() {
                   setTags((current) => [...current, item]);
                   return item;
                 }}
-                {...form.getInputProps("tags")}
+                {...form.getInputProps("eventTags")}
               />
-              <ColorInput
+              {/* <ColorInput
                 // withEyeDropper
                 size="sm"
                 className="w-fit"
@@ -262,15 +275,38 @@ export default function CreateEvent() {
                 swatchesPerRow={7}
                 swatches={favColors}
                 // onChange={updateColors}
-                {...form.getInputProps("colored")}
-              />
+                {...form.getInputProps("eventColor")}
+              /> */}
             </Flex>
+
+            <Space h={10} />
+            <Stack align={"center"}>
+              <ColorPicker
+                classNames={{
+                  preview: "bg-slate-100",
+                  swatch: "m-1",
+                  swatches: "justify-center",
+                }}
+                swatchesPerRow={8}
+                swatches={allColors}
+                withPicker={false}
+                {...form.getInputProps("eventColor")}
+              />
+              <Text>{form.values.eventColor}</Text>
+            </Stack>
             <Group position="right" mt="md">
-              <Button type="submit">Create</Button>
+              <Button
+                className="bg-app-color-500 hover:bg-app-color-600 transition duration-200 dark:bg-opacity-10 dark:hover:bg-opacity-5 dark:bg-app-color-50 dark-opacity-5"
+                type="submit"
+              >
+                Create
+              </Button>
             </Group>
           </form>
         </Container>
-      </Modal>
+      </AppStandardModal>
+
+      {/* </Modal> */}
     </>
   );
 }

@@ -1,21 +1,27 @@
 import {
   Button,
   ColorInput,
+  ColorPicker,
+  ColorSwatch,
   Container,
   Flex,
   Group,
   Modal,
   MultiSelect,
+  Space,
+  Stack,
+  Text,
   Textarea,
   TextInput,
 } from "@mantine/core";
+import { Swatches } from "@mantine/core/lib/ColorPicker/Swatches/Swatches";
 import { useForm, zodResolver } from "@mantine/form";
 import { useDisclosure, useHotkeys } from "@mantine/hooks";
 import { useAtom } from "jotai";
 import { createContext } from "react";
 import { z } from "zod";
-import { favColorsAtom, isOpen, tagsAtom } from "../../store/jotai";
-
+import { favColorsAtom, isOpen, tagsAtom, siteColors } from "../../store/jotai";
+import AppStandardModal from "./AppStandardModal";
 // export let createProjectToggle = createContext<boolean>(false);
 
 export default function CreateProject() {
@@ -51,11 +57,12 @@ export default function CreateProject() {
         }),
     ],
   ]);
+  const [allColors] = useAtom(siteColors);
 
   return (
     <>
       {/* <createProjectToggle.Provider value={createProjOpened}> */}
-      <Modal
+      {/* <Modal
         withinPortal={false}
         opened={isOpened.addProject_form}
         onClose={() => setIsOpened({ ...isOpened, addProject_form: false })}
@@ -68,7 +75,13 @@ export default function CreateProject() {
           header: "mb-0 py-4 bg-app-color-400",
           close: "mx-5",
         }}
+      > */}
+      <AppStandardModal
+        modalOpned={isOpened.addCluster_form}
+        modalCloser={() => setIsOpened({ ...isOpened, addCluster_form: false })}
+        title="Create Project"
       >
+        <></>
         <Container className="p-5">
           <form onSubmit={form.onSubmit((values) => console.log(values))}>
             <TextInput
@@ -85,19 +98,6 @@ export default function CreateProject() {
               {...form.getInputProps("projectDesc")}
             />
             <Flex wrap={"wrap"}>
-              <ColorInput
-                // withEyeDropper
-                size="sm"
-                className="w-fit"
-                variant="unstyled"
-                placeholder="Pick color"
-                format="hex"
-                swatchesPerRow={7}
-                swatches={favColors}
-                // onChange={updateColors}
-                {...form.getInputProps("colors")}
-              />
-
               <MultiSelect
                 className="w-fit"
                 data={tags}
@@ -116,12 +116,33 @@ export default function CreateProject() {
               />
             </Flex>
 
+            <Space h={10} />
+            <Stack align={"center"}>
+              <ColorPicker
+                classNames={{
+                  swatch: "m-1",
+                }}
+                swatchesPerRow={8}
+                swatches={allColors}
+                withPicker={false}
+                {...form.getInputProps("projectColor")}
+              />
+              <Text>{form.values.projectColor}</Text>
+            </Stack>
+
             <Group position="right" mt="md">
-              <Button type="submit">Create</Button>
+              <Button
+                className="bg-app-color-500 hover:bg-app-color-600 transition duration-200 dark:bg-opacity-10 dark:hover:bg-opacity-5 dark:bg-app-color-50 dark-opacity-5"
+                type="submit"
+              >
+                Create
+              </Button>
             </Group>
           </form>
         </Container>
-      </Modal>
+      </AppStandardModal>
+
+      {/* </Modal> */}
       {/* </createProjectToggle.Provider> */}
     </>
   );

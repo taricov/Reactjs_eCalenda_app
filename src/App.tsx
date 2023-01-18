@@ -1,6 +1,7 @@
 import { QueryClientProvider, QueryClient } from "react-query";
 import {
   ColorScheme,
+  createEmotionCache,
   Flex,
   MantineProvider,
   Space,
@@ -12,7 +13,7 @@ import { atom, PrimitiveAtom, useAtom } from "jotai";
 import FullCal from "./components/FullCal";
 import DatePicker from "./components/DatePicker/MantineDatePicker";
 import AppContainer from "./layout/AppContainer";
-import { darkModeAtom } from "./store/jotai";
+import { darkModeAtom, settingsAtom } from "./store/jotai";
 import { ModalsProvider } from "@mantine/modals";
 import { useLayoutEffect, useState } from "react";
 import { BsSearch } from "react-icons/bs";
@@ -30,6 +31,8 @@ import AppEditProfile from "./components/specialComps/AppEditProfile";
 import AppSettings from "./components/specialComps/AppSettings";
 import AppIntegrations from "./components/specialComps/AppIntegrations";
 
+import rtlPlugin from "stylis-plugin-rtl";
+
 const queryClient = new QueryClient();
 
 function App() {
@@ -44,12 +47,22 @@ function App() {
     fetchdata();
     return () => {};
   }, []);
+  const [allSettings, setSettings] = useAtom(settingsAtom);
+
+  const rtlCache = createEmotionCache({
+    key: "mantine-rtl",
+    stylisPlugins: [rtlPlugin],
+  });
 
   return (
     <div className={`App ${darkMode === "dark" ? "dark" : ""}`}>
       {/* <QueryClientProvider client={queryClient}> */}
       <MantineProvider
-        theme={{ colorScheme: darkMode === "dark" ? "dark" : "light" }}
+        emotionCache={!!allSettings.app_direction ? rtlCache : undefined}
+        theme={{
+          colorScheme: darkMode === "dark" ? "dark" : "light",
+          dir: !!allSettings.app_direction ? "rtl" : "ltr",
+        }}
         withGlobalStyles
         withNormalizeCSS
       >
