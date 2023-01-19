@@ -1,12 +1,7 @@
 import MantineDatePicker from "./DatePicker/MantineDatePicker";
-import React, {
-  useState,
-  useEffect,
-  useRef,
-  ChangeEventHandler,
-  createContext,
-  useContext,
-} from "react";
+import esLocale from "@fullcalendar/core/locales/es";
+import frLocale from "@fullcalendar/core/locales/fr";
+import React, { useState, useEffect, useRef, ChangeEventHandler } from "react";
 // import DatePickerModal from "./MantineModal";
 import FullCalendar from "@fullcalendar/react"; // must go before plugins
 import dayGridPlugin from "@fullcalendar/daygrid"; // a plugin!
@@ -53,6 +48,7 @@ import {
   favColorsAtom,
   isOpen,
   repeatedAtom,
+  settingsAtom,
   tagsAtom,
   xTimesAtom,
 } from "../store/jotai";
@@ -61,9 +57,10 @@ import CreateEvent from "./specialComps/EventForm";
 import CreateProject from "./specialComps/ProjectForm";
 import CreateCluster from "./specialComps/ClusterForm";
 import CreateRegular from "./specialComps/RegularForm";
+import { all } from "axios";
 // export let selectedDateRange = createContext<any>(null);
 
-export let formContext = createContext<any>(null);
+// export let formContext = createContext<any>(null);
 const FullCal = () => {
   // let x = useContext(eventFormContext);
 
@@ -295,41 +292,62 @@ const FullCal = () => {
     timeGridDay: { buttonText: "Day" },
     timeGridWeek: { buttonText: "Week" },
     dayGridMonth: { buttonText: "Month" },
+    listView: { buttonText: "List" },
   };
+  const [allSettings] = useAtom(settingsAtom);
+
   return (
     <>
-      <formContext.Provider value={dateRange}>
-        <CreateRegular />
-        <CreateProject />
-        <CreateCluster />
-        <CreateEvent />
-        <Grid className="h-full">
-          <Grid.Col>
-            <FullCalendar
-              plugins={[
-                dayGridPlugin,
-                timeGridPlugin,
-                interactionPlugin,
-                listPlugin,
-              ]}
-              views={views}
-              headerToolbar={{
-                left: "prev,next today",
-                center: "title",
-                right: "dayGridMonth,timeGridWeek,timeGridDay",
-              }}
-              select={createEventClick}
-              events={events}
-              selectable={true}
-              editable={true}
-              eventClick={clickedEvent}
-              drop={handleRecieve}
-              datesSet={currentMonth}
-              eventChange={handleChange}
-            />
-          </Grid.Col>
-        </Grid>
-      </formContext.Provider>
+      {/* <formContext.Provider value={dateRange}> */}
+
+      <Grid className="h-full">
+        <Grid.Col>
+          <FullCalendar
+            plugins={[
+              dayGridPlugin,
+              timeGridPlugin,
+              interactionPlugin,
+              listPlugin,
+            ]}
+            nowIndicator={true}
+            nowIndicatorContent="Now"
+            // nowIndicatorClassNames="!border-app-color-600"
+            scrollTime={"12:00"}
+            views={views}
+            headerToolbar={{
+              left: "prev,next today",
+              center: "title",
+              right: "dayGridMonth,timeGridWeek,timeGridDay",
+            }}
+            select={createEventClick}
+            events={events}
+            // firstDay={6}
+            // displayEventTime
+            // weekNumberCalculation={}
+            // locales={[esLocale, frLocale]}
+            // locale={"ar"}
+            // direction={"rtl"}
+            navLinks
+            navLinkWeekClick={function (weekStart, jsEvent) {
+              console.log("week start", weekStart.toISOString());
+            }}
+            weekends={allSettings.c_weekends}
+            weekNumbers={allSettings.c_week_numbers}
+            dayMaxEvents={2}
+            // eventMaxStack={2}
+            selectable={true}
+            // weekText="W"
+            // dayCount={3}
+            // weekNumberFormat={()=>}
+            editable={true}
+            eventClick={clickedEvent}
+            drop={handleRecieve}
+            datesSet={currentMonth}
+            eventChange={handleChange}
+          />
+        </Grid.Col>
+      </Grid>
+      {/* </formContext.Provider> */}
     </>
   );
 };

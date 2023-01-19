@@ -113,8 +113,8 @@ export const eventsAtom = atom<any>([
   {
     id: "1",
     title: "Event #1",
-    start: "2023-01-22",
-    end: "2023-01-28T22:00:00.000Z",
+    start: "2023-01-22T13:00:00Z",
+    end: "2023-01-38T20:00:00",
     filename: "event",
     color: "rgba(255,255,2,0.4)",
     textColor: "rgba(255,255,2)",
@@ -124,12 +124,29 @@ export const eventsAtom = atom<any>([
   {
     id: "2",
     title: "Event #2",
-    start: "2023-01-02",
-    end: "2023-01-03",
+    start: "2023-01-02T02:00:00Z",
+    end: "2023-01-04",
     filename: "event",
     color: "",
+    textColor: "white",
+    startRecur: "2023-01-02T02:00:00Z",
+    endRecur: true,
+    daysOfWeek: "daily",
+    groupId: "222",
+    // url: "https://www.google.com",
+    // extraParams: {
+    //   custom_param1: "something",
+    //   custom_param2: "somethingelse",
+    // },
     allDay: false,
   },
+  // {
+  //   googleCalendarApiKey:
+  //     "658535880589-249msa404ejrp26son858m39av1bs28k.apps.googleusercontent.com",
+  //   googleCalendarId: "mizom64.com.calendar.google.com",
+  //   color: "yellow", // an option!
+  //   textColor: "black", // an option!
+  // },
   {
     id: "3",
     title: "Event #3",
@@ -317,6 +334,8 @@ export const settingsAtom = atom({
   e_eventLimit: 0,
   e_allDay: true,
   c_weatherIndicator: false,
+  c_weekends: true,
+  c_week_numbers: true,
   c_recurring: false,
   selected_lang: "En",
   app_direction: false,
@@ -382,3 +401,6 @@ export const siteUpdates = atom([
     date: "",
   },
 ]);
+
+export const calendarDate = atom(undefined);
+export const datePickerDate = atom(undefined);

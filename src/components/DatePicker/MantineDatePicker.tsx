@@ -3,7 +3,7 @@ import { DateRangePicker, DateRangePickerValue } from "@mantine/dates";
 import { MantineSize } from "@mantine/core";
 import "./DatePicker.css";
 import dayjs from "dayjs";
-import { formContext } from "../FullCal";
+
 import { useAtom } from "jotai";
 // import { dateRangePicker } from "../../store/jotai";
 
@@ -21,15 +21,15 @@ const SiteCompDatePicker = ({
   size = "sm",
   desc,
 }: Props) => {
-  let dateObj = useContext(formContext);
-  const [pickerDates, setPickerDates] = useState<DateRangePickerValue>([
-    dateObj.startYear !== undefined
-      ? new Date(dateObj.startYear, dateObj.startMonth - 1, dateObj.startDay)
-      : new Date(),
-    dateObj.endYear !== undefined
-      ? new Date(dateObj.endYear, dateObj.endMonth - 1, dateObj.endDay - 1)
-      : new Date(),
-  ]);
+  // let dateObj = useContext(formContext);
+  // const [pickerDates, setPickerDates] = useState<DateRangePickerValue>([
+  //   dateObj.startYear !== undefined
+  //     ? new Date(dateObj.startYear, dateObj.startMonth - 1, dateObj.startDay)
+  //     : new Date(),
+  //   dateObj.endYear !== undefined
+  //     ? new Date(dateObj.endYear, dateObj.endMonth - 1, dateObj.endDay - 1)
+  //     : new Date(),
+  // ]);
   // const [selectedDateRangePicker, setSelectedDateRangePicker] =
   //   useAtom(dateRangePicker);
   // const handleSelectedDateRangePicker = () => {
@@ -69,8 +69,8 @@ const SiteCompDatePicker = ({
         description={desc}
         placeholder={placeholder}
         amountOfMonths={2}
-        value={pickerDates}
-        onChange={setPickerDates}
+        // value={pickerDates}
+        // onChange={setPickerDates}
       />
     </div>
   );

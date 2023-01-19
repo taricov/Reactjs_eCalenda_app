@@ -162,7 +162,7 @@ const ShortcutsPane = () => {
           <tbody>
             {shortcutsObj.map((section) => {
               return (
-                <>
+                <React.Fragment key={section.section_title}>
                   <tr key={section.section_title}>
                     <Text
                       align="center"
@@ -191,7 +191,7 @@ const ShortcutsPane = () => {
                       </tr>
                     );
                   })}
-                </>
+                </React.Fragment>
               );
             })}
           </tbody>

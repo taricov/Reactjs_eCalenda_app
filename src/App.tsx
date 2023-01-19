@@ -1,9 +1,15 @@
 import { QueryClientProvider, QueryClient } from "react-query";
+import CreateEvent from "./components/specialComps/EventForm";
+import CreateProject from "./components/specialComps/ProjectForm";
+import CreateCluster from "./components/specialComps/ClusterForm";
+import CreateRegular from "./components/specialComps/RegularForm";
+
 import {
   ColorScheme,
   createEmotionCache,
   Flex,
   MantineProvider,
+  Portal,
   Space,
   TextInput,
 } from "@mantine/core";
@@ -95,11 +101,18 @@ function App() {
             <FullCal />
             </Flex>
           </AppContainer> */}
-            <AppEditProfile />
-            <AppSettings />
-            <AppIntegrations />
-            <AppTakeABreak />
-            <AppHelp />
+
+            <Portal>
+              <AppEditProfile />
+              <AppSettings />
+              <AppIntegrations />
+              <AppTakeABreak />
+              <AppHelp />
+              <CreateRegular />
+              <CreateProject />
+              <CreateCluster />
+              <CreateEvent />
+            </Portal>
           </NotificationsProvider>
         </ModalsProvider>
       </MantineProvider>

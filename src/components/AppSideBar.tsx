@@ -62,7 +62,7 @@ import IconWithTooltip from "./specialComps/MantineIconWithTip";
 //   );
 export default function AppSideBar() {
   const [toggleNav] = useAtom(navBarToggleAtom);
-  console.log(toggleNav);
+  // console.log(toggleNav);
 
   // const [opened, { close, open }] = useDisclosure(false);
 

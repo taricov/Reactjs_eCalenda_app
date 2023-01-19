@@ -75,9 +75,7 @@ export default function AppTopBar() {
           <Menu.Dropdown className="xs:w-fit w-11/12">
             <Menu.Label>Actions</Menu.Label>
             <Menu.Item
-              onClick={() =>
-                setIsOpened({ ...isOpened, createEvent_form: true })
-              }
+              onClick={() => setIsOpened({ ...isOpened, addEvent_form: true })}
             >
               New Event
             </Menu.Item>
