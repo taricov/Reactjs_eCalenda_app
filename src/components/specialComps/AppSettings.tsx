@@ -1,6 +1,7 @@
 import {
   Drawer,
   Flex,
+  MultiSelect,
   NumberInput,
   Select,
   Space,
@@ -10,7 +11,11 @@ import { useClickOutside, useHotkeys, useToggle } from "@mantine/hooks";
 import { showNotification } from "@mantine/notifications";
 import { IconCheck } from "@tabler/icons";
 import { useAtom } from "jotai";
-import { allTimeZone, validMomentTimezones } from "../../store/baseData";
+import {
+  allTimeZone,
+  indexedDays,
+  validMomentTimezones,
+} from "../../store/baseData";
 import {
   darkModeAtom,
   isOpen,
@@ -72,6 +77,7 @@ export default function () {
 
   const [allTimeZones] = useAtom(validMomentTimezones);
   const [TimeZones] = useAtom(allTimeZone);
+  const [allDays] = useAtom(indexedDays);
   const x = TimeZones.map((v) => v.Timezone);
   const toggleWeathering = () => {
     setSettings({
@@ -81,6 +87,21 @@ export default function () {
   };
   const toggleRecurring = () => {
     setSettings({ ...allSettings, c_recurring: !allSettings.c_recurring });
+  };
+  const toggleWeekends = () => {
+    setSettings({ ...allSettings, c_weekends: !allSettings.c_weekends });
+  };
+  const toggleWeekNums = () => {
+    setSettings({
+      ...allSettings,
+      c_week_numbers: !allSettings.c_week_numbers,
+    });
+  };
+  const toggleEasyEdit = () => {
+    setSettings({
+      ...allSettings,
+      e_easyEdit: !allSettings.e_easyEdit,
+    });
   };
   const toggleSounds = () => {
     setSettings({ ...allSettings, g_sounds: !allSettings.g_sounds });
@@ -176,6 +197,39 @@ export default function () {
                 description="Enable/Disable Recurring Events (Default is Off)"
               />
               <Space h={20} />
+              <Switch
+                labelPosition="left"
+                label="Include Weekends"
+                checked={allSettings.c_weekends}
+                onChange={toggleWeekends}
+                description="Include/Exclude Weekends in the calednar (Included by default)"
+              />
+              <Space h={20} />
+              <Switch
+                labelPosition="left"
+                label="Show Weeks Nums"
+                checked={allSettings.c_weekends}
+                onChange={toggleWeekNums}
+                description="Toggle Week Nums on calendar (Off by default)"
+              />
+              <Space h={20} />
+              <MultiSelect
+                className="w-fit"
+                label="Hide More Days"
+                placeholder="Select Days to hide"
+                description="Hide More Days other than weekends"
+                searchable
+                value={allSettings.c_hiddenDays}
+                onChange={(e: any) => {
+                  setSettings({
+                    ...allSettings,
+                    c_hiddenDays: e,
+                  });
+                  console.log(allSettings.c_hiddenDays);
+                }}
+                data={allDays}
+              />
+              <Space h={20} />
               <Select
                 className="w-fit"
                 label="Select your timezone"
@@ -183,6 +237,21 @@ export default function () {
                 description="Search For Your City/Region"
                 searchable
                 data={allTimeZones}
+                onChange={(e: any) =>
+                  setSettings({ ...allSettings, c_timezone: e.target.value })
+                }
+              />
+              <Space h={20} />
+              <Select
+                className="w-fit"
+                label="First Day"
+                placeholder="Pick a Day"
+                description="Select The First Day Of The Week"
+                searchable
+                data={allDays}
+                onChange={(e: any) =>
+                  setSettings({ ...allSettings, c_firstDay: e })
+                }
               />
             </Accordion.Panel>
           </Accordion.Item>
@@ -199,6 +268,14 @@ export default function () {
                 step={1}
                 min={0}
                 max={10}
+              />
+              <Space h={20} />
+              <Switch
+                labelPosition="left"
+                label="Easy Edit"
+                checked={allSettings.e_easyEdit}
+                onChange={toggleEasyEdit}
+                description="Toggle Easy Edit to move events around and update start/end dates (Enabled by default)"
               />
             </Accordion.Panel>
           </Accordion.Item>

@@ -24,6 +24,7 @@ import {
   Select,
   MultiSelect,
   Switch,
+  Indicator,
 } from "@mantine/core";
 
 // Functions
@@ -140,7 +141,7 @@ const FullCal = () => {
     const { id, title, start, end, allDay } = eventClicked.event;
 
     console.log(id, title, start, end, allDay);
-    setIsOpened({ ...isOpened, addEvent_form: true });
+    // setIsOpened({ ...isOpened, addEvent_form: true });
   };
 
   const handleClick = (event: any, jsEvent: any, view: any) => {
@@ -319,31 +320,57 @@ const FullCal = () => {
               center: "title",
               right: "dayGridMonth,timeGridWeek,timeGridDay",
             }}
-            select={createEventClick}
-            events={events}
-            // firstDay={6}
-            // displayEventTime
-            // weekNumberCalculation={}
-            // locales={[esLocale, frLocale]}
-            // locale={"ar"}
-            // direction={"rtl"}
             navLinks
-            navLinkWeekClick={function (weekStart, jsEvent) {
-              console.log("week start", weekStart.toISOString());
-            }}
-            weekends={allSettings.c_weekends}
-            weekNumbers={allSettings.c_week_numbers}
-            dayMaxEvents={2}
-            // eventMaxStack={2}
+            displayEventTime
+            eventResizableFromStart
+            weekText="W"
+            fixedWeekCount={false}
             selectable={true}
-            // weekText="W"
-            // dayCount={3}
-            // weekNumberFormat={()=>}
             editable={true}
+            events={events}
+            firstDay={allSettings.c_firstDay}
+            dayMaxEvents={3}
+            eventClassNames="border-app-color-600"
+            // eventRemove={(removeInfo) => {
+            //   const x = (e: any) => {
+            //     e.keyUp() === "/" ? true : false;
+            //   };
+            //   // x(e);
+
+            //   removeInfo.revert();
+            // }}
+            // eventContent={(args) => {
+            // args.isStart ? (
+            // <>
+            //   <div className="!w-fit !h-fit !bg-red-600">
+            //     {args.event.title}
+            //   </div>
+            //   <Indicator color={"indigo"} size={10} processing>
+            //     {args.event.title}
+            //   </Indicator>
+            // </>;
+            // ) : null;
+            // }}
+            eventTimeFormat={{
+              hour: "2-digit",
+              minute: "2-digit",
+              hour12: true,
+            }}
+            // weekNumberCalculation={}
+            weekends={allSettings.c_weekends}
+            hiddenDays={allSettings.c_hiddenDays.map((e) => +e)}
+            weekNumbers={allSettings.c_week_numbers}
+            eventAllow={() => allSettings.e_easyEdit}
+            // validRange={{ start: "2023-01-03", end: "2023-01-09" }} -- to be Custom programmed
+            // Fns
+            select={createEventClick}
             eventClick={clickedEvent}
             drop={handleRecieve}
             datesSet={currentMonth}
             eventChange={handleChange}
+            // locales={[esLocale, frLocale]}
+            // locale={"ar"}
+            // direction={"rtl"}
           />
         </Grid.Col>
       </Grid>

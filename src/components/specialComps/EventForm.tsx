@@ -33,6 +33,7 @@ import {
   favColorsAtom,
   isOpen,
   repeatedAtom,
+  settingsAtom,
   siteColors,
   tagsAtom,
 } from "../../store/jotai";
@@ -125,6 +126,7 @@ export default function CreateEvent() {
   // console.log(editObj);
 
   const [allColors] = useAtom(siteColors);
+  const [allSettings, setSettings] = useAtom(settingsAtom);
   return (
     <>
       {/* <Modal
@@ -191,6 +193,7 @@ export default function CreateEvent() {
 
             <Space h={"md"} />
             <Checkbox
+              className={allSettings.c_recurring ? "" : "hidden"}
               label="Repeat"
               classNames={{
                 input: `checked:bg-app-color-500 checked:border-none cursor-pointer`,

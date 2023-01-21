@@ -136,10 +136,13 @@
     }
     
 }
+.fc-event-main{
+    @apply !bg-opacity-5 
+}
 
  .fc-timegrid-now-indicator-arrow{ @apply hidden}
 .fc-timegrid-now-indicator-line {@apply !text-[#fa5252]  }
-.fc-popover{@apply  !bg-app-color-100 !rounded-md dark:!bg-[#262729]}
+.fc-popover{@apply !z-10 !bg-app-color-100 !rounded-md dark:!bg-[#262729]}
 .fc-popover-header{@apply  !bg-app-color-400 !rounded-tl-md rounded-tr-md dark:!bg-slate-600}
 .fc-popover-body{@apply !flex-col !justify-start}
 .fc-daygrid-week-number{@apply  dark:!text-app-color-100 !text-xs}
@@ -148,6 +151,9 @@
 } */
 .fc-view-harness{
     @apply !bg-app-color-50 rounded-md w-full !mx-auto dark:!bg-app-color-50 dark:!bg-opacity-5 border  border-app-color-100 dark:!border-opacity-10
+}
+.fc-daygrid-event-harness{
+    @apply !bg-opacity-50 
 }
 
 /* .fc-daygrid-day-frame ,.fc-scrollgrid-sync-inner{

@@ -65,10 +65,10 @@ function App() {
     <div className={`App ${darkMode === "dark" ? "dark" : ""}`}>
       {/* <QueryClientProvider client={queryClient}> */}
       <MantineProvider
-        emotionCache={!!allSettings.app_direction ? rtlCache : undefined}
+        emotionCache={!!allSettings.g_app_direction ? rtlCache : undefined}
         theme={{
           colorScheme: darkMode === "dark" ? "dark" : "light",
-          dir: !!allSettings.app_direction ? "rtl" : "ltr",
+          dir: !!allSettings.g_app_direction ? "rtl" : "ltr",
         }}
         withGlobalStyles
         withNormalizeCSS
