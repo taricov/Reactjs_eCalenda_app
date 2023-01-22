@@ -101,7 +101,9 @@ export default function AppEditProfile() {
       > */}
       <AppStandardModal
         modalOpned={isOpened.profile_modal}
-        modalCloser={() => setIsOpened({ ...isOpened, profile_modal: true })}
+        modalCloser={() =>
+          setIsOpened({ ...isOpened, profile_modal: !isOpened.profile_modal })
+        }
         title="Edit Profile"
         Xwidth={10}
       >

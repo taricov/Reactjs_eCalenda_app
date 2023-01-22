@@ -43,11 +43,13 @@ import { DatePicker, DatePickerBase, TimeInput } from "@mantine/dates";
 import { BsClock } from "react-icons/bs";
 import {
   allIntervals,
+  calendarDate,
   createdClustersAtom,
   createdProjectsAtom,
   eventsAtom,
   favColorsAtom,
   isOpen,
+  PickerDate,
   repeatedAtom,
   settingsAtom,
   tagsAtom,
@@ -134,6 +136,10 @@ const FullCal = () => {
       endDay,
     });
     // createEventHandlers.open;
+    calendarHandler(() => [dayInfo.startStr, dayInfo.endStr]);
+    console.log([dayInfo.startStr, dayInfo.endStr]);
+    console.log("fromCalendar", dateCalendar);
+    pickerHandler([new Date(dayInfo.startStr), new Date(dayInfo.endStr)]);
     setIsOpened({ ...isOpened, addEvent_form: true });
   };
 
@@ -296,7 +302,8 @@ const FullCal = () => {
     listView: { buttonText: "List" },
   };
   const [allSettings] = useAtom(settingsAtom);
-
+  const [dateCalendar, calendarHandler] = useAtom(calendarDate);
+  const [, pickerHandler] = useAtom(PickerDate);
   return (
     <>
       {/* <formContext.Provider value={dateRange}> */}

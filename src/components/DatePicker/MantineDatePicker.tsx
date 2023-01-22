@@ -1,10 +1,12 @@
 import { createContext, useContext, useState } from "react";
 import { DateRangePicker, DateRangePickerValue } from "@mantine/dates";
 import { MantineSize } from "@mantine/core";
-import "./DatePicker.css";
+// import "./DatePicker.css";
 import dayjs from "dayjs";
 
 import { useAtom } from "jotai";
+import { calendarDate, PickerDate } from "../../store/jotai";
+import moment from "moment";
 // import { dateRangePicker } from "../../store/jotai";
 
 interface Props {
@@ -38,6 +40,18 @@ const SiteCompDatePicker = ({
   // };
   // console.log(pickerDates[1]);
 
+  const [datePicker, pickerHandler] = useAtom(PickerDate);
+  const [c, calendarHandler] = useAtom(calendarDate);
+  console.log("fromPicker", datePicker);
+
+  const datePicked = (e: any) => {
+    pickerHandler(e);
+    calendarHandler([
+      moment(e[0]).format("YYYY-MM-DD"),
+      moment(e[1]).format("YYYY-MM-DD"),
+    ]);
+    console.log("cal", c);
+  };
   return (
     <div className="w-full">
       <DateRangePicker
@@ -52,15 +66,15 @@ const SiteCompDatePicker = ({
         classNames={{
           calendarBase: "flex sm:flex-row flex-col w-fit",
           input: "w-full",
-          dropdown: "text-xs bg-app-color-400 h-fit border-none",
+          // dropdown: "text-xs bg-app-color-400 h-fit border-none",
           cell: "",
-          day: "text-sm h-8 hover:bg-app-color-300  date__custom_styles date__in_range date__both_ends",
-          weekday: "text-app-color-700 dark:!text-app-color-100 text-sm",
+          day: "data-[first-in-range=true]:!text-app-color-100 data-[first-in-range=true]:!bg-app-color-500 data-[first-in-range=true]:!bg-opacity-100 data-[last-in-range=true]:!text-app-color-100 data-[last-in-range=true]:!bg-app-color-500 data-[last-in-range=true]:!bg-opacity-100 data-[selected=true]:bg-app-color-500 data-[in-range=true]:bg-app-color-50 data-[in-range=true]:!bg-opacity-5 text-sm h-8 hover:bg-app-color-500 hover:bg-opacity-5",
+          weekday: "text-app-color-400 dark:!text-app-color-100 text-sm",
           month: "text-app-color-500",
-          calendarHeaderControl: "hover:bg-app-color-300",
-          calendarHeaderLevel: "hover:bg-app-color-300",
-          monthPickerControl: "hover:bg-app-color-300",
-          yearPickerControl: "hover:bg-app-color-300",
+          calendarHeaderControl: "hover:bg-app-color-50 hover:bg-opacity-10",
+          calendarHeaderLevel: "hover:bg-app-color-50 hover:bg-opacity-10",
+          monthPickerControl: "hover:bg-app-color-50 hover:bg-opacity-10",
+          yearPickerControl: "hover:bg-app-color-50 hover:bg-opacity-10",
         }}
         variant="unstyled"
         label={label}
@@ -69,8 +83,8 @@ const SiteCompDatePicker = ({
         description={desc}
         placeholder={placeholder}
         amountOfMonths={2}
-        // value={pickerDates}
-        // onChange={setPickerDates}
+        value={datePicker}
+        onChange={datePicked}
       />
     </div>
   );

@@ -99,11 +99,11 @@ export default function AppHeader() {
             rightSection: "hidden",
             dropdown: "!w-fit",
           }}
-          value={allSettings.selected_lang}
+          value={allSettings.g_selected_lang}
           onChange={(e: any) =>
-            setSettings({ ...allSettings, selected_lang: e })
+            setSettings({ ...allSettings, g_selected_lang: e })
           }
-          defaultValue={allSettings.selected_lang}
+          defaultValue={allSettings.g_selected_lang}
           data={languages}
         />
       </Flex>

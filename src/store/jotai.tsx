@@ -412,5 +412,5 @@ export const siteUpdates = atom([
   },
 ]);
 
-export const calendarDate = atom(undefined);
-export const datePickerDate = atom(undefined);
+export const calendarDate = atom<any>(undefined);
+export const PickerDate = atom<any>(undefined);
