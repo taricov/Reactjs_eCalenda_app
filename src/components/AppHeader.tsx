@@ -27,6 +27,7 @@ import {
 } from "../store/jotai";
 import EasyOnYourself from "./specialComps/AppTakeABreak";
 import AppIntegrationModal from "./specialComps/AppIntegrations";
+import { MdUpdate } from "react-icons/md";
 export default function AppHeader() {
   const theme = useMantineTheme();
 
@@ -69,9 +70,9 @@ export default function AppHeader() {
       <Flex align={"center"} justify={"center"}>
         <ActionIcon
           size={30}
-          onClick={() => setIsOpened({ ...isOpened, help_modal: true })}
+          onClick={() => setIsOpened({ ...isOpened, updates_modal: true })}
         >
-          <IoMdHelpCircle />
+          <MdUpdate />
         </ActionIcon>
 
         <ActionIcon

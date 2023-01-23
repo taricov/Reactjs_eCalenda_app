@@ -50,7 +50,7 @@ export default function () {
   const nameOnChange = (e: any) =>
     setSettings({
       ...allSettings,
-      g_calendarName: e.currentTarget.value,
+      c_calendarName: e.currentTarget.value,
     });
   const editCalendarTitle = () => {
     setCalendarNameDisabled(false);
@@ -174,7 +174,7 @@ export default function () {
             <Accordion.Panel>
               <AppEditableInput
                 label="Calendar Name"
-                inputVal={allSettings.g_calendarName}
+                inputVal={allSettings.c_calendarName}
                 disabled={disabledCalendarName}
                 valOnChange={nameOnChange}
                 inputRef={refCalendarTitle}

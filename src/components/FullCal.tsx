@@ -47,6 +47,7 @@ import {
   createdClustersAtom,
   createdProjectsAtom,
   eventsAtom,
+  excludeDay,
   favColorsAtom,
   isOpen,
   PickerDate,
@@ -61,6 +62,7 @@ import CreateProject from "./specialComps/ProjectForm";
 import CreateCluster from "./specialComps/ClusterForm";
 import CreateRegular from "./specialComps/RegularForm";
 import { all } from "axios";
+import { ConfirmModal } from "@mantine/modals/lib/ConfirmModal";
 // export let selectedDateRange = createContext<any>(null);
 
 // export let formContext = createContext<any>(null);
@@ -116,38 +118,64 @@ const FullCal = () => {
       },
     });
   };
-  const [dateRange, setDateRange] = useState<{}>({});
-  const createEventClick = (dayInfo: any) => {
-    let startDate: string[] = dayInfo.startStr.split("-");
-    let startYear = +startDate[0];
-    let startMonth = +startDate[1];
-    let startDay = +startDate[2];
-    let endDate: string[] = dayInfo.endStr.split("-");
-    let endYear = +endDate[0];
-    let endMonth = +endDate[1];
-    let endDay = +endDate[2];
+  // const [dateRange, setDateRange] = useState<{}>({});
+  const onSelectDays = (dayInfo: any) => {
+    // let startDate: string[] = dayInfo.startStr.split("-");
+    // let startYear = +startDate[0];
+    // let startMonth = +startDate[1];
+    // let startDay = +startDate[2];
+    // let endDate: string[] = dayInfo.endStr.split("-");
+    // let endYear = +endDate[0];
+    // let endMonth = +endDate[1];
+    // let endDay = +endDate[2];
 
-    setDateRange({
-      startYear,
-      startMonth,
-      startDay,
-      endYear,
-      endMonth,
-      endDay,
-    });
+    // setDateRange({
+    //   startYear,
+    //   startMonth,
+    //   startDay,
+    //   endYear,
+    //   endMonth,
+    //   endDay,
+    // });
     // createEventHandlers.open;
+    // const lastDay: Date = excludeDay(
+    //   allSettings.c_lastDayExcluded,
+    //   dayInfo.endStr
+    // );
+    // const lastDay: Date = excludeDay(false, dayInfo.endStr)._d;
+    // const lastDay: Date = excludeLastDay(true, dayInfo.endStr)._d;
+    // console.log("lastttttttttt", l);
+
     calendarHandler(() => [dayInfo.startStr, dayInfo.endStr]);
     console.log([dayInfo.startStr, dayInfo.endStr]);
-    console.log("fromCalendar", dateCalendar);
-    pickerHandler([new Date(dayInfo.startStr), new Date(dayInfo.endStr)]);
+    // console.log("fromCalendar", dateCalendar);
+    const calendarStartDate = new Date(dayInfo.startStr);
+    const calendarLastDate = moment(dayInfo.endStr).subtract(1, "days")._d;
+
+    pickerHandler([calendarStartDate, calendarLastDate]);
     setIsOpened({ ...isOpened, addEvent_form: true });
   };
 
-  const clickedEvent = (eventClicked: any) => {
+  const onClickEvent = (eventClicked: any) => {
     const { id, title, start, end, allDay } = eventClicked.event;
 
-    console.log(id, title, start, end, allDay);
-    // setIsOpened({ ...isOpened, addEvent_form: true });
+    eventClicked.el.addEventListener("click", (e: any) => {
+      e.preventDefault();
+      e.stopPropagation();
+      if (e.altKey) {
+        console.log(id);
+        ConfirmModal;
+        removeEvent(id);
+        // setEvents({ ...events });
+      } else {
+        setIsOpened({ ...isOpened, addEvent_form: true });
+        console.log(id, title, start, end, allDay);
+      }
+    });
+  };
+
+  const removeEvent = (id: string) => {
+    setEvents(events.filter((eve: { id: string }) => eve.id !== id));
   };
 
   const handleClick = (event: any, jsEvent: any, view: any) => {
@@ -226,7 +254,7 @@ const FullCal = () => {
 
   // Handle Change Resize
   const handleChange = (eventData: any) => {
-    console.log("fromSelect", eventData);
+    // console.log("fromSelect", eventData);
     // console.log(info.event._def.extendedProps._id)
     // console.log(info.event.startStr, info.event.endStr)
     const values = {
@@ -370,8 +398,8 @@ const FullCal = () => {
             eventAllow={() => allSettings.e_easyEdit}
             // validRange={{ start: "2023-01-03", end: "2023-01-09" }} -- to be Custom programmed
             // Fns
-            select={createEventClick}
-            eventClick={clickedEvent}
+            select={onSelectDays}
+            eventClick={onClickEvent}
             drop={handleRecieve}
             datesSet={currentMonth}
             eventChange={handleChange}

@@ -14,7 +14,7 @@ import { useAtom } from "jotai";
 import { AiOutlineCheck, AiOutlineEdit } from "react-icons/ai";
 import { allTimeZone, validMomentTimezones } from "../store/baseData";
 import {
-  calendarSettingsAtom,
+  settingsAtom,
   darkModeAtom,
   userInfoDisabledAtom,
 } from "../store/jotai";
@@ -64,8 +64,7 @@ export default function SettingsDrawer({ closedIt, closeIt }: any) {
   };
 
   const [darkMode, setDarkMode] = useAtom(darkModeAtom);
-  const [caleandarSettings, setCaleandarSettings] =
-    useAtom(calendarSettingsAtom);
+  const [allSettings, setSettings] = useAtom(settingsAtom);
   const [disabledFields, setDisabledFields] = useAtom(userInfoDisabledAtom);
 
   const refCalendarTitle = useClickOutside(() => {
@@ -84,9 +83,9 @@ export default function SettingsDrawer({ closedIt, closeIt }: any) {
   });
 
   const nameOnChange = (e: any) =>
-    setCaleandarSettings({
-      ...caleandarSettings,
-      calendar_title: e.currentTarget.value,
+    setSettings({
+      ...allSettings,
+      c_calendarName: e.currentTarget.value,
     });
   const editCalendarTitle = () => {
     setDisabledFields({ ...disabledFields, calendar_title: false });
@@ -150,7 +149,7 @@ export default function SettingsDrawer({ closedIt, closeIt }: any) {
         >
           <AppEditableInput
             label="This new input"
-            inputVal={caleandarSettings.calendar_title}
+            inputVal={allSettings.c_calendarName}
             disabled={disabledFields.calendar_title}
             valOnChange={nameOnChange}
             inputRef={refCalendarTitle}
@@ -160,10 +159,10 @@ export default function SettingsDrawer({ closedIt, closeIt }: any) {
           {/* <Flex align={"end"} className="bg-slate-200 px-3 py-5 rounded mb-3">
             <TextInput
               label="Calendar Title"
-              value={caleandarSettings.calendar_title}
+              value={allSettings.calendar_title}
               onChange={(e) =>
-                setCaleandarSettings({
-                  ...caleandarSettings,
+                setSettings({
+                  ...allSettings,
                   calendar_title: e.currentTarget.value,
                 })
               }
@@ -183,11 +182,11 @@ export default function SettingsDrawer({ closedIt, closeIt }: any) {
           <Flex align={"end"} className="bg-slate-200 px-3 py-5 rounded mb-3">
             <TextInput
               label="Event Limits/day"
-              value={caleandarSettings.event_limit}
+              value={allSettings.e_eventLimit}
               onChange={(e) =>
-                setCaleandarSettings({
-                  ...caleandarSettings,
-                  event_limit: e.currentTarget.value,
+                setSettings({
+                  ...allSettings,
+                  e_eventLimit: +e.currentTarget.value,
                 })
               }
               disabled={disabledFields.event_limit}
@@ -205,11 +204,11 @@ export default function SettingsDrawer({ closedIt, closeIt }: any) {
             <Switch
               labelPosition="left"
               label="Weather Indicator"
-              checked={caleandarSettings.weather_indicator}
+              checked={allSettings.c_weatherIndicator}
               onChange={(e) =>
-                setCaleandarSettings({
-                  ...caleandarSettings,
-                  weather_indicator: e.currentTarget.checked,
+                setSettings({
+                  ...allSettings,
+                  c_weatherIndicator: e.currentTarget.checked,
                 })
               }
               description="Show/Hide weather indicators"

@@ -35,13 +35,16 @@ import {
   repeatedAtom,
   settingsAtom,
   siteColors,
+  PickerDate,
   tagsAtom,
+  excludeDay,
 } from "../../store/jotai";
 import MantineDatePicker from "../DatePicker/MantineDatePicker";
 import { date, z } from "zod";
 import { useForm, zodResolver } from "@mantine/form";
 import { useDisclosure } from "@mantine/hooks";
 import AppStandardModal from "./AppStandardModal";
+import moment from "moment";
 
 interface Props {
   open: () => void;
@@ -54,6 +57,7 @@ export default function CreateEvent() {
   const [createdProjects] = useAtom(createdProjectsAtom);
   const [createdClusters] = useAtom(createdClustersAtom);
   const [favColors, setFavColors] = useAtom(favColorsAtom);
+  const [datePicked] = useAtom(PickerDate);
   const [tags, setTags] = useAtom(tagsAtom);
   //   const [repeated, setRepeated] = useAtom(repeatedAtom);
   const [repeated, setRepeated] = useState(false);
@@ -112,12 +116,23 @@ export default function CreateEvent() {
 
   // const [selectedDateRangePicker] = useAtom(dateRangePicker);
   const [isOpened, setIsOpened] = useAtom(isOpen);
-  const eventData = (values: any) => {
+  const createEvent = (values: any) => {
     const { eventName, colored } = values;
+    const color = "red-600";
     // const start = selectedDateRangePicker[0];
     // const end = selectedDateRangePicker[1];
-    setEvents([...events, { title: eventName, allDay: true, color: colored }]);
-    console.log(events);
+    const lastDate = excludeDay(allSettings.c_lastDayExcluded, datePicked[1]);
+    setEvents([
+      ...events,
+      {
+        title: eventName,
+        allDay: true,
+        className: `!text-${colored} !bg-${colored} !bg-opacity-5 after:!bg-white before:!bg-white`,
+        start: datePicked[0],
+        end: lastDate,
+      },
+    ]);
+    // console.log(events);
     // setEventFormOpened(false);
     setIsOpened({ ...isOpened, addEvent_form: false });
     form.reset();
@@ -127,6 +142,7 @@ export default function CreateEvent() {
 
   const [allColors] = useAtom(siteColors);
   const [allSettings, setSettings] = useAtom(settingsAtom);
+
   return (
     <>
       {/* <Modal
@@ -150,7 +166,7 @@ export default function CreateEvent() {
       >
         <></>
         <Container className="p-5">
-          <form onSubmit={form.onSubmit(eventData)}>
+          <form onSubmit={form.onSubmit(createEvent)}>
             <Flex direction="column">
               <TextInput
                 // withAsterisk

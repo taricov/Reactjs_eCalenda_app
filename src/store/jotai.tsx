@@ -2,6 +2,7 @@ import { Flex, Text, TextInput } from "@mantine/core";
 import { DateRangePickerValue } from "@mantine/dates";
 import { atom, useAtom } from "jotai";
 import { atomWithStorage } from "jotai/utils";
+import moment from "moment";
 
 // ====================== Setting DarkMode ====================
 const browser = typeof window !== "undefined";
@@ -120,9 +121,10 @@ export const eventsAtom = atom<any>([
       project_id: "1",
       cluster_id: "2",
     },
-    color: "",
+    // color: "#40c057",
     // backgroundColor: "#40c057",
-    className: "font-bold border-none !bg-opacity-5",
+    className:
+      "!text-app-color-300 !bg-app-color-700 !bg-opacity-50 after:!bg-app-color-500 before:!bg-app-color-500",
     // allDay: false,
   },
   {
@@ -159,6 +161,8 @@ export const eventsAtom = atom<any>([
     filename: "event",
     color: "teal",
     allDay: true,
+    className:
+      "!bg-red-700 !bg-opacity-50 !text-red-200  after:!bg-red-300 before:!bg-red-300",
   },
 ]);
 
@@ -331,12 +335,24 @@ export const availableIntegrationsAtom = [
 // ================ user settings variables =================
 
 // export const settingsDrawerOpen = atom(false);
+export const excludeDay = (excluded: boolean, treatedDate: Date) => {
+  if (excluded) {
+    const treatedDay = treatedDate;
+    // const treatedDay = moment(treatedDate).subtract(1, "days")._d;
+    return treatedDay;
+  } else {
+    const treatedDay = moment(treatedDate).add(1, "days")._d;
+    return treatedDay;
+  }
+};
 export const settingsAtom = atom({
   g_darkMode: false,
   g_sounds: true,
-  g_calendarName: "Calendar #1",
+  c_calendarName: "Calendar #1",
   e_eventLimit: 0,
   e_allDay: true,
+  c_lastDayExcluded: false,
+  // c_startDayExcluded: true,
   c_weatherIndicator: false,
   c_weekends: true,
   c_hiddenDays: [],
@@ -371,7 +387,8 @@ export const isOpen = atom({
   profile_modal: false,
   shortcuts_modal: false,
   easy_modal: false,
-  help_modal: false,
+  updates_modal: false,
+  api_modal: false,
   addEvent_form: false,
   addCluster_form: false,
   addProject_form: false,

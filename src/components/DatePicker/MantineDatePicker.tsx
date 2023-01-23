@@ -42,7 +42,7 @@ const SiteCompDatePicker = ({
 
   const [datePicker, pickerHandler] = useAtom(PickerDate);
   const [c, calendarHandler] = useAtom(calendarDate);
-  console.log("fromPicker", datePicker);
+  // console.log("fromPicker", datePicker);
 
   const datePicked = (e: any) => {
     pickerHandler(e);

@@ -60,6 +60,10 @@ const ShortcutsPane = () => {
           title: "Open Settings",
           shortcut: "Ctrl/⌘ + J",
         },
+        {
+          title: "Latest Uopdates",
+          shortcut: "Alt/⌥ + H",
+        },
       ],
     },
     {

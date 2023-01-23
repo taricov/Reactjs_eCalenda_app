@@ -5,6 +5,7 @@ import { AiFillBug } from "react-icons/ai";
 import { GiNewShoot } from "react-icons/gi";
 import { isOpen } from "../../store/jotai";
 import { RiSpeedFill } from "react-icons/ri";
+import AppStandardModal from "./AppStandardModal";
 
 export default function AppHelp() {
   const [isOpened, setIsOpened] = useAtom(isOpen);
@@ -12,7 +13,8 @@ export default function AppHelp() {
   useHotkeys([
     [
       "alt+h",
-      () => setIsOpened({ ...isOpened, help_modal: !isOpened.help_modal }),
+      () =>
+        setIsOpened({ ...isOpened, updates_modal: !isOpened.updates_modal }),
     ],
   ]);
   return (
@@ -21,10 +23,16 @@ export default function AppHelp() {
         title="Updates"
         classNames={{ title: "font-bold text-xl" }}
         transition={"slide-down"}
-        opened={isOpened.help_modal}
-        onClose={() => setIsOpened({ ...isOpened, help_modal: false })}
+        opened={isOpened.updates_modal}
+        onClose={() => setIsOpened({ ...isOpened, updates_modal: false })}
         fullScreen
       >
+        {/* <AppStandardModal
+        modalOpned={isOpened.updates_modal}
+        modalCloser={() => setIsOpened({ ...isOpened, updates_modal: false })}
+        title="Shortcuts/Hacks"
+        Xwidth={11}
+      > */}
         <Center className="bg-app-color-200 rounded bg-opacity-5 py-4 px-2 m-auto w-5/6">
           Your Guide to easily understand/navigate the updates
         </Center>
@@ -89,6 +97,7 @@ export default function AppHelp() {
           </Timeline>
         </Container>
       </Modal>
+      {/* </AppStandardModal> */}
     </>
   );
 }
