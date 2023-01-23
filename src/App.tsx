@@ -26,7 +26,7 @@ import { BsSearch } from "react-icons/bs";
 import AppTopBar from "./layout/AppTopBar";
 import ShortcutsPane from "./components/ShortcutsPane/ShortcutsPane";
 import AppTakeABreak from "./components/specialComps/AppTakeABreak";
-import { Route } from "wouter";
+import { Route, Switch } from "wouter";
 import RegistrationPage from "./pages/RegistrationPage";
 import LoginPage from "./pages/LoginPage";
 import Error404Page from "./pages/Error404Page";
@@ -39,6 +39,7 @@ import AppIntegrations from "./components/specialComps/AppIntegrations";
 
 import rtlPlugin from "stylis-plugin-rtl";
 import AppHelp from "./components/specialComps/AppHelp";
+// import "./i18n";
 
 const queryClient = new QueryClient();
 
@@ -65,28 +66,30 @@ function App() {
     <div className={`App ${darkMode === "dark" ? "dark" : ""}`}>
       {/* <QueryClientProvider client={queryClient}> */}
       <MantineProvider
-        emotionCache={!!allSettings.g_app_direction ? rtlCache : undefined}
+        emotionCache={!!allSettings.g_rtl_direction ? rtlCache : undefined}
         theme={{
           colorScheme: darkMode === "dark" ? "dark" : "light",
-          dir: !!allSettings.g_app_direction ? "rtl" : "ltr",
+          dir: !!allSettings.g_rtl_direction ? "rtl" : "ltr",
         }}
         withGlobalStyles
         withNormalizeCSS
       >
         <ModalsProvider>
           <NotificationsProvider autoClose={2000}>
-            <Route path="/">
-              <HomePage />
-            </Route>
-            <Route path="/register">
-              <RegistrationPage />
-            </Route>
-            <Route path="/login">
-              <LoginPage />
-            </Route>
-            <Route path="/:rest*">
-              <Error404Page />
-            </Route>
+            <Switch>
+              <Route path="/">
+                <HomePage />
+              </Route>
+              <Route path="/register">
+                <RegistrationPage />
+              </Route>
+              <Route path="/login">
+                <LoginPage />
+              </Route>
+              <Route path="/:rest*">
+                <Error404Page />
+              </Route>
+            </Switch>
             {/* <AppContainer>
             <ShortcutsPane />
             <Flex direction={"column"} gap={10}>

@@ -1,6 +1,7 @@
 import MantineDatePicker from "./DatePicker/MantineDatePicker";
 import esLocale from "@fullcalendar/core/locales/es";
 import frLocale from "@fullcalendar/core/locales/fr";
+import arLocale from "@fullcalendar/core/locales/ar";
 import React, { useState, useEffect, useRef, ChangeEventHandler } from "react";
 // import DatePickerModal from "./MantineModal";
 import FullCalendar from "@fullcalendar/react"; // must go before plugins
@@ -8,7 +9,7 @@ import dayGridPlugin from "@fullcalendar/daygrid"; // a plugin!
 import listPlugin from "@fullcalendar/list";
 import timeGridPlugin from "@fullcalendar/timegrid";
 import interactionPlugin, { Draggable } from "@fullcalendar/interaction"; // needed for dayClick
-
+import ConfirmModal, { ConfirmationModal } from "./specialComps/AppConfirm";
 import moment from "moment";
 
 import {
@@ -62,7 +63,8 @@ import CreateProject from "./specialComps/ProjectForm";
 import CreateCluster from "./specialComps/ClusterForm";
 import CreateRegular from "./specialComps/RegularForm";
 import { all } from "axios";
-import { ConfirmModal } from "@mantine/modals/lib/ConfirmModal";
+import { pushNotification } from "./specialComps/pushNotification";
+import { MdError } from "react-icons/md";
 // export let selectedDateRange = createContext<any>(null);
 
 // export let formContext = createContext<any>(null);
@@ -118,7 +120,8 @@ const FullCal = () => {
       },
     });
   };
-  // const [dateRange, setDateRange] = useState<{}>({});
+
+  // HANDLE SELECT DAYS && CREATE EVENTS ==== START
   const onSelectDays = (dayInfo: any) => {
     // let startDate: string[] = dayInfo.startStr.split("-");
     // let startYear = +startDate[0];
@@ -155,18 +158,26 @@ const FullCal = () => {
     pickerHandler([calendarStartDate, calendarLastDate]);
     setIsOpened({ ...isOpened, addEvent_form: true });
   };
+  // HANDLE SELECT DAYS && CREATE EVENTS ==== END
 
+  // HANDLE EDIT && DELETE EVENTS ==== START
   const onClickEvent = (eventClicked: any) => {
     const { id, title, start, end, allDay } = eventClicked.event;
-
     eventClicked.el.addEventListener("click", (e: any) => {
       e.preventDefault();
       e.stopPropagation();
-      if (e.altKey) {
-        console.log(id);
-        ConfirmModal;
+      if (e.altKey && e.shiftKey) {
+        console.log("doble");
         removeEvent(id);
-        // setEvents({ ...events });
+        pushNotification(
+          "Removed!",
+          "Event has been removed by a force command",
+          "red",
+          <MdError />
+        );
+      } else if (e.altKey) {
+        ConfirmationModal(removeEvent(id));
+        console.log(events);
       } else {
         setIsOpened({ ...isOpened, addEvent_form: true });
         console.log(id, title, start, end, allDay);
@@ -177,6 +188,7 @@ const FullCal = () => {
   const removeEvent = (id: string) => {
     setEvents(events.filter((eve: { id: string }) => eve.id !== id));
   };
+  // HANDLE EDIT && DELETE EVENTS ==== END
 
   const handleClick = (event: any, jsEvent: any, view: any) => {
     console.log(event);
@@ -257,18 +269,20 @@ const FullCal = () => {
     // console.log("fromSelect", eventData);
     // console.log(info.event._def.extendedProps._id)
     // console.log(info.event.startStr, info.event.endStr)
-    const values = {
-      id: eventData.event._def.extendedProps._id,
-      start: eventData.event.startStr,
-      end: eventData.event.endStr,
-    };
-    updateEvent(values)
-      .then((res) => {
-        // console.log(res);
-      })
-      .catch((err) => {
-        // console.log(err);
-      });
+    console.log("change");
+    // eventData.revert();
+    // const values = {
+    //   id: eventData.event._def.extendedProps._id,
+    //   start: eventData.event.startStr,
+    //   end: eventData.event.endStr,
+    // };
+    // updateEvent(values)
+    //   .then((res) => {
+    //     // console.log(res);
+    //   })
+    //   .catch((err) => {
+    //     // console.log(err);
+    //   });
   };
 
   const onChangeValues = (e: any) => {
@@ -324,10 +338,10 @@ const FullCal = () => {
 
   const views = {
     // listWeek: { buttonText: "Agenda" },
-    timeGridDay: { buttonText: "Day" },
-    timeGridWeek: { buttonText: "Week" },
-    dayGridMonth: { buttonText: "Month" },
-    listView: { buttonText: "List" },
+    // timeGridDay: { buttonText: "Day" },
+    // timeGridWeek: { buttonText: "Week" },
+    // dayGridMonth: { buttonText: "Month" },
+    // listView: { buttonText: "List" },
   };
   const [allSettings] = useAtom(settingsAtom);
   const [dateCalendar, calendarHandler] = useAtom(calendarDate);
@@ -398,14 +412,15 @@ const FullCal = () => {
             eventAllow={() => allSettings.e_easyEdit}
             // validRange={{ start: "2023-01-03", end: "2023-01-09" }} -- to be Custom programmed
             // Fns
+
             select={onSelectDays}
             eventClick={onClickEvent}
             drop={handleRecieve}
             datesSet={currentMonth}
             eventChange={handleChange}
-            // locales={[esLocale, frLocale]}
-            // locale={"ar"}
-            // direction={"rtl"}
+            locales={[arLocale, esLocale, frLocale]}
+            locale={allSettings.c_locale}
+            direction={!!allSettings.g_rtl_direction ? "rtl" : "ltr"}
           />
         </Grid.Col>
       </Grid>

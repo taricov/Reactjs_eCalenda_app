@@ -49,7 +49,7 @@
     @apply mb-[10px];
 } */
 .fc-header-toolbar{
-    @apply !bg-app-color-50 rounded-md p-5 w-full !my-3 !mx-auto dark:!bg-app-color-50 dark:!bg-opacity-5 border border-app-color-100 dark:!border-opacity-10
+    @apply !bg-app-color-50 !flex-col sm:!flex-row rounded-md p-5 w-full !my-3 !mx-auto dark:!bg-app-color-50 dark:!bg-opacity-5 border border-app-color-100 dark:!border-opacity-10
 }
 .fc-toolbar-title{
     @apply !text-[14px] !font-bold !text-app-color-800 dark:!text-app-color-50
@@ -64,14 +64,14 @@
 
 }
 .fc-button[title*=" view"]:first-child{
-    @apply !border-r-0
+    @apply !border-r-0 
 }
 .fc-button[title*=" view"]:last-child{
     @apply !border-l-0
 }
 .fc-button{
     @apply !text-app-color-800 !border-app-color-200 
-    !bg-none 
+    !bg-none !w-fit !capitalize
     hover:!bg-app-color-500
     hover:!text-app-color-50
     dark:hover:!bg-opacity-20

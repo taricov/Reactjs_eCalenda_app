@@ -28,6 +28,7 @@ import {
 import EasyOnYourself from "./specialComps/AppTakeABreak";
 import AppIntegrationModal from "./specialComps/AppIntegrations";
 import { MdUpdate } from "react-icons/md";
+import { useTranslation } from "react-i18next";
 export default function AppHeader() {
   const theme = useMantineTheme();
 
@@ -48,6 +49,19 @@ export default function AppHeader() {
   useHotkeys([
     ["alt + d", () => setDarkMode(darkMode === "dark" ? "light" : "dark")],
   ]);
+
+  const { t, i18n } = useTranslation();
+
+  const onChangeLanguage = (e: any) => {
+    setSettings({
+      ...allSettings,
+      g_selected_lang: e,
+      g_rtl_direction: e === "ar" ? true : false,
+      c_locale: e,
+    });
+    // let loc = "http://localhost:5174";
+    // window.location.replace(loc + "?lng=" + e);
+  };
   return (
     <Header
       className="flex justify-between"
@@ -101,10 +115,7 @@ export default function AppHeader() {
             dropdown: "!w-fit",
           }}
           value={allSettings.g_selected_lang}
-          onChange={(e: any) =>
-            setSettings({ ...allSettings, g_selected_lang: e })
-          }
-          defaultValue={allSettings.g_selected_lang}
+          onChange={onChangeLanguage}
           data={languages}
         />
       </Flex>

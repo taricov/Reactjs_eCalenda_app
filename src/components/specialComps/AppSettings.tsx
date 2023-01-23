@@ -91,6 +91,12 @@ export default function () {
   const toggleWeekends = () => {
     setSettings({ ...allSettings, c_weekends: !allSettings.c_weekends });
   };
+  const toggleLastDayExcluded = () => {
+    setSettings({
+      ...allSettings,
+      c_lastDayExcluded: !allSettings.c_lastDayExcluded,
+    });
+  };
   const toggleWeekNums = () => {
     setSettings({
       ...allSettings,
@@ -252,6 +258,14 @@ export default function () {
                 onChange={(e: any) =>
                   setSettings({ ...allSettings, c_firstDay: e })
                 }
+              />
+              <Space h={20} />
+              <Switch
+                labelPosition="left"
+                label="Exclude Last Day"
+                checked={allSettings.c_lastDayExcluded}
+                onChange={toggleLastDayExcluded}
+                description="Include/Exclude last day in created events (Included by default)"
               />
             </Accordion.Panel>
           </Accordion.Item>

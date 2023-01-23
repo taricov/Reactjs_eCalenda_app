@@ -11,6 +11,7 @@ import { useHotkeys } from "@mantine/hooks";
 import { useAtom } from "jotai";
 import { useRef } from "react";
 import { ChangeEvent, ChangeEventHandler, SetStateAction } from "react";
+import { useTranslation } from "react-i18next";
 import { BsPlusLg, BsSearch } from "react-icons/bs";
 import { eventsAtom, isOpen, searchQueryAtom } from "../store/jotai";
 
@@ -33,6 +34,8 @@ export default function AppTopBar() {
     ["mod+k", () => focusSearchBar()],
     ["/", () => focusSearchBar()],
   ]);
+  const { t, i18n } = useTranslation();
+
   return (
     <>
       <Flex
@@ -68,7 +71,7 @@ export default function AppTopBar() {
               variant="default"
               leftIcon={<BsPlusLg />}
             >
-              Add New
+              {t("nw_tsk")}
             </Button>
           </Menu.Target>
 

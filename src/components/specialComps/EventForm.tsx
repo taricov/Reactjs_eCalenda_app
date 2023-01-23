@@ -38,6 +38,7 @@ import {
   PickerDate,
   tagsAtom,
   excludeDay,
+  siteColorsMap,
 } from "../../store/jotai";
 import MantineDatePicker from "../DatePicker/MantineDatePicker";
 import { date, z } from "zod";
@@ -61,6 +62,8 @@ export default function CreateEvent() {
   const [tags, setTags] = useAtom(tagsAtom);
   //   const [repeated, setRepeated] = useAtom(repeatedAtom);
   const [repeated, setRepeated] = useState(false);
+  const [mappedColors]: any = useAtom(siteColorsMap);
+
   // const [eventTitle, setEventTitle] = useState("");
 
   // const [hideMe] = useAutoAnimate<HTMLDivElement>();
@@ -117,8 +120,10 @@ export default function CreateEvent() {
   // const [selectedDateRangePicker] = useAtom(dateRangePicker);
   const [isOpened, setIsOpened] = useAtom(isOpen);
   const createEvent = (values: any) => {
-    const { eventName, colored } = values;
-    const color = "red-600";
+    const { eventName, eventColored } = values;
+    const selectedColor = mappedColors[eventColored];
+    console.log(eventColored, selectedColor);
+
     // const start = selectedDateRangePicker[0];
     // const end = selectedDateRangePicker[1];
     const lastDate = excludeDay(allSettings.c_lastDayExcluded, datePicked[1]);
@@ -127,7 +132,7 @@ export default function CreateEvent() {
       {
         title: eventName,
         allDay: true,
-        className: `!text-${colored} !bg-${colored} !bg-opacity-5 after:!bg-white before:!bg-white`,
+        className: `!text-${selectedColor}-300 !bg-${selectedColor}-700 !bg-opacity-5 after:!bg-white before:!bg-white`,
         start: datePicked[0],
         end: lastDate,
       },

@@ -360,8 +360,8 @@ export const settingsAtom = atom({
   c_week_numbers: true,
   c_recurring: false,
   e_easyEdit: true,
-  g_selected_lang: "En",
-  g_app_direction: false,
+  g_selected_lang: "en",
+  g_rtl_direction: false,
   c_firstDay: 0,
   c_locale: "en",
   c_direction: "ltr",
@@ -408,16 +408,30 @@ export const siteColors = atom([
   "#12b886",
   "#40c057",
   "#82c91e",
-  // "#fab005",
   "#fab005",
   "#fd7e14",
 ]);
 
+export const siteColorsMap = atom({
+  "#868e96": "oslo-gray",
+  "#fa5252": "carnation",
+  "#e64980": "mandy",
+  "#7950f2": "cornflower-blue2",
+  "#4c6ef5": "cornflower-blue",
+  "#228be6": "curious-blue",
+  "#15aabf": "java",
+  "#12b886": "mountain-meadow",
+  "#40c057": "chateau-green",
+  "#82c91e": "lime",
+  "#fab005": "yellow-sea",
+  "#fd7e14": "ecstasy",
+});
+
 export const langs = atom([
-  { label: "🇺🇸", value: "En" },
-  { label: "🇸🇦", value: "Ar" },
-  { label: "🇪🇸", value: "Sp" },
-  { label: "🇫🇷", value: "Fr" },
+  { label: "🇺🇸", value: "en" },
+  { label: "🇸🇦", value: "ar" },
+  { label: "🇪🇸", value: "es" },
+  { label: "🇫🇷", value: "fr" },
 ]);
 
 export const siteUpdates = atom([
