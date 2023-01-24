@@ -83,7 +83,7 @@ export default function CreateEvent() {
   // };
 
   const eventSchema = z.object({
-    eventName: z.string().nonempty(),
+    // eventName: z.string().nonempty(),
     // notes: z.string().optional(),
     // dateRange: z.date().array().nonempty(),
     // project: z.string().optional(),
@@ -120,10 +120,10 @@ export default function CreateEvent() {
   // const [selectedDateRangePicker] = useAtom(dateRangePicker);
   const [isOpened, setIsOpened] = useAtom(isOpen);
   const createEvent = (values: any) => {
-    const { eventName, eventColored } = values;
-    const selectedColor = mappedColors[eventColored];
-    console.log(eventColored);
-
+    const { eventName, eventColor } = values;
+    const className = `${mappedColors[eventColor]}`;
+    const alertClassName = `after:!bg-slate-900 dark:after:!bg-slate-300`;
+    console.log(className);
     // const start = selectedDateRangePicker[0];
     // const end = selectedDateRangePicker[1];
     const lastDate = excludeDay(allSettings.c_lastDayExcluded, datePicked[1]);
@@ -132,7 +132,7 @@ export default function CreateEvent() {
       {
         title: eventName,
         allDay: true,
-        className: `!text-${selectedColor}-300 !bg-${selectedColor}-700 !bg-opacity-5 after:!bg-white before:!bg-white`,
+        className,
         start: datePicked[0],
         end: lastDate,
       },

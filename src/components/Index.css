@@ -137,10 +137,9 @@
     
 }
 .fc-h-event{
-    @apply !border-none text-0 font-bold text-center after:w-[5px] after:h-[5px] after:absolute after:rounded-full after:left-0 after:top-0 after:animate-ping before:w-[5px] before:h-[5px] before:absolute before:rounded-full before:left-0 before:top-0 relative 
-}
-.fc-event-main{
-    /* @apply !bg-opacity-5  */
+    @apply  !border-none font-bold text-center !bg-app-color-700 !bg-opacity-60 dark:!bg-opacity-30 
+    after:w-[5px] after:h-[5px] after:absolute after:rounded-full after:right-[5px] after:top-[5px] after:animate-ping 
+    /* before:w-[5px] before:animate-ping before:h-[5px] before:absolute before:rounded-full before:top-1/2 before:-translate-y-1/2 before:right-[5px] relative  */
 }
 
  .fc-timegrid-now-indicator-arrow{ @apply hidden}

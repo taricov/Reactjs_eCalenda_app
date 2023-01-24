@@ -177,7 +177,7 @@ const FullCal = () => {
     // console.log("lastttttttttt", l);
 
     calendarHandler(() => [dayInfo.startStr, dayInfo.endStr]);
-    console.log([dayInfo.startStr, dayInfo.endStr]);
+    // console.log([dayInfo.startStr, dayInfo.endStr]);
     // console.log("fromCalendar", dateCalendar);
     const calendarStartDate = dayInfo.start;
     // const calendarStartDate = new Date(dayInfo.startStr);
@@ -186,7 +186,6 @@ const FullCal = () => {
       .subtract(1, "days")
       .toDate();
     // const calendarLastDate = dayjs(dayInfo.endStr).subtract(1, "day").$d;
-    console.log("subbbbbbbb", dayInfo);
     pickerHandler([calendarStartDate, calendarLastDate]);
     setIsOpened({ ...isOpened, addEvent_form: true });
   };

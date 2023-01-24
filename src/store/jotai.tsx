@@ -417,18 +417,31 @@ export const siteColors = atom([
 ]);
 
 export const siteColorsMap = atom({
-  "#868e96": "oslo-gray",
-  "#fa5252": "carnation",
-  "#e64980": "mandy",
-  "#7950f2": "cornflower-blue2",
-  "#4c6ef5": "cornflower-blue",
-  "#228be6": "curious-blue",
-  "#15aabf": "java",
-  "#12b886": "mountain-meadow",
-  "#40c057": "chateau-green",
-  "#82c91e": "lime",
-  "#fab005": "yellow-sea",
-  "#fd7e14": "ecstasy",
+  "#868e96":
+    "!bg-oslo-gray-700 !text-oslo-gray-900 !bg-opacity-60 dark:!bg-opacity-30 dark:!text-oslo-gray-400",
+  "#fa5252":
+    "!bg-carnation-700 !text-carnation-500 !bg-opacity-60 dark:!bg-opacity-30 dark:!text-carnation-400",
+  "#e64980":
+    "!bg-mandy-700 !text-mandy-500 !bg-opacity-60 dark:!bg-opacity-30 dark:!text-mandy-400",
+  "#7950f2":
+    "!bg-cornflower-blue2-700 !text-cornflower-blue2-500 !bg-opacity-60 dark:!bg-opacity-30 dark:!text-cornflower-blue2-400",
+
+  "#4c6ef5":
+    "!bg-cornflower-blue-700 !text-cornflower-blue-500 !bg-opacity-60 dark:!bg-opacity-30 dark:!text-cornflower-blue-400",
+  "#228be6":
+    "!bg-curious-blue-700 !text-curious-blue-500 !bg-opacity-60 dark:!bg-opacity-30 dark:!text-curious-blue2-400",
+  "#15aabf":
+    "!bg-java-700 !text-java-500 !bg-opacity-60 dark:!bg-opacity-30 dark:!text-java-400",
+  "#12b886":
+    "!bg-mountain-meadow-700 !text-mountain-meadow-500 !bg-opacity-60 dark:!bg-opacity-30 dark:!text-mountain-meadow-400",
+  "#40c057":
+    "!bg-chateau-green-700 !text-chateau-green-500 !bg-opacity-60 dark:!bg-opacity-30 dark:!text-chateau-green-400",
+  "#82c91e":
+    "!bg-lime-700 !text-lime-500 !bg-opacity-60 dark:!bg-opacity-30 dark:!text-lime-400",
+  "#fab005":
+    "!bg-yellow-sea-700 !text-yellow-sea-500 !bg-opacity-60 dark:!bg-opacity-30 dark:!text-yellow-sea-400",
+  "#fd7e14":
+    "!bg-ecstasy-700 !text-ecstasy-500 !bg-opacity-60 dark:!bg-opacity-30 dark:!text-ecstasy-400",
 });
 
 export const langs = atom([
