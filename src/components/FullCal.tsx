@@ -9,7 +9,7 @@ import dayGridPlugin from "@fullcalendar/daygrid"; // a plugin!
 import listPlugin from "@fullcalendar/list";
 import timeGridPlugin from "@fullcalendar/timegrid";
 import interactionPlugin, { Draggable } from "@fullcalendar/interaction"; // needed for dayClick
-import ConfirmModal, { ConfirmationModal } from "./specialComps/AppConfirm";
+import { ConfirmationModal } from "./specialComps/AppConfirm";
 import moment from "moment";
 
 import {
@@ -65,6 +65,7 @@ import CreateRegular from "./specialComps/RegularForm";
 import { all } from "axios";
 import { pushNotification } from "./specialComps/pushNotification";
 import { MdError } from "react-icons/md";
+import dayjs from "dayjs";
 // export let selectedDateRange = createContext<any>(null);
 
 // export let formContext = createContext<any>(null);
@@ -84,6 +85,7 @@ const FullCal = () => {
   const [id, setId] = useState("");
   const [file, setFile] = useState("");
   const [image, setImage] = useState("");
+  const [magicNum, setMagicNum] = useState("0");
 
   const department = [
     { id: "1", name: "แผนกบัญชี", color: "red" },
@@ -91,8 +93,34 @@ const FullCal = () => {
     { id: "3", name: "แผนกไอที", color: "#1DCF0E" },
   ];
   useEffect(() => {
-    // loadData();
-    drag();
+    document.querySelectorAll(".fc-event").forEach((el) =>
+      el.addEventListener("mousedown", () => {
+        window.addEventListener("keyup", (e: any) => {
+          console.log(e.key);
+          setMagicNum(magicNum.concat(e.key));
+          console.log(magicNum);
+        });
+      })
+    );
+
+    let draggableElement: any = document.getElementById("external-event");
+    const draggable = new Draggable(draggableElement, {
+      itemSelector: ".fc-event",
+      eventData: function (eventEl) {
+        let id = eventEl.getAttribute("id");
+        let title = eventEl.getAttribute("title");
+        let color = eventEl.getAttribute("color");
+
+        return {
+          id,
+          title,
+          color,
+        };
+      },
+      // loadData();
+    });
+    return () => draggable.destroy();
+    // drag(draggableElement);
   }, []);
   // const loadData = () => {
   //   listEvent()
@@ -103,9 +131,8 @@ const FullCal = () => {
   //       console.log(err);
   //     });
   // };
-  const drag = () => {
-    let dragable: any = document.getElementById("external-event");
-    new Draggable(dragable, {
+  const drag = (el: any) => {
+    const draggable = new Draggable(el, {
       itemSelector: ".fc-event",
       eventData: function (eventEl) {
         let id = eventEl.getAttribute("id");
@@ -152,9 +179,14 @@ const FullCal = () => {
     calendarHandler(() => [dayInfo.startStr, dayInfo.endStr]);
     console.log([dayInfo.startStr, dayInfo.endStr]);
     // console.log("fromCalendar", dateCalendar);
-    const calendarStartDate = new Date(dayInfo.startStr);
-    const calendarLastDate = moment(dayInfo.endStr).subtract(1, "days")._d;
-
+    const calendarStartDate = dayInfo.start;
+    // const calendarStartDate = new Date(dayInfo.startStr);
+    // const calendarLastDate = moment(dayInfo.end).subtract(1, "days");
+    const calendarLastDate = moment(dayInfo.endStr)
+      .subtract(1, "days")
+      .toDate();
+    // const calendarLastDate = dayjs(dayInfo.endStr).subtract(1, "day").$d;
+    console.log("subbbbbbbb", dayInfo);
     pickerHandler([calendarStartDate, calendarLastDate]);
     setIsOpened({ ...isOpened, addEvent_form: true });
   };
@@ -206,18 +238,18 @@ const FullCal = () => {
         }),
     ],
   ]);
-  const handleRemove = () => {
-    removeEvent(id)
-      .then((res) => {
-        //code
-        // loadData();
-        // console.log(res);
-      })
-      .catch((err) => {
-        //error
-        // console.log(err);
-      });
-  };
+  // const handleRemove = () => {
+  //   removeEvent(id)
+  //     .then((res) => {
+  //code
+  // loadData();
+  // console.log(res);
+  // })
+  // .catch((err) => {
+  //error
+  // console.log(err);
+  //     });
+  // };
 
   const [isOpened, setIsOpened] = useAtom(isOpen);
   const handleFile = (e: any) => {
@@ -225,23 +257,26 @@ const FullCal = () => {
     setFile(fileInput);
   };
 
+  const whileDragging = (info: any) => {
+    console.log(info);
+  };
   const handleRecieve = (eventInfo: any) => {
-    // console.log(eventInfo);
-    let value = {
-      id: eventInfo.draggedEl.getAttribute("id"),
-      title: eventInfo.draggedEl.getAttribute("title"),
-      color: eventInfo.draggedEl.getAttribute("color"),
-      start: eventInfo.dateStr,
-      end: moment(eventInfo.dateStr).add(+1, "days").format("YYYY-MM-DD"),
-    };
+    console.log(eventInfo);
+    // let value = {
+    //   id: eventInfo.draggedEl.getAttribute("id"),
+    //   title: eventInfo.draggedEl.getAttribute("title"),
+    //   color: eventInfo.draggedEl.getAttribute("color"),
+    //   start: eventInfo.dateStr,
+    // end: moment(eventInfo.dateStr).add(+1, "days").format("YYYY-MM-DD"),
+    // };
     // console.log("value", value);
-    createEvent(value)
-      .then((res) => {
-        // loadData()
-      })
-      .catch((err) => {
-        // console.log(err);
-      });
+    // createEvent(value)
+    //   .then((res) => {
+    //     // loadData()
+    //   })
+    //   .catch((err) => {
+    //     // console.log(err);
+    //   });
   };
   const currentMonth = (info: any) => {
     const m = info.view.calendar.currentDataManager.data.currentDate;
@@ -412,15 +447,15 @@ const FullCal = () => {
             eventAllow={() => allSettings.e_easyEdit}
             // validRange={{ start: "2023-01-03", end: "2023-01-09" }} -- to be Custom programmed
             // Fns
-
+            locales={[arLocale, esLocale, frLocale]}
+            locale={allSettings.c_locale}
+            direction={!!allSettings.g_rtl_direction ? "rtl" : "ltr"}
             select={onSelectDays}
             eventClick={onClickEvent}
             drop={handleRecieve}
             datesSet={currentMonth}
             eventChange={handleChange}
-            locales={[arLocale, esLocale, frLocale]}
-            locale={allSettings.c_locale}
-            direction={!!allSettings.g_rtl_direction ? "rtl" : "ltr"}
+            eventDragStart={whileDragging}
           />
         </Grid.Col>
       </Grid>

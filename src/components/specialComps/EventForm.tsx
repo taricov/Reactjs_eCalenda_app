@@ -122,7 +122,7 @@ export default function CreateEvent() {
   const createEvent = (values: any) => {
     const { eventName, eventColored } = values;
     const selectedColor = mappedColors[eventColored];
-    console.log(eventColored, selectedColor);
+    console.log(eventColored);
 
     // const start = selectedDateRangePicker[0];
     // const end = selectedDateRangePicker[1];

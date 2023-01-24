@@ -61,7 +61,11 @@ export const predefinedDraggables = [
   {
     id: "1",
     title: "Task #1",
-    toColor: "to-[#cee010]",
+    // toColor: "to-[#cee010]",
+    // days: 14,
+    // duration: 10,
+    // itemSelected: ".fuck",
+    // create: true,
   },
   {
     id: "2",
@@ -341,7 +345,7 @@ export const excludeDay = (excluded: boolean, treatedDate: Date) => {
     // const treatedDay = moment(treatedDate).subtract(1, "days")._d;
     return treatedDay;
   } else {
-    const treatedDay = moment(treatedDate).add(1, "days")._d;
+    const treatedDay = moment(treatedDate).add(1, "days").toDate();
     return treatedDay;
   }
 };
