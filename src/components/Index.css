@@ -136,6 +136,11 @@
     }
     
 }
+
+.fc-event{
+    @apply !shadow-none
+}
+
 .fc-h-event{
     @apply  !border-none font-bold text-center !bg-app-color-700 !bg-opacity-60 dark:!bg-opacity-30 
     after:w-[5px] after:h-[5px] after:absolute after:rounded-full after:right-[5px] after:top-[5px] after:animate-ping 

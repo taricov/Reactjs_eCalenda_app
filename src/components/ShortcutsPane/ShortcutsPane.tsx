@@ -97,6 +97,39 @@ const ShortcutsPane = () => {
           title: "Focus Search Bar",
           shortcut: 'Ctrl/⌘ + K Or "/"',
         },
+        {
+          title: "Delete An Event",
+          shortcut: "Hold Alt/⌥ + Left Click",
+        },
+      ],
+    },
+    {
+      section_title: "Easy Navigation",
+      items: [
+        {
+          title: "Month Month",
+          shortcut: "Alt/⌥ + 1",
+        },
+        {
+          title: "Week View",
+          shortcut: "Alt/⌥ + 2",
+        },
+        {
+          title: "Day View",
+          shortcut: "Alt/⌥ + 3",
+        },
+        {
+          title: "Next Month/Week/Day",
+          shortcut: "]",
+        },
+        {
+          title: "Previous Month/Week/Day",
+          shortcut: "[",
+        },
+        {
+          title: "Today",
+          shortcut: "\\",
+        },
       ],
     },
     {

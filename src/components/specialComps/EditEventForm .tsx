@@ -39,6 +39,7 @@ import {
   tagsAtom,
   excludeDay,
   siteColorsMap,
+  calendarData,
 } from "../../store/jotai";
 import MantineDatePicker from "../DatePicker/MantineDatePicker";
 import { date, z } from "zod";
@@ -53,7 +54,7 @@ interface Props {
   opened: boolean;
 }
 
-export default function CreateEvent() {
+export default function EditEvent() {
   const [events, setEvents] = useAtom(eventsAtom);
   const [createdProjects] = useAtom(createdProjectsAtom);
   const [createdClusters] = useAtom(createdClustersAtom);
@@ -63,8 +64,6 @@ export default function CreateEvent() {
   //   const [repeated, setRepeated] = useAtom(repeatedAtom);
   const [repeated, setRepeated] = useState(false);
   const [mappedColors]: any = useAtom(siteColorsMap);
-
-  // const [eventTitle, setEventTitle] = useState("");
 
   // const [hideMe] = useAutoAnimate<HTMLDivElement>();
   // const [repeatTimes, setRepeatTimes] = useAtom<string | undefined>(xTimesAtom);
@@ -77,42 +76,17 @@ export default function CreateEvent() {
   //   setFavColors([selectedColor, ...favColors.slice(0, -1)]);
   // };
 
-  // const handleEventTitle = (e: any) => {
-  //   setEventTitle(e.target.value);
-  //   console.log(eventTitle);
-  // };
+  const [eveData] = useAtom(calendarData);
 
-  const eventSchema = z.object({
-    // eventName: z.string().nonempty(),
-    // notes: z.string().optional(),
-    // dateRange: z.date().array().nonempty(),
-    // project: z.string().optional(),
-    // clusters: z.string().array().optional(),
-    // repeated: z.boolean().optional(),
-    // freq: z.string().optional(),
-    // ends: z.date().optional(),
-    // reminder: z.date().optional(),
-    // tags: z.string().array().optional(),
-    // color: z.string().optional(),
-  });
+  const [eventTitle, updateTitle] = useState(eveData.title);
+  const [eventColor, updateColor] = useState("");
+  const [eventNotes, updateNotes] = useState("");
+  const [eventProject, updateProject] = useState("");
+  const [eventTags, updateTags] = useState<string[] | undefined | any>([]);
+  const [eventClusters, updateClusters] = useState<string[] | undefined | any>(
+    []
+  );
 
-  const form = useForm({
-    initialValues: {
-      eventName: "",
-      // dateRange: "",
-      eventNotes: "",
-      eventProject: "",
-      eventClusters: "",
-      eventRepeated: false,
-      eventFreq: "",
-      eventEnds: "",
-      eventColor: "",
-      eventReminder: "",
-      eventTags: [],
-      eventColored: "",
-    },
-    validate: zodResolver(eventSchema),
-  });
   // const [creatEventOpened, createEventHandlers] = useDisclosure(false);
 
   // const [createdEventFormOpened, setEventFormOpened] = useAtom(createEventForm);
@@ -140,8 +114,7 @@ export default function CreateEvent() {
     ]);
     // console.log(events);
     // setEventFormOpened(false);
-    setIsOpened({ ...isOpened, addEvent_form: false });
-    form.reset();
+    setIsOpened({ ...isOpened, editEvent_form: false });
   };
   // let editObj = useContext(formContext);
   // console.log(editObj);
@@ -151,46 +124,30 @@ export default function CreateEvent() {
 
   return (
     <>
-      {/* <Modal
-        withinPortal={false}
-        opened={isOpened.addEvent_form}
-        onClose={() => setIsOpened({ ...isOpened, addEvent_form: false })}
-        centered
-        size={"30%"}
-        title="Create Event"
-        classNames={{
-          title: "mx-4 dark:text-red font-bold",
-          modal: "p-0 overflow-hidden",
-          header: "mb-0 py-4 bg-app-color-400",
-          close: "mx-5",
-        }}
-      > */}
       <AppStandardModal
-        modalOpned={isOpened.addEvent_form}
-        modalCloser={() => setIsOpened({ ...isOpened, addEvent_form: false })}
+        modalOpned={isOpened.editEvent_form}
+        modalCloser={() => setIsOpened({ ...isOpened, editEvent_form: false })}
         title="Create Event"
       >
         <></>
         <Container className="p-5">
-          <form onSubmit={form.onSubmit(createEvent)}>
+          <form onSubmit={createEvent}>
             <Flex direction="column">
               <TextInput
-                // withAsterisk
                 placeholder="Event Name"
-                // onChange={handleEventTitle}
+                onChange={(e: any) => {
+                  updateTitle(e.target.value);
+                }}
                 variant="unstyled"
-                {...form.getInputProps("eventName")}
+                value={eventTitle}
               />
               <Textarea
                 variant="unstyled"
                 placeholder="Type Notes ..."
-                {...form.getInputProps("eventNotes")}
+                value={eventNotes}
+                onChange={() => updateNotes((e) => e)}
               />
-              <MantineDatePicker
-                desc="Select Dates"
-                size="sm"
-                {...form.getInputProps("eventDateRange")}
-              />
+              <MantineDatePicker desc="Select Dates" size="sm" />
             </Flex>
             <Flex gap={20}>
               <Select
@@ -198,18 +155,22 @@ export default function CreateEvent() {
                 placeholder={"add project"}
                 // onChange={selectedXTimes}
                 data={createdProjects.map((v) => v.name)}
+                value={eventProject}
+                onChange={(e: any) => updateProject(e.target.value)}
                 className="w-3/5"
                 size="sm"
-                {...form.getInputProps("eventProject")}
               />
               <MultiSelect
                 className="w-fit"
                 data={createdClusters.map((v) => v.name)}
+                value={eventClusters}
+                onChange={(e: any) =>
+                  updateClusters([...eventClusters, e.target.value])
+                }
                 size="sm"
                 placeholder="add clusters"
                 searchable
                 variant="unstyled"
-                {...form.getInputProps("clusters")}
               />
             </Flex>
 
@@ -222,15 +183,9 @@ export default function CreateEvent() {
               }}
               size="sm"
               checked={repeated}
-              // onChange={() => setRepeated((repeated) => !repeated)}
-              {...form.getInputProps("eventRepeated", { type: "checkbox" })}
+              onChange={() => setRepeated((repeated) => !repeated)}
             />
-            <Flex
-              direction={"column"}
-              className={`${
-                !form.getInputProps("eventRepeated").value ? "hidden" : ""
-              }`}
-            >
+            <Flex direction={"column"}>
               <Flex gap={20}>
                 <Select
                   variant="unstyled"
@@ -239,7 +194,6 @@ export default function CreateEvent() {
                   data={allIntervals}
                   className="w-3/5"
                   size="sm"
-                  {...form.getInputProps("freq")}
                 />
                 <Flex className="w-full" gap={10}>
                   <Text
@@ -253,7 +207,6 @@ export default function CreateEvent() {
                     variant="unstyled"
                     placeholder="never"
                     size="sm"
-                    {...form.getInputProps("eventEnds")}
                   />
                 </Flex>
               </Flex>
@@ -268,7 +221,6 @@ export default function CreateEvent() {
                   icon={<BsClock size={16} />}
                   variant="unstyled"
                   defaultValue={new Date()}
-                  {...form.getInputProps("eventReminder")}
                 />
               </Flex>
             </Flex>
@@ -281,6 +233,10 @@ export default function CreateEvent() {
                 placeholder="add tags"
                 searchable
                 variant="unstyled"
+                value={eventTags}
+                onChange={(e: any) =>
+                  updateTags([...eventTags, e.target.value])
+                }
                 creatable
                 getCreateLabel={(query) => `+ Create ${query}`}
                 onCreate={(query) => {
@@ -288,20 +244,7 @@ export default function CreateEvent() {
                   setTags((current) => [...current, item]);
                   return item;
                 }}
-                {...form.getInputProps("eventTags")}
               />
-              {/* <ColorInput
-                // withEyeDropper
-                size="sm"
-                className="w-fit"
-                variant="unstyled"
-                placeholder="Pick color"
-                format="hex"
-                swatchesPerRow={7}
-                swatches={favColors}
-                // onChange={updateColors}
-                {...form.getInputProps("eventColor")}
-              /> */}
             </Flex>
 
             <Space h={10} />
@@ -312,19 +255,29 @@ export default function CreateEvent() {
                   swatch: "m-1",
                   swatches: "justify-center",
                 }}
+                value={eventColor}
+                onChange={(e: any) => updateColor(e.target.value)}
                 swatchesPerRow={8}
                 swatches={allColors}
                 withPicker={false}
-                {...form.getInputProps("eventColor")}
               />
-              <Text>{form.values.eventColor}</Text>
+              <Text>{eventColor}</Text>
             </Stack>
             <Group position="right" mt="md">
+              <Button
+                className="bg-red-500 hover:bg-red-600 transition duration-200 dark:bg-opacity-10 dark:hover:bg-opacity-5 dark:bg-red-50 dark-opacity-5"
+                type="button"
+                onClick={() =>
+                  setIsOpened({ ...isOpened, editEvent_form: false })
+                }
+              >
+                Cancel
+              </Button>
               <Button
                 className="bg-app-color-500 hover:bg-app-color-600 transition duration-200 dark:bg-opacity-10 dark:hover:bg-opacity-5 dark:bg-app-color-50 dark-opacity-5"
                 type="submit"
               >
-                Create
+                Edit
               </Button>
             </Group>
           </form>

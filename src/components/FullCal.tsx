@@ -44,6 +44,7 @@ import { DatePicker, DatePickerBase, TimeInput } from "@mantine/dates";
 import { BsClock } from "react-icons/bs";
 import {
   allIntervals,
+  calendarData,
   calendarDate,
   createdClustersAtom,
   createdProjectsAtom,
@@ -73,6 +74,7 @@ const FullCal = () => {
   // let x = useContext(eventFormContext);
 
   const newAddedColor = useRef<HTMLInputElement>(null);
+  const [editCalData, setCalData] = useAtom(calendarData);
   const [values, setValues] = useState({
     title: "",
     start: "",
@@ -194,6 +196,12 @@ const FullCal = () => {
   // HANDLE EDIT && DELETE EVENTS ==== START
   const onClickEvent = (eventClicked: any) => {
     const { id, title, start, end, allDay } = eventClicked.event;
+    console.log(eventClicked);
+
+    const startDate = start;
+    const endDate = moment(end).subtract(1, "days").toDate();
+    setCalData({ id, title, start, end, allDay });
+    pickerHandler([startDate, endDate]);
     eventClicked.el.addEventListener("click", (e: any) => {
       e.preventDefault();
       e.stopPropagation();
@@ -210,7 +218,7 @@ const FullCal = () => {
         ConfirmationModal(removeEvent(id));
         console.log(events);
       } else {
-        setIsOpened({ ...isOpened, addEvent_form: true });
+        setIsOpened({ ...isOpened, editEvent_form: true });
         console.log(id, title, start, end, allDay);
       }
     });
@@ -236,7 +244,43 @@ const FullCal = () => {
           addEvent_form: !isOpened.addEvent_form,
         }),
     ],
+    ["]", () => toNext()],
+    ["[", () => toPrev()],
+    ["\\", () => toToday()],
+    ["alt+shift+1", () => toMonthView()],
+    ["alt+2", () => toWeekView()],
+    ["alt+", () => toDayView()],
   ]);
+
+  const toMonthView = () => {
+    const targetedView: HTMLElement | null = document.querySelector(
+      ".fc-dayGridMonth-button"
+    );
+    targetedView?.click();
+  };
+  const toWeekView = () => {
+    const targetedView: HTMLElement | null = document.querySelector(
+      ".fc-timeGridWeek-button"
+    );
+    targetedView?.click();
+  };
+  const toDayView = () => {
+    const targetedView: HTMLElement | null = document.querySelector(
+      ".fc-timeGridDay-button"
+    );
+    targetedView?.click();
+  };
+  const toToday = () => {
+    const todayBtn: HTMLElement | null =
+      document.querySelector(".fc-today-button");
+    todayBtn?.click();
+  };
+  const toNext = () => {
+    document.querySelector(".fc-icon-chevron-right")?.parentElement?.click();
+  };
+  const toPrev = () => {
+    document.querySelector(".fc-icon-chevron-left")?.parentElement?.click();
+  };
   // const handleRemove = () => {
   //   removeEvent(id)
   //     .then((res) => {

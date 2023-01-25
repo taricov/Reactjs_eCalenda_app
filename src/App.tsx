@@ -39,6 +39,7 @@ import AppIntegrations from "./components/specialComps/AppIntegrations";
 
 import rtlPlugin from "stylis-plugin-rtl";
 import AppHelp from "./components/specialComps/AppHelp";
+import EditEvent from "./components/specialComps/EditEventForm ";
 // import "./i18n";
 
 const queryClient = new QueryClient();
@@ -115,6 +116,7 @@ function App() {
               <CreateProject />
               <CreateCluster />
               <CreateEvent />
+              <EditEvent />
             </Portal>
           </NotificationsProvider>
         </ModalsProvider>

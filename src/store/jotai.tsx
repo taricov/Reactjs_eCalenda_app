@@ -394,6 +394,7 @@ export const isOpen = atom({
   updates_modal: false,
   api_modal: false,
   addEvent_form: false,
+  editEvent_form: false,
   addCluster_form: false,
   addProject_form: false,
   addRegular_form: false,
@@ -462,3 +463,5 @@ export const siteUpdates = atom([
 
 export const calendarDate = atom<any>(undefined);
 export const PickerDate = atom<any>(undefined);
+export const calendarData = atom<any>({});
+export const pickerData = atom<any>({});
