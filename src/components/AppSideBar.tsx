@@ -6,6 +6,7 @@ import {
   Checkbox,
   Container,
   Flex,
+  MantineProvider,
   Navbar,
   Progress,
   Text,
@@ -28,6 +29,7 @@ import Tooltip from "./MantineTooltip";
 import { openEditProfileModal } from "./ModalEditProfile";
 import SettingsDrawer from "./SettingsDrawer";
 import AppEditProfile from "./specialComps/AppEditProfile";
+import { AppProject } from "./specialComps/AppProject";
 import AppSettings from "./specialComps/AppSettings";
 import IconWithTooltip from "./specialComps/MantineIconWithTip";
 
@@ -110,12 +112,14 @@ export default function AppSideBar() {
   // const openEditProfile = () =>{
   //   setEditProfile(true)
   // }
+
   const [isOpened, setIsOpened] = useAtom(isOpen);
   const [userInfo] = useAtom(userInfoAtom);
   const [createdProjects] = useAtom(createdProjectsAtom);
   const [createdClusters] = useAtom(createdClustersAtom);
   return (
     <Navbar
+      className="overflow-auto scroll-smooth"
       p="md"
       hiddenBreakpoint="sm"
       hidden={toggleNav}
@@ -196,6 +200,7 @@ export default function AppSideBar() {
               {"(" + createdProjects.length + ")"}
             </Text>
           </Flex>
+          <AppProject />
           <Checkbox.Group
             spacing={1}
             defaultValue={createdProjects.map((x) => x.id)}

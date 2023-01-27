@@ -19,7 +19,7 @@ import {
 } from "@mantine/core";
 import { useAutoAnimate } from "@formkit/auto-animate/react";
 
-import { DatePicker, TimeInput } from "@mantine/dates";
+import { DatePicker, TimeInput, TimeRangeInput } from "@mantine/dates";
 import { useAtom } from "jotai";
 import { useState } from "react";
 import { BsClock } from "react-icons/bs";
@@ -39,6 +39,7 @@ import {
   tagsAtom,
   excludeDay,
   siteColorsMap,
+  PickerTime,
 } from "../../store/jotai";
 import MantineDatePicker from "../DatePicker/MantineDatePicker";
 import { date, z } from "zod";
@@ -148,6 +149,12 @@ export default function CreateEvent() {
 
   const [allColors] = useAtom(siteColors);
   const [allSettings, setSettings] = useAtom(settingsAtom);
+  const [selectedTime, setPickerTime] = useAtom(PickerTime);
+
+  const onChangeTime = (e: any) => {
+    setPickerTime(e);
+  };
+  console.log(selectedTime);
 
   return (
     <>
@@ -190,6 +197,18 @@ export default function CreateEvent() {
                 desc="Select Dates"
                 size="sm"
                 {...form.getInputProps("eventDateRange")}
+              />
+              <Text color={"dimmed"} size={"xs"}>
+                Select Time
+              </Text>
+              <TimeRangeInput
+                // label="Select Time Range"
+                value={selectedTime}
+                format={allSettings.g_timeFormat ?? "12"}
+                onChange={onChangeTime}
+                withSeconds={allSettings.g_useSecondsInTime}
+                variant="unstyled"
+                clearable
               />
             </Flex>
             <Flex gap={20}>

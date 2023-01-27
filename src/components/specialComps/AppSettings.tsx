@@ -19,6 +19,8 @@ import {
 import {
   darkModeAtom,
   isOpen,
+  langs,
+  langs2,
   settingsAtom,
   userInfoDisabledAtom,
 } from "../../store/jotai";
@@ -112,6 +114,12 @@ export default function () {
   const toggleSounds = () => {
     setSettings({ ...allSettings, g_sounds: !allSettings.g_sounds });
   };
+  const toggleDealWithTime = () => {
+    setSettings({
+      ...allSettings,
+      g_dealWithTime: !allSettings.g_dealWithTime,
+    });
+  };
   const handleEventLimit = (e: any) => {
     setSettings({
       ...allSettings,
@@ -131,6 +139,19 @@ export default function () {
         }),
     ],
   ]);
+  const onChangeHourSys = (e: any) => {
+    setSettings({ ...allSettings, g_timeFormat: e });
+  };
+  const onChangeLanguage = (e: any) => {
+    setSettings({
+      ...allSettings,
+      g_selected_lang: e,
+      g_rtl_direction: e === "ar" ? true : false,
+      c_locale: e,
+    });
+  };
+  const [languages2] = useAtom(langs2);
+
   return (
     <>
       <Drawer
@@ -162,6 +183,31 @@ export default function () {
                 checked={allSettings.g_sounds}
                 onChange={toggleSounds}
                 description="On/Off Notifications Sound (Default is On)"
+              />
+              <Space h={20} />
+              <Switch
+                labelPosition="left"
+                label="Deal With Time"
+                checked={allSettings.g_dealWithTime}
+                onChange={toggleDealWithTime}
+                description="Decide whether or not to calculate time if you deal time not only days (Default is On)"
+              />
+              <Space h={20} />
+              <Select
+                label="Your Language"
+                value={allSettings.g_selected_lang}
+                onChange={onChangeLanguage}
+                data={languages2}
+              />
+              <Space h={20} />
+              <Select
+                label="Time Format"
+                value={allSettings.g_timeFormat}
+                onChange={onChangeHourSys}
+                data={[
+                  { value: "12", label: "12 Houres" },
+                  { value: "24", label: "24 Hours" },
+                ]}
               />
               {/* </Flex> */}
               {/* 

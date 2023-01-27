@@ -352,6 +352,9 @@ export const excludeDay = (excluded: boolean, treatedDate: Date) => {
 export const settingsAtom = atom({
   g_darkMode: false,
   g_sounds: true,
+  g_dealWithTime: true,
+  g_timeFormat: undefined,
+  g_useSecondsInTime: false,
   c_calendarName: "Calendar #1",
   e_eventLimit: 0,
   e_allDay: true,
@@ -451,6 +454,12 @@ export const langs = atom([
   { label: "🇪🇸", value: "es" },
   { label: "🇫🇷", value: "fr" },
 ]);
+export const langs2 = atom([
+  { label: "🇺🇸 English", value: "en" },
+  { label: "🇸🇦 Arabic", value: "ar" },
+  { label: "🇪🇸 Spanish", value: "es" },
+  { label: "🇫🇷 French", value: "fr" },
+]);
 
 export const siteUpdates = atom([
   {
@@ -463,5 +472,6 @@ export const siteUpdates = atom([
 
 export const calendarDate = atom<any>(undefined);
 export const PickerDate = atom<any>(undefined);
+export const PickerTime = atom<any>([new Date(), new Date()]);
 export const calendarData = atom<any>({});
 export const pickerData = atom<any>({});

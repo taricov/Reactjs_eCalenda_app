@@ -8,12 +8,18 @@ import {
   ColorScheme,
   createEmotionCache,
   Flex,
+  Indicator,
   MantineProvider,
   Portal,
   Space,
   TextInput,
 } from "@mantine/core";
-import { useColorScheme, useLocalStorage } from "@mantine/hooks";
+import {
+  useColorScheme,
+  useDocumentTitle,
+  useDocumentVisibility,
+  useLocalStorage,
+} from "@mantine/hooks";
 import { atom, PrimitiveAtom, useAtom } from "jotai";
 
 import FullCal from "./components/FullCal";
@@ -62,6 +68,13 @@ function App() {
     key: "mantine-rtl",
     stylisPlugins: [rtlPlugin],
   });
+
+  // const tabActive = useDocumentVisibility();
+  // if (!useDocumentVisibility()) {
+  //   useDocumentTitle("🔴 Be back");
+  // } else {
+  //   useDocumentTitle("take a nap");
+  // }
 
   return (
     <div className={`App ${darkMode === "dark" ? "dark" : ""}`}>

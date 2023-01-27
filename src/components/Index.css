@@ -183,3 +183,8 @@
 
   
 
+/* Globals */
+
+.dir-rtl{
+    direction: rtl;
+}

@@ -415,6 +415,9 @@ const FullCal = () => {
   // window.location.reload();
 
   const views = {
+    // listDay: { buttonText: "list day" },
+    // listWeek: { buttonText: "list week" },
+    // listMonth: { buttonText: "list month" },
     // listWeek: { buttonText: "Agenda" },
     // timeGridDay: { buttonText: "Day" },
     // timeGridWeek: { buttonText: "Week" },
