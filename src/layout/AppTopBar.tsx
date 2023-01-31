@@ -9,19 +9,17 @@ import {
 } from "@mantine/core";
 import { useHotkeys } from "@mantine/hooks";
 import { useAtom } from "jotai";
-import { useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import { ChangeEvent, ChangeEventHandler, SetStateAction } from "react";
 import { useTranslation } from "react-i18next";
 import { BsPlusLg, BsSearch } from "react-icons/bs";
-import { eventsAtom, isOpen, searchQueryAtom } from "../store/jotai";
+import { eventsAtom, isOpen, searchBarQuery } from "../store/jotai";
 
 export default function AppTopBar() {
   const [isOpened, setIsOpened] = useAtom(isOpen);
-  const [searchQuery, setSearchQuery] = useAtom(searchQueryAtom);
-  const handleSearch = (e: SetStateAction<string>) => {
-    setSearchQuery(e);
-    console.log(e);
-  };
+  // const [searchQuery, setSearchQuery] = useAtom(searchQueryAtom);
+  const [searchQuery, setSearchQuery] = useState<string>("");
+
   const [events] = useAtom(eventsAtom);
   const processEvents = (e: SetStateAction<string>) => {
     // events.
@@ -29,12 +27,33 @@ export default function AppTopBar() {
   const searchBar = useRef<HTMLInputElement | null>(null);
   const focusSearchBar: () => void = () => {
     searchBar.current?.focus();
+    window.scrollTo({ top: 0, behavior: "smooth" });
   };
   useHotkeys([
     ["mod+k", () => focusSearchBar()],
     ["/", () => focusSearchBar()],
   ]);
   const { t, i18n } = useTranslation();
+
+  // const calWrapper = forwardedRef?.current;
+  // console.log("from Top this is my ref", calWrapper);
+  const [, commandBarHandler] = useAtom(searchBarQuery);
+
+  const handleMagicBar = (e: any) => {
+    commandBarHandler(e);
+    setSearchQuery(e);
+
+    // const commandSymbol =
+    //   searchQuery.split(":")[0].trim() ?? searchQuery.trim();
+    // let qry = commandSymbol[1];
+
+    // if (commandSymbol === "/create") {
+    // } else if (commandSymbol === "/filter") {
+    // } else if (commandSymbol === "/goto") {
+    // } else if (commandSymbol === "/open") {
+    // } else {
+    // }
+  };
 
   return (
     <>
@@ -53,9 +72,10 @@ export default function AppTopBar() {
           className="grow xm:mx-auto"
           icon={<BsSearch />}
           data={[]}
-          placeholder="search"
-          onChange={handleSearch}
+          placeholder="Search, Filter, Navigate, and more..."
+          onChange={handleMagicBar}
           value={searchQuery}
+          onKeyDown={(e) => console.log("s")}
           radius="md"
           size="sm"
         />

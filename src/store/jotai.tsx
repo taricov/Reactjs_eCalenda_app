@@ -190,7 +190,7 @@ export const createdClustersAtom = atom([
     borderColor: "border-[#4c6ef5]",
   },
 ]);
-export const searchQueryAtom = atom("");
+// export const searchQueryAtom = atom("");
 export const loggerAtom = atom<string | null>("");
 
 export const valuesAtom = atom({
@@ -207,6 +207,7 @@ export const integrationModalOpen = atom(false);
 // export const eventLimitAtom = atom("");
 // export const calendarTitleAtom = atom("Calendar #1");
 
+export const searchBarQuery = atom("");
 export const availableIntegrationsAtom = [
   {
     id: "1",

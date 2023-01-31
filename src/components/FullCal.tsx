@@ -54,6 +54,7 @@ import {
   isOpen,
   PickerDate,
   repeatedAtom,
+  searchBarQuery,
   settingsAtom,
   tagsAtom,
   xTimesAtom,
@@ -70,7 +71,7 @@ import dayjs from "dayjs";
 // export let selectedDateRange = createContext<any>(null);
 
 // export let formContext = createContext<any>(null);
-const FullCal = () => {
+const FullCal = ({ toDate }: any) => {
   // let x = useContext(eventFormContext);
 
   const newAddedColor = useRef<HTMLInputElement>(null);
@@ -427,6 +428,31 @@ const FullCal = () => {
   const [allSettings] = useAtom(settingsAtom);
   const [dateCalendar, calendarHandler] = useAtom(calendarDate);
   const [, pickerHandler] = useAtom(PickerDate);
+  const [commandBar] = useAtom(searchBarQuery);
+  const calendarRef = useRef<any>();
+
+  const handleCommand = () => {
+    const calWrapper = calendarRef?.current.getApi();
+
+    const commandSymbol = commandBar.split(":")[0].trim() ?? commandBar.trim();
+    let qry = commandSymbol[1].trim();
+
+    if (commandSymbol === "/create") {
+    } else if (commandSymbol === "/filter") {
+    } else if (commandSymbol === "/goto") {
+      let newDate: any =
+        qry.length === 1 ? `01-${qry}-${new Date().getFullYear()}` : null;
+      console.log(newDate);
+      calWrapper.gotoDate(new Date(newDate));
+    } else if (commandSymbol === "/open") {
+    } else {
+    }
+  };
+
+  useEffect(() => {
+    handleCommand;
+    console.log(commandBar);
+  }, [commandBar]);
   return (
     <>
       {/* <formContext.Provider value={dateRange}> */}
@@ -434,6 +460,7 @@ const FullCal = () => {
       <Grid className="h-full">
         <Grid.Col>
           <FullCalendar
+            ref={calendarRef}
             plugins={[
               dayGridPlugin,
               timeGridPlugin,

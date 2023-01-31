@@ -123,7 +123,7 @@ export default function AppSideBar() {
       p="md"
       hiddenBreakpoint="sm"
       hidden={toggleNav}
-      zIndex={1000}
+      // zIndex={-10}//was before 1000
       width={{ sm: 200, lg: 300 }}
     >
       <Container>

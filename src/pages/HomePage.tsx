@@ -4,6 +4,7 @@ import AppContainer from "../layout/AppContainer";
 import AppTopBar from "../layout/AppTopBar";
 import FullCal from "../components/FullCal";
 import CalendarStats from "../components/CalendarStats";
+import { useState } from "react";
 
 export default function HomePage() {
   return (
