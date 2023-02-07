@@ -21,7 +21,7 @@ import { useAutoAnimate } from "@formkit/auto-animate/react";
 
 import { DatePicker, TimeInput } from "@mantine/dates";
 import { useAtom } from "jotai";
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { BsClock } from "react-icons/bs";
 import {
   allIntervals,
@@ -44,7 +44,7 @@ import {
 import MantineDatePicker from "../DatePicker/MantineDatePicker";
 import { date, z } from "zod";
 import { useForm, zodResolver } from "@mantine/form";
-import { useDisclosure } from "@mantine/hooks";
+import { useDisclosure, useFocusTrap } from "@mantine/hooks";
 import AppStandardModal from "./AppStandardModal";
 import moment from "moment";
 
@@ -93,7 +93,7 @@ export default function EditEvent() {
 
   // const [selectedDateRangePicker] = useAtom(dateRangePicker);
   const [isOpened, setIsOpened] = useAtom(isOpen);
-  const createEvent = (values: any) => {
+  const onEditEvent = (values: any) => {
     const { eventName, eventColor } = values;
     const className = `${mappedColors[eventColor]}`;
     const alertClassName = `after:!bg-slate-900 dark:after:!bg-slate-300`;
@@ -118,10 +118,8 @@ export default function EditEvent() {
   };
   // let editObj = useContext(formContext);
   // console.log(editObj);
-
   const [allColors] = useAtom(siteColors);
   const [allSettings, setSettings] = useAtom(settingsAtom);
-
   return (
     <>
       <AppStandardModal
@@ -131,9 +129,10 @@ export default function EditEvent() {
       >
         <></>
         <Container className="p-5">
-          <form onSubmit={createEvent}>
+          <form onSubmit={onEditEvent}>
             <Flex direction="column">
               <TextInput
+                data-autofocus
                 placeholder="Event Name"
                 onChange={(e: any) => {
                   updateTitle(e.target.value);

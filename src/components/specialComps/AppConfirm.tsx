@@ -1,7 +1,10 @@
 import { Button, Text } from "@mantine/core";
 import { openConfirmModal } from "@mantine/modals";
+import { xTimesAtom } from "../../store/jotai";
 
-export const ConfirmationModal = (xHappens: any) =>
+// const removeEvent = (id: string) => {};
+
+export const ConfirmationModal: any = (id: any, setEvents: any, events: any) =>
   openConfirmModal({
     title: "Cancel Event",
     centered: true,
@@ -14,5 +17,7 @@ export const ConfirmationModal = (xHappens: any) =>
     labels: { confirm: "Delete", cancel: "Back" },
     confirmProps: { color: "red" },
     onCancel: () => console.log("Cancel"),
-    onConfirm: () => xHappens,
+    onConfirm: () => {
+      setEvents(events.filter((eve: any) => eve.id !== id));
+    },
   });

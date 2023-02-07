@@ -50,7 +50,7 @@ const SiteCompDatePicker = ({
       moment(e[0]).format("YYYY-MM-DD"),
       moment(e[1]).format("YYYY-MM-DD"),
     ]);
-    console.log("cal", c);
+    // console.log("cal", c);
   };
   return (
     <div className="w-full">

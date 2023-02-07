@@ -124,16 +124,17 @@ export default function CreateEvent() {
     const { eventName, eventColor } = values;
     const className = `${mappedColors[eventColor]}`;
     const alertClassName = `after:!bg-slate-900 dark:after:!bg-slate-300`;
-    console.log(className);
+    // console.log(className);
     // const start = selectedDateRangePicker[0];
     // const end = selectedDateRangePicker[1];
     const lastDate = excludeDay(allSettings.c_lastDayExcluded, datePicked[1]);
     setEvents([
       ...events,
       {
+        id: Math.floor(Math.random() * 1000),
         title: eventName,
         allDay: true,
-        id: new String(Math.random()),
+        // id: new String(Math.random()),
         className,
         start: datePicked[0],
         end: lastDate,
@@ -154,7 +155,7 @@ export default function CreateEvent() {
   const onChangeTime = (e: any) => {
     setPickerTime(e);
   };
-  console.log(selectedTime);
+  // console.log(selectedTime);
 
   return (
     <>
@@ -182,6 +183,7 @@ export default function CreateEvent() {
           <form onSubmit={form.onSubmit(createEvent)}>
             <Flex direction="column">
               <TextInput
+                data-autofocus
                 // withAsterisk
                 placeholder="Event Name"
                 // onChange={handleEventTitle}

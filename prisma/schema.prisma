@@ -61,3 +61,12 @@ model Tag {
   event     Event?   @relation(fields: [event_id], references: [id])
   event_id  Int?     @unique
 }
+
+// model Settings{
+
+// }
+// model Languages{
+//   id Int 
+//   label String
+//   value String
+// }

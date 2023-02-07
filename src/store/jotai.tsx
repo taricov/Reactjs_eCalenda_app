@@ -61,16 +61,16 @@ export const predefinedDraggables = [
   {
     id: "1",
     title: "Task #1",
-    // toColor: "to-[#cee010]",
+    color: "bg-app-color-100",
     // days: 14,
-    // duration: 10,
+    duration: "48:00",
+    create: false,
     // itemSelected: ".fuck",
-    // create: true,
   },
   {
     id: "2",
     title: "Task #2",
-    toColor: "to-[blue]",
+    color: "#f067d3",
   },
   {
     id: "3",
@@ -80,7 +80,7 @@ export const predefinedDraggables = [
   {
     id: "4",
     title: "Task #4",
-    toColor: "to-[black]",
+    color: "black",
   },
 ];
 
@@ -162,6 +162,17 @@ export const eventsAtom = atom<any>([
     title: "Event #3",
     start: "2023-01-11",
     end: "2023-01-11",
+    filename: "event",
+    color: "teal",
+    allDay: true,
+    className:
+      "!bg-red-700 !bg-opacity-50 !text-red-200  after:!bg-red-300 before:!bg-red-300",
+  },
+  {
+    id: "4",
+    title: "Event #4",
+    start: "2023-01-30",
+    end: "2023-02-20",
     filename: "event",
     color: "teal",
     allDay: true,
@@ -357,8 +368,11 @@ export const settingsAtom = atom({
   g_timeFormat: undefined,
   g_useSecondsInTime: false,
   c_calendarName: "Calendar #1",
+  g_projectName: "Project",
+  g_clusterName: "Cluster",
   e_eventLimit: 0,
   e_allDay: true,
+  e_eventOverlapping: true,
   c_lastDayExcluded: false,
   // c_startDayExcluded: true,
   c_weatherIndicator: false,
@@ -387,6 +401,7 @@ export const userInfoAtom = atom({
   user_email: "taricov1@gmail.com",
   avatar_url: "../assets/me.jpg",
   user_birthday: undefined,
+  plan: 1,
 });
 
 export const isOpen = atom({

@@ -1,4 +1,5 @@
 import {
+  Divider,
   Drawer,
   Flex,
   MultiSelect,
@@ -6,6 +7,7 @@ import {
   Select,
   Space,
   Switch,
+  TextInput,
 } from "@mantine/core";
 import { useClickOutside, useHotkeys, useToggle } from "@mantine/hooks";
 import { showNotification } from "@mantine/notifications";
@@ -37,8 +39,32 @@ export default function () {
 
   const [disabledCalendarName, setCalendarNameDisabled] =
     useState<boolean>(true);
+  const [disabledProjectName, setProjectNameDisabled] = useState<boolean>(true);
+  const [disabledClusterName, setClusterNameDisabled] = useState<boolean>(true);
   const refCalendarTitle = useClickOutside(() => {
     setCalendarNameDisabled(true);
+    if (!disabledCalendarName) {
+      pushNotification(
+        "Updated!",
+        "Your name has been updated",
+        "teal",
+        <IconCheck size={10} />
+      );
+    }
+  });
+  const refProjectTitle = useClickOutside(() => {
+    setProjectNameDisabled(true);
+    if (!disabledCalendarName) {
+      pushNotification(
+        "Updated!",
+        "Your name has been updated",
+        "teal",
+        <IconCheck size={10} />
+      );
+    }
+  });
+  const refClusterTitle = useClickOutside(() => {
+    setClusterNameDisabled(true);
     if (!disabledCalendarName) {
       pushNotification(
         "Updated!",
@@ -54,13 +80,51 @@ export default function () {
       ...allSettings,
       c_calendarName: e.currentTarget.value,
     });
+  const projectOnChange = (e: any) =>
+    setSettings({
+      ...allSettings,
+      g_projectName: e.currentTarget.value,
+    });
+  const clusterOnChange = (e: any) =>
+    setSettings({
+      ...allSettings,
+      g_clusterName: e.currentTarget.value,
+    });
   const editCalendarTitle = () => {
     setCalendarNameDisabled(false);
+    refCalendarTitle.current.focus();
+
     if (!disabledCalendarName) {
       setCalendarNameDisabled(true);
       pushNotification(
         "Updated!",
         "Your name has been updated",
+        "teal",
+        <IconCheck size={18} />
+      );
+    }
+  };
+  const editProjectTitle = () => {
+    setProjectNameDisabled(false);
+    refProjectTitle.current.focus();
+    if (!disabledProjectName) {
+      setProjectNameDisabled(true);
+      pushNotification(
+        "Updated!",
+        "Your project name has been updated",
+        "teal",
+        <IconCheck size={18} />
+      );
+    }
+  };
+  const editClusterTitle = () => {
+    setClusterNameDisabled(false);
+    refClusterTitle.current.focus();
+    if (!disabledClusterName) {
+      setClusterNameDisabled(true);
+      pushNotification(
+        "Updated!",
+        "Cluster name has been updated",
         "teal",
         <IconCheck size={18} />
       );
@@ -109,6 +173,12 @@ export default function () {
     setSettings({
       ...allSettings,
       e_easyEdit: !allSettings.e_easyEdit,
+    });
+  };
+  const toggleEventOverlapping = () => {
+    setSettings({
+      ...allSettings,
+      e_eventOverlapping: !allSettings.e_eventOverlapping,
     });
   };
   const toggleSounds = () => {
@@ -161,7 +231,7 @@ export default function () {
         title="Settings"
         classNames={{ title: "text-2xl font-bold" }}
         padding="xl"
-        size="xl"
+        size="full"
         // className="w-full md:w-[40%]"
       >
         <Accordion defaultValue="Settings" className="-mx-4">
@@ -193,22 +263,46 @@ export default function () {
                 description="Decide whether or not to calculate time if you deal time not only days (Default is On)"
               />
               <Space h={20} />
-              <Select
-                label="Your Language"
-                value={allSettings.g_selected_lang}
-                onChange={onChangeLanguage}
-                data={languages2}
-              />
+              <Flex className="flex gap-5">
+                <Select
+                  label="Your Language"
+                  value={allSettings.g_selected_lang}
+                  onChange={onChangeLanguage}
+                  data={languages2}
+                />
+                <Space h={20} />
+                <Select
+                  label="Time Format"
+                  value={allSettings.g_timeFormat}
+                  onChange={onChangeHourSys}
+                  data={[
+                    { value: "12", label: "12 Houres" },
+                    { value: "24", label: "24 Hours" },
+                  ]}
+                />
+              </Flex>
               <Space h={20} />
-              <Select
-                label="Time Format"
-                value={allSettings.g_timeFormat}
-                onChange={onChangeHourSys}
-                data={[
-                  { value: "12", label: "12 Houres" },
-                  { value: "24", label: "24 Hours" },
-                ]}
-              />
+              <Divider my="xs" label="Workflow-related" />
+
+              <Flex className="flex gap-5">
+                <AppEditableInput
+                  label="Project"
+                  inputVal={allSettings.g_projectName}
+                  disabled={disabledProjectName}
+                  valOnChange={projectOnChange}
+                  inputRef={refProjectTitle}
+                  iconOnClick={editProjectTitle}
+                />
+                <AppEditableInput
+                  label="Cluster"
+                  inputVal={allSettings.g_clusterName}
+                  disabled={disabledClusterName}
+                  valOnChange={clusterOnChange}
+                  inputRef={refClusterTitle}
+                  iconOnClick={editClusterTitle}
+                />
+              </Flex>
+
               {/* </Flex> */}
               {/* 
               <Flex
@@ -319,7 +413,16 @@ export default function () {
           <Accordion.Item value="event_settings">
             <Accordion.Control>Event Settings</Accordion.Control>
             <Accordion.Panel>
+              <Switch
+                labelPosition="left"
+                label="Event Overlap"
+                checked={allSettings.e_eventOverlapping}
+                onChange={toggleEventOverlapping}
+                description="Toggle whether it's for more than one event to happen in a given day (Enabled by default)"
+              />
+              <Space h={20} />
               <NumberInput
+                disabled={allSettings.e_eventOverlapping ? false : true}
                 label="Event Limit"
                 classNames={{ wrapper: "w-fit" }}
                 description='Set How Many Events Could be Set Per Day ("0" Means Unlimited)'

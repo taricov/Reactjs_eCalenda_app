@@ -68,6 +68,7 @@ import { all } from "axios";
 import { pushNotification } from "./specialComps/pushNotification";
 import { MdError } from "react-icons/md";
 import dayjs from "dayjs";
+import { showNotification } from "@mantine/notifications";
 // export let selectedDateRange = createContext<any>(null);
 
 // export let formContext = createContext<any>(null);
@@ -88,43 +89,88 @@ const FullCal = ({ toDate }: any) => {
   const [id, setId] = useState("");
   const [file, setFile] = useState("");
   const [image, setImage] = useState("");
-  const [magicNum, setMagicNum] = useState("0");
+  const [magicNum, setMagicNum] = useState("24:00");
 
-  const department = [
-    { id: "1", name: "แผนกบัญชี", color: "red" },
-    { id: "2", name: "แผนกการเงิน", color: "#55A9F7" },
-    { id: "3", name: "แผนกไอที", color: "#1DCF0E" },
-  ];
+  const setQuickDuration = (e: any) => {
+    // console.log(+e.key);
+    const dd = `${+e.key ? +e.key * 24 + ":00" : "24:00"}`;
+    // console.log(dd);
+    setMagicNum(dd);
+
+    // showNotification({
+    //   title: "",
+    //   message: (
+    //     <Text className="text-[60px] text-app-color-800 opacity-100 ">
+    //       {e.key}
+    //     </Text>
+    //   ),
+    //   autoClose: 700,
+    // });
+
+    // const floatingDiv: any = `<div class="magic-num z-10 text-[200px] text-app-color-800 opacity-100 absolute !w-fit text-center top-1/2 left-1/2 font-bold mx-auto -translate-x-1/2">${e.key}</div>`;
+    // document
+    //   ?.querySelector(".App")
+    //   .insertAdjacentHTML("afterbegin", floatingDiv);
+    // setTimeout(() => {
+    // }, 300);
+  };
+
   useEffect(() => {
-    document.querySelectorAll(".fc-event").forEach((el) =>
-      el.addEventListener("mousedown", () => {
-        window.addEventListener("keyup", (e: any) => {
-          console.log(e.key);
-          setMagicNum(magicNum.concat(e.key));
-          console.log(magicNum);
-        });
-      })
-    );
+    window.addEventListener("keyup", setQuickDuration);
+    // document.querySelectorAll(".fc-event").forEach((el) =>
+    //   el.addEventListener("mousedown", () => {
+    //     window.addEventListener("keyup", (e: any) => {
+    //       // console.log(e.key);
+    //       setMagicNum(magicNum.concat(e.key));
+    //       // console.log(magicNum);
+    //     });
+    //   })
+    // );
 
     let draggableElement: any = document.getElementById("external-event");
-    const draggable = new Draggable(draggableElement, {
+    const onDragging = new Draggable(draggableElement, {
       itemSelector: ".fc-event",
       eventData: function (eventEl) {
-        let id = eventEl.getAttribute("id");
-        let title = eventEl.getAttribute("title");
-        let color = eventEl.getAttribute("color");
+        // console.log(eventEl);
+        // eventEl.style.cssText = `relative
+        // after:content-[${magicNum}] after:absolute after:top-0 after:left-0 after:text-xl after:opacity-30
+        // `;
+        let draggable_id = Math.floor(Math.random() * 100000);
+        let id = Math.floor(Math.random() * 2000);
+        let title = eventEl.dataset.title;
+        let backgroundColor = eventEl.dataset.color;
+        let duration = magicNum;
+        // console.log(id);
+        // let duration = eventEl.dataset.dur;
 
+        // setEvents([
+        //   ...events,
+        //   {
+        //     draggable_id,
+        //     id,
+        //     title,
+        //     backgroundColor,
+        //     duration,
+        //     create: false,
+        //   },
+        // ]);
         return {
+          draggable_id,
           id,
           title,
-          color,
+          backgroundColor,
+          duration,
         };
       },
       // loadData();
     });
-    return () => draggable.destroy();
+    return () => {
+      onDragging.destroy();
+      window.removeEventListener("keyup", setQuickDuration);
+    };
+
     // drag(draggableElement);
-  }, []);
+  }, [magicNum]);
   // const loadData = () => {
   //   listEvent()
   //     .then((res) => {
@@ -134,22 +180,22 @@ const FullCal = ({ toDate }: any) => {
   //       console.log(err);
   //     });
   // };
-  const drag = (el: any) => {
-    const draggable = new Draggable(el, {
-      itemSelector: ".fc-event",
-      eventData: function (eventEl) {
-        let id = eventEl.getAttribute("id");
-        let title = eventEl.getAttribute("title");
-        let color = eventEl.getAttribute("color");
+  // const drag = (el: any) => {
+  //   const draggable = new Draggable(el, {
+  //     itemSelector: ".fc-event",
+  //     eventData: function (eventEl) {
+  //       let id = eventEl.getAttribute("id");
+  //       let title = eventEl.getAttribute("title");
+  //       let color = eventEl.getAttribute("color");
 
-        return {
-          id,
-          title,
-          color,
-        };
-      },
-    });
-  };
+  //       return {
+  //         id,
+  //         title,
+  //         color,
+  //       };
+  //     },
+  //   });
+  // };
 
   // HANDLE SELECT DAYS && CREATE EVENTS ==== START
   const onSelectDays = (dayInfo: any) => {
@@ -178,6 +224,16 @@ const FullCal = ({ toDate }: any) => {
     // const lastDay: Date = excludeDay(false, dayInfo.endStr)._d;
     // const lastDay: Date = excludeLastDay(true, dayInfo.endStr)._d;
     // console.log("lastttttttttt", l);
+    // console.log(dayInfo);
+    const startDate = moment(dayInfo.start);
+    const endDate = moment(dayInfo.end);
+    const numnerOfDays = endDate.diff(startDate, "days");
+
+    const selectedDaysArr = [...Array(numnerOfDays).keys()].map((i) =>
+      moment(startDate.clone()).add(i, "d").format("YYYY-MM-DD")
+    );
+    // events.filter((d) => d.===)
+    console.log(selectedDaysArr);
 
     calendarHandler(() => [dayInfo.startStr, dayInfo.endStr]);
     // console.log([dayInfo.startStr, dayInfo.endStr]);
@@ -192,13 +248,11 @@ const FullCal = ({ toDate }: any) => {
     pickerHandler([calendarStartDate, calendarLastDate]);
     setIsOpened({ ...isOpened, addEvent_form: true });
   };
-  // HANDLE SELECT DAYS && CREATE EVENTS ==== END
 
   // HANDLE EDIT && DELETE EVENTS ==== START
   const onClickEvent = (eventClicked: any) => {
     const { id, title, start, end, allDay } = eventClicked.event;
-    console.log(eventClicked);
-
+    // console.log(eventClicked, id);
     const startDate = start;
     const endDate = moment(end).subtract(1, "days").toDate();
     setCalData({ id, title, start, end, allDay });
@@ -207,7 +261,7 @@ const FullCal = ({ toDate }: any) => {
       e.preventDefault();
       e.stopPropagation();
       if (e.altKey && e.shiftKey) {
-        console.log("doble");
+        // console.log("doble");
         removeEvent(id);
         pushNotification(
           "Removed!",
@@ -216,8 +270,9 @@ const FullCal = ({ toDate }: any) => {
           <MdError />
         );
       } else if (e.altKey) {
-        ConfirmationModal(removeEvent(id));
-        console.log(events);
+        ConfirmationModal(id, setEvents, events);
+        // removeEvent(id)
+        // console.log(events);
       } else {
         setIsOpened({ ...isOpened, editEvent_form: true });
         console.log(id, title, start, end, allDay);
@@ -301,26 +356,40 @@ const FullCal = ({ toDate }: any) => {
     setFile(fileInput);
   };
 
-  const whileDragging = (info: any) => {
-    console.log(info);
+  const whileDragging: any = () => {
+    // console.log(info);
+    // window.addEventListener("keyup", (e: any) => {
+    //   setMagicNum(magicNum.concat(e.key));
+    //   console.log(e.key);
+    //   const setDuration = `${magicNum}:00`;
+    //   return setDuration;
+    // });
   };
-  const handleRecieve = (eventInfo: any) => {
-    console.log(eventInfo);
-    // let value = {
-    //   id: eventInfo.draggedEl.getAttribute("id"),
-    //   title: eventInfo.draggedEl.getAttribute("title"),
-    //   color: eventInfo.draggedEl.getAttribute("color"),
-    //   start: eventInfo.dateStr,
-    // end: moment(eventInfo.dateStr).add(+1, "days").format("YYYY-MM-DD"),
-    // };
-    // console.log("value", value);
+  // console.log(events);
+
+  const onDropping = (eventInfo: any) => {
+    let values = {
+      // id: eventInfo.draggedEl.dataset.id,
+      id: Math.floor(Math.random() * 100000),
+      title: eventInfo.draggedEl.dataset.title,
+      color: eventInfo.draggedEl.dataset.tocolor,
+      start: eventInfo.dateStr,
+      end: moment(eventInfo.dateStr).add(magicNum, "days").format("YYYY-MM-DD"),
+      create: false,
+    };
+    setEvents([...events, values]);
+    console.log(events);
+    // console.log(eventInfo);
+    // console.log(values);
+    // calendarRef.current.addEvent(values);
+    // return values;
     // createEvent(value)
     //   .then((res) => {
-    //     // loadData()
-    //   })
-    //   .catch((err) => {
-    //     // console.log(err);
-    //   });
+    // loadData()
+    // })
+    // .catch((err) => {
+    // console.log(err);
+    // });
   };
   const currentMonth = (info: any) => {
     const m = info.view.calendar.currentDataManager.data.currentDate;
@@ -416,6 +485,10 @@ const FullCal = ({ toDate }: any) => {
   // window.location.reload();
 
   const views = {
+    // timeGridFourDay: {
+    //   type: "timeGrid",
+    //   duration: { days: 4 },
+    // },
     // listDay: { buttonText: "list day" },
     // listWeek: { buttonText: "list week" },
     // listMonth: { buttonText: "list month" },
@@ -442,7 +515,7 @@ const FullCal = ({ toDate }: any) => {
     } else if (commandSymbol === "/goto") {
       let newDate: any =
         qry.length === 1 ? `01-${qry}-${new Date().getFullYear()}` : null;
-      console.log(newDate);
+      // console.log(newDate);
       calWrapper.gotoDate(new Date(newDate));
     } else if (commandSymbol === "/open") {
     } else {
@@ -451,7 +524,7 @@ const FullCal = ({ toDate }: any) => {
 
   useEffect(() => {
     handleCommand;
-    console.log(commandBar);
+    // console.log(commandBar);
   }, [commandBar]);
   return (
     <>
@@ -483,6 +556,7 @@ const FullCal = ({ toDate }: any) => {
             weekText="W"
             fixedWeekCount={false}
             selectable={true}
+            selectOverlap={allSettings.e_eventOverlapping}
             editable={true}
             events={events}
             firstDay={allSettings.c_firstDay}
@@ -518,6 +592,7 @@ const FullCal = ({ toDate }: any) => {
             hiddenDays={allSettings.c_hiddenDays.map((e) => +e)}
             weekNumbers={allSettings.c_week_numbers}
             eventAllow={() => allSettings.e_easyEdit}
+            //selectConstraint={}
             // validRange={{ start: "2023-01-03", end: "2023-01-09" }} -- to be Custom programmed
             // Fns
             locales={[arLocale, esLocale, frLocale]}
@@ -525,10 +600,10 @@ const FullCal = ({ toDate }: any) => {
             direction={!!allSettings.g_rtl_direction ? "rtl" : "ltr"}
             select={onSelectDays}
             eventClick={onClickEvent}
-            drop={handleRecieve}
+            drop={onDropping}
             datesSet={currentMonth}
             eventChange={handleChange}
-            eventDragStart={whileDragging}
+            eventDragStart={whileDragging} //to add ability to drag [tempalate] events with no period specified before and keydown to add days
           />
         </Grid.Col>
       </Grid>
