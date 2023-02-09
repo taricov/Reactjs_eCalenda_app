@@ -188,3 +188,16 @@
 .dir-rtl{
     direction: rtl;
 }
+
+
+.wb-max{
+    background-image: none !important;
+}
+.wb-max:after{
+    content: "♞"
+}
+
+
+.ant-tree-switcher_close,.ant-tree-switcher_open{
+    display: none;
+}

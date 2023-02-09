@@ -224,7 +224,7 @@ const FullCal = ({ toDate }: any) => {
     // const lastDay: Date = excludeDay(false, dayInfo.endStr)._d;
     // const lastDay: Date = excludeLastDay(true, dayInfo.endStr)._d;
     // console.log("lastttttttttt", l);
-    // console.log(dayInfo);
+    console.log(dayInfo);
     const startDate = moment(dayInfo.start);
     const endDate = moment(dayInfo.end);
     const numnerOfDays = endDate.diff(startDate, "days");
@@ -504,9 +504,10 @@ const FullCal = ({ toDate }: any) => {
   const [commandBar] = useAtom(searchBarQuery);
   const calendarRef = useRef<any>();
 
+  const calWrapper = calendarRef.current?.getApi();
+  // const xxz = calWrapper.getEvents();
+  console.log("He", calWrapper);
   const handleCommand = () => {
-    const calWrapper = calendarRef?.current.getApi();
-
     const commandSymbol = commandBar.split(":")[0].trim() ?? commandBar.trim();
     let qry = commandSymbol[1].trim();
 
@@ -526,6 +527,23 @@ const FullCal = ({ toDate }: any) => {
     handleCommand;
     // console.log(commandBar);
   }, [commandBar]);
+
+  const renderedEventContent = (ev: any) => {
+    console.log("from render", ev);
+    return (
+      <>
+        <div
+          className="block"
+          data-id={ev.event.id}
+          data-start={ev.event.startStr}
+          data-end={ev.event.endStr}
+          data-group={ev.event.groupId}
+        >
+          {ev.event.title}
+        </div>
+      </>
+    );
+  };
   return (
     <>
       {/* <formContext.Provider value={dateRange}> */}
@@ -533,6 +551,7 @@ const FullCal = ({ toDate }: any) => {
       <Grid className="h-full">
         <Grid.Col>
           <FullCalendar
+            eventContent={renderedEventContent}
             ref={calendarRef}
             plugins={[
               dayGridPlugin,

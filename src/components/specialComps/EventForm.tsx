@@ -138,6 +138,9 @@ export default function CreateEvent() {
         className,
         start: datePicked[0],
         end: lastDate,
+        tags: form.values.eventTags,
+        proj: form.values.eventProject,
+        cluster: form.values.eventClusters,
       },
     ]);
     // console.log(events);
@@ -155,6 +158,7 @@ export default function CreateEvent() {
   const onChangeTime = (e: any) => {
     setPickerTime(e);
   };
+  console.log(selectedTime);
   // console.log(selectedTime);
 
   return (

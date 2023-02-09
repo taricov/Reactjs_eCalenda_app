@@ -121,10 +121,9 @@ export const eventsAtom = atom<any>([
     start: "2023-01-22T13:00:00Z",
     end: "2023-01-38T20:00:00",
     filename: "event",
-    extendedProps: {
-      project_id: "1",
-      cluster_id: "2",
-    },
+    project_id: "1",
+    cluster_id: "2",
+    tag: ["dfsd", "gas", "awefd"],
     // color: "#40c057",
     // backgroundColor: "#40c057",
     className:
@@ -491,3 +490,5 @@ export const PickerDate = atom<any>(undefined);
 export const PickerTime = atom<any>([new Date(), new Date()]);
 export const calendarData = atom<any>({});
 export const pickerData = atom<any>({});
+
+// export const selectedTime = atom<any>(null);

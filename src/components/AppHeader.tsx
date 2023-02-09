@@ -123,7 +123,7 @@ export default function AppHeader() {
           <ActionIcon size={30} onClick={toggleDarkMode}>
             {darkMode === "light" ? <GiStripedSun /> : <BsFillCircleFill />}
           </ActionIcon>
-          <Select
+          {/* <Select
             classNames={{
               root: "!z-100000",
               item: "text-xl w-fit",
@@ -135,7 +135,7 @@ export default function AppHeader() {
             value={allSettings.g_selected_lang}
             onChange={onChangeLanguage}
             data={languages}
-          />
+          /> */}
         </Flex>
       </Header>
     </MantineProvider>
