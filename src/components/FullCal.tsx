@@ -525,7 +525,13 @@ const FullCal = ({ toDate }: any) => {
 
   useEffect(() => {
     handleCommand;
-    // console.log(commandBar);
+    console.log(commandBar);
+// document.querySelectorAll("td.fc-day").forEach(dayCell => {
+  // let dayEventCount = dayCell.querySelectorAll(".fc-daygrid-day-events")[0].querySelectorAll(".fc-daygrid-event-harness").length
+  // console.log(dayEventCount)
+  // dayCell.append(`events: ${dayEventCount}`)
+
+// })
   }, [commandBar]);
 
   const renderedEventContent = (ev: any) => {
@@ -551,7 +557,7 @@ const FullCal = ({ toDate }: any) => {
       <Grid className="h-full">
         <Grid.Col>
           <FullCalendar
-            eventContent={renderedEventContent}
+            // eventContent={renderedEventContent}
             ref={calendarRef}
             plugins={[
               dayGridPlugin,

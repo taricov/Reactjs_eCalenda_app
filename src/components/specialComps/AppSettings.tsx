@@ -1,4 +1,5 @@
 import {
+  Button,
   Divider,
   Drawer,
   Flex,
@@ -9,6 +10,7 @@ import {
   Switch,
   TextInput,
 } from "@mantine/core";
+import MantineDatePicker from "../DatePicker/MantineDatePicker";
 import { useClickOutside, useHotkeys, useToggle } from "@mantine/hooks";
 import { showNotification } from "@mantine/notifications";
 import { IconCheck } from "@tabler/icons";
@@ -20,6 +22,7 @@ import {
 } from "../../store/baseData";
 import {
   darkModeAtom,
+  eventsAtom,
   isOpen,
   langs,
   langs2,
@@ -31,6 +34,8 @@ import AppEditableInput from "../specialComps/AppEditableInput";
 import { Accordion } from "@mantine/core";
 import { pushNotification } from "./pushNotification";
 import { ChangeEvent, useState } from "react";
+import SiteCompDatePicker from "../DatePicker/MantineDatePicker";
+import { DatePicker, DateRangePicker } from "@mantine/dates";
 
 export default function () {
   const [darkMode, setDarkMode] = useAtom(darkModeAtom);
@@ -222,6 +227,16 @@ export default function () {
   };
   const [languages2] = useAtom(langs2);
 
+
+  const [events,] = useAtom(eventsAtom)
+  const [exportedRange, setExportedRange] = useState<any>([new Date(), new Date()])
+
+  const exportData:any = (e:ChangeEvent) => {
+    setExportedRange(e)
+    const exportedData = events.filter((event:any) => event.start >= exportedRange[0] || event.start <= exportedRange[1])
+    
+  }
+  console.log(exportedRange);
   return (
     <>
       <Drawer
@@ -443,9 +458,59 @@ export default function () {
             </Accordion.Panel>
           </Accordion.Item>
 
-          <Accordion.Item value="user permissions">
+          <Accordion.Item value="user_permissions">
             <Accordion.Control disabled>User Permissions</Accordion.Control>
             <Accordion.Panel>User Permissions</Accordion.Panel>
+          </Accordion.Item>
+          <Accordion.Item value="export">
+            <Accordion.Control  >Export</Accordion.Control>
+            <Accordion.Panel>
+              <div className="mt-2">
+
+            
+    <DateRangePicker 
+        classNames={{
+          calendarBase: "flex sm:flex-row flex-col w-fit",
+          input: "w-full",
+          // dropdown: "text-xs bg-app-color-400 h-fit border-none",
+          cell: "",
+          day: "data-[first-in-range=true]:!text-app-color-100 data-[first-in-range=true]:!bg-app-color-500 data-[first-in-range=true]:!bg-opacity-100 data-[last-in-range=true]:!text-app-color-100 data-[last-in-range=true]:!bg-app-color-500 data-[last-in-range=true]:!bg-opacity-100 data-[selected=true]:bg-app-color-500 data-[in-range=true]:bg-app-color-50 data-[in-range=true]:!bg-opacity-5 text-sm h-8 hover:bg-app-color-500 hover:bg-opacity-5",
+          weekday: "text-app-color-400 dark:!text-app-color-100 text-sm",
+          month: "text-app-color-500",
+          calendarHeaderControl: "hover:bg-app-color-50 hover:bg-opacity-10",
+          calendarHeaderLevel: "hover:bg-app-color-50 hover:bg-opacity-10",
+          monthPickerControl: "hover:bg-app-color-50 hover:bg-opacity-10",
+          yearPickerControl: "hover:bg-app-color-50 hover:bg-opacity-10",
+        }}
+    amountOfMonths={2} 
+    variant="unstyled"
+    label={"Select Date"}
+    size={"sm"}
+    value={exportedRange}
+    onChange={exportData}
+    
+    />
+
+
+                </div>
+<Select
+      label="Format:"
+      variant="unstyled"
+defaultValue={"csv"}
+      data={[
+        { value: 'csv', label: 'CSV' },
+        { value: 'excel', label: 'Excel' },
+        { value: 'pdf', label: 'PDF' },
+        { value: 'text', label: 'Text' },
+      ]}
+
+    />
+<Button onClick={exportData} variant="default">Export</Button>
+            </Accordion.Panel>
+          </Accordion.Item>
+          <Accordion.Item value="activity_log">
+            <Accordion.Control disabled>Activity Log</Accordion.Control>
+            <Accordion.Panel>Activity Log</Accordion.Panel>
           </Accordion.Item>
         </Accordion>
       </Drawer>

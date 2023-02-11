@@ -84,7 +84,7 @@ export default function CreateEvent() {
   // };
 
   const eventSchema = z.object({
-    // eventName: z.string().nonempty(),
+    eventName: z.string().nonempty(),
     // notes: z.string().optional(),
     // dateRange: z.date().array().nonempty(),
     // project: z.string().optional(),

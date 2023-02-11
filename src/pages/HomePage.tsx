@@ -4,8 +4,7 @@ import AppContainer from "../layout/AppContainer";
 import AppTopBar from "../layout/AppTopBar";
 import FullCal from "../components/FullCal";
 import CalendarStats from "../components/CalendarStats";
-import ReactWhatsapp from 'react-whatsapp';
-import { FloatingWhatsApp} from "react-floating-whatsapp"
+
 
 import WinBox from "react-winbox";
 import "winbox/dist/css/winbox.min.css"; // required
@@ -18,7 +17,7 @@ const englishAccounts = [
     name: "Jeffrey Brown",
     position: "creative leader",
     account: "98912*******",
-    avatar: (<img src={""} alt="" />),
+  avatar: (<img src={""} alt="" />),
     status: false,
   },
   // {
@@ -96,20 +95,7 @@ export default function HomePage() {
               /> */}
           <AppTopBar />
           <FullCal />
-          <FloatingWhatsApp 
-          
-          tooltipTitle={"Do you have any questions about this product?"}
-        tooltipDescription="Chat via WhatsApp"
-        title={"chat start"}
-        lead={"Please chat on WhatsApp"}
-        description={"Responsive, usually responds in minutes"}
-        accountList={englishAccounts}
-        phoneNumber="98912*******"
-        textareaPlaceholder="send message ..."
-        widthSendIcon={42}
-    textAreaPlaceholder="Helooooooooo"/>
-          {/* <ReactWhatsapp number="1-212-736-5000" message="Hello World!!!" /> */}
-
+         
           <CalendarStats />
         </Flex>
       </AppContainer>

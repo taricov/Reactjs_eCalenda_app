@@ -14,7 +14,7 @@ export default function CalendarStats() {
   return (
     <>
       <Center>
-        <Flex className="bg-app-color-100 items-center justify-around rounded px-10 xs:flex-row flex-col dark:bg-opacity-5">
+        <Flex className="bg-app-color-100 items-center justify-around rounded px-10 xs:flex-row flex-col dark:bg-opacity-5 z-10">
           <Flex align="center" c="dimmed">
             <Text size={"xs"} mx={5} fw="bold">
               22
