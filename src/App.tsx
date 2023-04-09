@@ -47,7 +47,6 @@ import rtlPlugin from "stylis-plugin-rtl";
 import AppHelp from "./components/specialComps/AppHelp";
 import EditEvent from "./components/specialComps/EditEventForm ";
 // import "./i18n";
-import { LinkedInCallback } from "react-linkedin-login-oauth2";
 
 const queryClient = new QueryClient();
 
@@ -92,7 +91,6 @@ function App() {
         <ModalsProvider>
           <NotificationsProvider autoClose={2000}>
             <Switch>
-              <Route path="/linkedin" component={LinkedInCallback} />
 
               <Route path="/">
                 <HomePage />
