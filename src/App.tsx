@@ -38,7 +38,7 @@ import LoginPage from "./pages/LoginPage";
 import Error404Page from "./pages/Error404Page";
 import HomePage from "./pages/HomePage";
 import { NotificationsProvider } from "@mantine/notifications";
-import { getWeatherIcons } from "./api/weather/getWeatherIcons";
+// import { getWeatherIcons } from "./api/weather/getWeatherIcons";
 import AppEditProfile from "./components/specialComps/AppEditProfile";
 import AppSettings from "./components/specialComps/AppSettings";
 import AppIntegrations from "./components/specialComps/AppIntegrations";
