@@ -15,7 +15,7 @@ This project was a 🤦 solopreneurship 🤕
 
 Here, I am exposing my whole brainstorming 🧠 process document on Notion where I tried to gather my thoughts in one place and make sense of the business need 📍 customer profiling/plan features 📂 and to document my development choices/bugs 🪲 all along the process. You can also view the [Documentation](https://splendid-glove-771.notion.site/eCalenda-6b935e025adb44c4a41cf04ec342c7e9)
 
-**This document is *NIETHER* refined nor finished** ✋ it rather acts like a closet drawer where I throw any thing in.
+**This document is *NIETHER* refined nor finished** ✋ <br/> it rather acts like a closet drawer where I throw any thing in.
 <br/>
 <br/>
 ![222](https://user-images.githubusercontent.com/65824043/231031839-fe750525-ebf8-4ec6-92ca-aef9afc0bde2.gif)
