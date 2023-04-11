@@ -2,7 +2,6 @@
 
 ![SCR-20230125-stj](https://user-images.githubusercontent.com/65824043/231025083-584d5600-448d-4f65-88d7-77eae3521f93.jpeg)
 
-
   
 
 
@@ -17,15 +16,15 @@ This project was a 🤦 solopreneurship 🤕
 Here, I am exposing my whole brainstorming 🧠 process document on Notion where I tried to gather my thoughts in one place and make sense of the business need 📍 customer profiling/plan features 📂 and to document my development choices/bugs 🪲 all along the process. You can also view the [Documentation](https://splendid-glove-771.notion.site/eCalenda-6b935e025adb44c4a41cf04ec342c7e9)
 
 **This document is *NIETHER* refined nor finished** ✋ it rather acts like a closet drawer where I throw any thing in.
+<br/>
+![222](https://user-images.githubusercontent.com/65824043/231031839-fe750525-ebf8-4ec6-92ca-aef9afc0bde2.gif)
 
 
-✅ [LinkedIn post:](https://www.linkedin.com/posts/taricov_testing-experience-share-activity-7028380891672363008-Ec6K?utm_source=share&utm_medium=member_desktop), <br/>
-✅ Go to the app repo directly from this [link](https://github.com/taricov/Reactjs_eCalenda_app)
+✅ View a [LinkedIn post:](https://www.linkedin.com/posts/taricov_testing-experience-share-activity-7028380891672363008-Ec6K?utm_source=share&utm_medium=member_desktop) documenting the process <br/>
+✅ Go to the website repo directly from this [link](https://github.com/taricov/Reactjs_eCalenda_app)
 
 
 <br/>
-
-
 
 
 # Author
