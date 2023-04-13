@@ -42,11 +42,11 @@ Find more about me:
 
 <div align="center">
 
-  <a href="https://twitter.com/taricov">
+  <a href="https://twitter.com/taric_ov">
     <img src="https://img.shields.io/twitter/follow/taric_ov?style=social" alt="Taric Ov's Twitter Account" />
   </a>
 
-  <a href="https://linkedin.com/en/taricov">
+  <a href="https://linkedin.com/in/taricov">
     <img src="https://img.shields.io/badge/Taric%20Ov-0077B5?style=flat&logo=linkedin&logoColor=fff" alt="Taric Ov's Linkedin Account"/>
   </a>
   
@@ -55,7 +55,7 @@ Find more about me:
   </a>
   
   <p align="center" style="display:inline-block">
-     <a href="https://podcasters.spotify.com/pod/show/taric-ov0">
+     <a href="https://podcasters.spotify.com/pod/show/thesamuraination">
     <img src="https://img.shields.io/badge/Taric%20Ov-1DB954?style=flat&logo=spotify&logoColor=white" alt="Taric Ov's Spotify Podcast" />
   </a>
   </p>
