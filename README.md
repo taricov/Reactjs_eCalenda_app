@@ -22,7 +22,7 @@ Here, I am exposing my whole brainstorming 🧠 process document on Notion where
 
 
 ✅ View a [LinkedIn post:](https://www.linkedin.com/posts/taricov_testing-experience-share-activity-7028380891672363008-Ec6K?utm_source=share&utm_medium=member_desktop) documenting the process <br/>
-✅ Go to the website repo directly from this [link](https://github.com/taricov/Reactjs_eCalenda_app)
+✅ Go to the website repo directly from this [link](https://github.com/taricov/Reactjs_eCalenda_website)
 
 
 <br/>
